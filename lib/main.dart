@@ -46,11 +46,12 @@ class _MainAppState extends State<MainApp> {
       Column col = Column(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
-        children: [],
+        children: [Divider()],
       );
       List<String> meal = geupsick![idx]["DDISH_NM"].toString().split("<br/>");
       for (int i = 0; i < meal.length; i++) {
-        col.children.add(Text("* ${meal[i]}"));
+        col.children.add(Text(meal[i]));
+        col.children.add(Divider());
       }
       return col;
     } else {
@@ -61,7 +62,7 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return DynamicColorBuilder(
-      builder: (lightDynamic, darkDynamic) {
+      builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
         ColorScheme light;
         ColorScheme dark;
 
@@ -69,7 +70,9 @@ class _MainAppState extends State<MainApp> {
           light = lightDynamic.harmonized();
           dark = darkDynamic.harmonized();
         } else {
-          light = ColorScheme.fromSeed(seedColor: Colors.deepPurple);
+          light = ColorScheme.fromSeed(
+            seedColor: Colors.deepPurple,
+          );
           dark = ColorScheme.fromSeed(
             seedColor: Colors.deepPurple,
             brightness: Brightness.dark,
@@ -85,44 +88,49 @@ class _MainAppState extends State<MainApp> {
             colorScheme: dark,
           ),
           debugShowCheckedModeBanner: false,
-          home: Scaffold(
-            appBar: AppBar(
-              title: Text(
-                DateFormat("yyyy년 MM월 dd일").format(DateTime.now()),
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-            body: Center(
-              child: Card(
-                child: Padding(
-                  padding: EdgeInsets.all(30),
-                  child: printMeal(),
+          home: Builder(builder: (context) {
+            return Scaffold(
+              appBar: AppBar(
+                title: Text(
+                  DateFormat("yyyy년 MM월 dd일").format(DateTime.now()),
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
-            ),
-            bottomNavigationBar: NavigationBar(
-              onDestinationSelected: (int index) {
-                setState(() {
-                  idx = index;
-                });
-              },
-              selectedIndex: idx,
-              destinations: const [
-                NavigationDestination(
-                  icon: Icon(Icons.breakfast_dining),
-                  label: "아침",
+              body: Center(
+                child: Card(
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                  child: Padding(
+                    padding: EdgeInsets.all(30),
+                    child: printMeal(),
+                  ),
                 ),
-                NavigationDestination(
-                  icon: Icon(Icons.lunch_dining),
-                  label: "점심",
-                ),
-                NavigationDestination(
-                  icon: Icon(Icons.dinner_dining),
-                  label: "저녁",
-                ),
-              ],
-            ),
-          ),
+              ),
+              bottomNavigationBar: Builder(builder: (context) {
+                return NavigationBar(
+                  onDestinationSelected: (int index) {
+                    setState(() {
+                      idx = index;
+                    });
+                  },
+                  selectedIndex: idx,
+                  destinations: const [
+                    NavigationDestination(
+                      icon: Icon(Icons.breakfast_dining),
+                      label: "아침",
+                    ),
+                    NavigationDestination(
+                      icon: Icon(Icons.lunch_dining),
+                      label: "점심",
+                    ),
+                    NavigationDestination(
+                      icon: Icon(Icons.dinner_dining),
+                      label: "저녁",
+                    ),
+                  ],
+                );
+              }),
+            );
+          }),
         );
       },
     );
