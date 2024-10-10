@@ -1,0 +1,22 @@
+name: geupsick
+description: "Get Geupsick."
+publish_to: "none"
+version: 0.1.0
+
+environment:
+  sdk: ^3.5.3
+
+dependencies:
+  dynamic_color: ^1.7.0
+  flutter:
+    sdk: flutter
+  http: ^1.2.2
+  intl: ^0.19.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
