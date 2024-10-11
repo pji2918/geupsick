@@ -4,6 +4,7 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:dart_openai/dart_openai.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(MainApp());
@@ -147,6 +148,13 @@ class _MainAppState extends State<MainApp> {
 
         return MaterialApp(
           title: "급식",
+          localizationsDelegates: [
+            GlobalMaterialLocalizations.delegate,
+          ],
+          supportedLocales: [
+            const Locale('en'),
+            const Locale('ko'),
+          ],
           theme: ThemeData(
             colorScheme: light,
           ),
@@ -166,6 +174,7 @@ class _MainAppState extends State<MainApp> {
                     icon: Icon(Icons.calendar_month),
                     onPressed: () async {
                       date = (await showDatePicker(
+                            locale: const Locale('ko', 'KR'),
                             context: context,
                             initialDate: date,
                             firstDate: DateTime(2000),
