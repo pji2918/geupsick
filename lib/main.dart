@@ -19,7 +19,11 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-  int idx = 0;
+  int idx = DateTime.now().hour <= 8
+      ? 0
+      : DateTime.now().hour <= 13
+          ? 1
+          : 2;
   List<dynamic>? geupsick;
 
   DateTime date = DateTime.now();
@@ -81,12 +85,11 @@ class _MainAppState extends State<MainApp> {
           home: Builder(builder: (context) {
             return Scaffold(
               appBar: AppBar(
-                title: Text(
-                  DateFormat("yyyy년 MM월 dd일").format(date),
-                ),
+                title: Text(DateFormat("MM월 dd일").format(date)),
                 actions: [
                   IconButton(
                     icon: Icon(Icons.calendar_month),
+                    tooltip: "날짜 선택",
                     onPressed: () async {
                       date = (await showDatePicker(
                             locale: const Locale('ko', 'KR'),
@@ -97,10 +100,15 @@ class _MainAppState extends State<MainApp> {
                           ) ??
                           date);
                       getMeal(date).then((data) {
-                        // refresh meal
-                        setState(() {
-                          geupsick = data;
-                        });
+                        if (date.day != DateTime.now().day) {
+                          idx = 0;
+                        } else {
+                          idx = DateTime.now().hour <= 8
+                              ? 0
+                              : DateTime.now().hour <= 13
+                                  ? 1
+                                  : 2;
+                        }
 
                         // refresh g-score
                         getGScore(idx, date).then((value) {

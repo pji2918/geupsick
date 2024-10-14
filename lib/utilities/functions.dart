@@ -31,7 +31,8 @@ Widget printMeal(List<dynamic>? geupsick, int idx) {
       meal = geupsick[idx]["DDISH_NM"].toString().split("<br/>");
     } catch (e) {
       if (e is RangeError) {
-        return Text("급식이 없습니다.", style: TextStyle(fontSize: 20));
+        col.children.add(Text("급식이 없습니다.", style: TextStyle(fontSize: 20)));
+        return col;
       }
     }
     for (int i = 0; i < meal.length; i++) {
@@ -43,7 +44,7 @@ Widget printMeal(List<dynamic>? geupsick, int idx) {
 
     return col;
   } else {
-    return CircularProgressIndicator();
+    return Center(child: CircularProgressIndicator());
   }
 }
 
