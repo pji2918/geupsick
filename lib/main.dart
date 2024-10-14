@@ -51,7 +51,7 @@ class _MainAppState extends State<MainApp> {
       Column col = Column(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
-        children: [Divider()],
+        children: [],
       );
 
       List<String> meal = [];
@@ -65,7 +65,9 @@ class _MainAppState extends State<MainApp> {
       }
       for (int i = 0; i < meal.length; i++) {
         col.children.add(Text(meal[i]));
-        col.children.add(Divider());
+        if (i != meal.length - 1) {
+          col.children.add(SizedBox(height: 10));
+        }
       }
 
       return col;
@@ -150,6 +152,8 @@ class _MainAppState extends State<MainApp> {
           title: "급식",
           localizationsDelegates: [
             GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
           ],
           supportedLocales: [
             const Locale('en'),
@@ -167,7 +171,6 @@ class _MainAppState extends State<MainApp> {
               appBar: AppBar(
                 title: Text(
                   DateFormat("yyyy년 MM월 dd일").format(date),
-                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 actions: [
                   IconButton(
@@ -201,78 +204,7 @@ class _MainAppState extends State<MainApp> {
                   ),
                 ],
               ),
-              body: Center(
-                child: Column(
-                  children: [
-                    Card(
-                      child: Padding(
-                        padding: EdgeInsets.all(30),
-                        child: printMeal(),
-                      ),
-                    ),
-                    FutureBuilder(
-                        future: getGScore(idx),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return Card(
-                                child: Padding(
-                              padding: EdgeInsets.all(50),
-                              child: CircularProgressIndicator(),
-                            ));
-                          } else if (snapshot.data == -2) {
-                            return Container();
-                          } else if (snapshot.hasError || snapshot.data == -1) {
-                            return Card(
-                              child: Padding(
-                                padding: const EdgeInsets.all(30),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.warning,
-                                      size: 50,
-                                    ),
-                                    Text(
-                                      "급식 점수를 불러올 수 없습니다",
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          } else {
-                            return Card(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 30, vertical: 10),
-                                child: Column(
-                                  children: [
-                                    Text("G-Score:",
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                        )),
-                                    Divider(),
-                                    Text(
-                                      snapshot.data.toString(),
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          }
-                        }),
-                  ],
-                ),
-              ),
+              body: mainForm(),
               bottomNavigationBar: Builder(builder: (context) {
                 return NavigationBar(
                   onDestinationSelected: (int index) {
@@ -281,17 +213,20 @@ class _MainAppState extends State<MainApp> {
                     });
                   },
                   selectedIndex: idx,
-                  destinations: const [
+                  destinations: [
                     NavigationDestination(
-                      icon: Icon(Icons.breakfast_dining),
+                      icon: Icon(Icons.breakfast_dining_outlined),
+                      selectedIcon: Icon(Icons.breakfast_dining),
                       label: "아침",
                     ),
                     NavigationDestination(
-                      icon: Icon(Icons.lunch_dining),
+                      icon: Icon(Icons.lunch_dining_outlined),
+                      selectedIcon: Icon(Icons.lunch_dining),
                       label: "점심",
                     ),
                     NavigationDestination(
-                      icon: Icon(Icons.dinner_dining),
+                      icon: Icon(Icons.dinner_dining_outlined),
+                      selectedIcon: Icon(Icons.dinner_dining),
                       label: "저녁",
                     ),
                   ],
@@ -301,6 +236,111 @@ class _MainAppState extends State<MainApp> {
           }),
         );
       },
+    );
+  }
+
+  Center mainForm() {
+    return Center(
+      child: Column(
+        children: [
+          Builder(builder: (context) {
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Card.filled(
+                  color: Theme.of(context).colorScheme.secondaryContainer,
+                  child: Padding(
+                    padding: EdgeInsets.all(20),
+                    child: printMeal(),
+                  ),
+                ),
+              ),
+            );
+          }),
+          FutureBuilder(
+              future: getGScore(idx),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: Card.filled(
+                        color: Theme.of(context).colorScheme.secondaryContainer,
+                        child: Padding(
+                          padding: EdgeInsets.all(20),
+                          child: Center(child: CircularProgressIndicator()),
+                        ),
+                      ),
+                    ),
+                  );
+                } else if (snapshot.data == -2) {
+                  return Container();
+                } else if (snapshot.hasError || snapshot.data == -1) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: Card.filled(
+                        color: Theme.of(context).colorScheme.secondaryContainer,
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.warning,
+                                size: 50,
+                              ),
+                              Text(
+                                "급식 점수를 불러올 수 없습니다",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                } else {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: Card.filled(
+                        color: Theme.of(context).colorScheme.secondaryContainer,
+                        child: Padding(
+                          padding: EdgeInsets.all(20),
+                          child: Column(
+                            children: [
+                              Text(
+                                "G-Score:",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                snapshot.data.toString(),
+                                style: TextStyle(
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }
+              }),
+        ],
+      ),
     );
   }
 }
