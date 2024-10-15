@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'dart:io' show Platform;
 
 import 'utilities/functions.dart';
+import 'utilities/getschoolinfo.dart';
 
 void main() {
   runApp(MainApp());
@@ -28,10 +29,13 @@ class _MainAppState extends State<MainApp> {
 
   DateTime date = DateTime.now();
 
+  String schoolCode = "";
+  String ministryCode = "";
+
   @override
   void initState() {
     super.initState();
-    getMeal(date).then((data) {
+    getMeal(date, schoolCode, ministryCode).then((data) {
       setState(() {
         geupsick = data;
       });
@@ -99,7 +103,7 @@ class _MainAppState extends State<MainApp> {
                             lastDate: DateTime(2050),
                           ) ??
                           date);
-                      getMeal(date).then((data) {
+                      getMeal(date, schoolCode, ministryCode).then((data) {
                         if (date.day != DateTime.now().day) {
                           idx = 0;
                         } else {
@@ -111,7 +115,8 @@ class _MainAppState extends State<MainApp> {
                         }
 
                         // refresh g-score
-                        getGScore(idx, date).then((value) {
+                        getGScore(idx, date, schoolCode, ministryCode)
+                            .then((value) {
                           setState(() {});
                         });
 
@@ -122,6 +127,31 @@ class _MainAppState extends State<MainApp> {
                       });
                     },
                   ),
+                  IconButton(
+                    onPressed: () {
+                      var result = showDialog(
+                        context: context,
+                        builder: (BuildContext context) => Dialog.fullscreen(
+                          child: SchoolChanger(
+                              schoolCode: schoolCode,
+                              ministryCode: ministryCode),
+                        ),
+                        useRootNavigator: false,
+                      );
+                      result.then((value) {
+                        schoolCode = value[0];
+                        ministryCode = value[1];
+                      });
+                      getMeal(date, schoolCode, ministryCode).then(
+                        (data) => geupsick = data,
+                      );
+
+                      // refresh everything
+                      setState(() {});
+                    },
+                    icon: Icon(Icons.school),
+                    tooltip: "학교 선택",
+                  )
                 ],
               ),
               body: mainForm(),
@@ -163,23 +193,25 @@ class _MainAppState extends State<MainApp> {
     return Center(
       child: Column(
         children: [
-          Builder(builder: (context) {
-            return Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: Card.filled(
-                  color: Theme.of(context).colorScheme.secondaryContainer,
-                  child: Padding(
-                    padding: EdgeInsets.all(20),
-                    child: printMeal(geupsick, idx),
+          Builder(
+            builder: (context) {
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: Card.filled(
+                    color: Theme.of(context).colorScheme.secondaryContainer,
+                    child: Padding(
+                      padding: EdgeInsets.all(20),
+                      child: printMeal(geupsick, idx),
+                    ),
                   ),
                 ),
-              ),
-            );
-          }),
+              );
+            },
+          ),
           FutureBuilder(
-              future: getGScore(idx, date),
+              future: getGScore(idx, date, schoolCode, ministryCode),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Padding(
