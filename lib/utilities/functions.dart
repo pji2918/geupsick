@@ -3,39 +3,37 @@ import 'package:dart_openai/dart_openai.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'dart:convert';
+import 'types/geupsickinfoclass.dart';
 
-Future<List<dynamic>> getMeal(
-    DateTime date, String schoolCode, String ministryCode) async {
+Future<GeupsickInfo> getMeal(
+    DateTime date, String schoolCode, String ministryCode, int idx) async {
   var url = Uri.parse(
-      "https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=ec86c034134b4479bcbdf413fa3f2288&Type=json&ATPT_OFCDC_SC_CODE=$ministryCode&SD_SCHUL_CODE=$schoolCode&MLSV_YMD=${DateFormat('yyyyMMdd').format(date)}");
+      "https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=ec86c034134b4479bcbdf413fa3f2288&Type=json&ATPT_OFCDC_SC_CODE=$ministryCode&SD_SCHUL_CODE=$schoolCode&MLSV_YMD=${DateFormat('yyyyMMdd').format(date)}&MMEAL_SC_CODE=${idx + 1}");
   var response = await http.get(url);
-  var data = json.decode(response.body);
-  if (data != null && data["mealServiceDietInfo"] != null) {
-    List<dynamic> meals = data["mealServiceDietInfo"][1]["row"];
-    return meals;
-  } else {
-    return [];
-  }
+  debugPrint(response.body);
+  return GeupsickInfo.fromJson(jsonDecode(response.body));
 }
 
-Widget printMeal(List<dynamic>? geupsick, int idx) {
-  if (geupsick != null) {
-    Column col = Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: [],
-    );
+Widget printMeal(GeupsickInfo geupsick, DateTime date, String schoolCode,
+    String ministryCode, int idx) {
+  Column col = Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    mainAxisSize: MainAxisSize.min,
+    children: [],
+  );
 
+  if (geupsick.mealServiceDietInfo == null) {
+    col.children.add(Text(
+      "급식이 없습니다.",
+      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    ));
+    return col;
+  } else {
     List<String> meal = [];
 
-    try {
-      meal = geupsick[idx]["DDISH_NM"].toString().split("<br/>");
-    } catch (e) {
-      if (e is RangeError) {
-        col.children.add(Text("급식이 없습니다.", style: TextStyle(fontSize: 20)));
-        return col;
-      }
-    }
+    meal = geupsick.mealServiceDietInfo![1].row![0].dDISHNM
+        .toString()
+        .split("<br/>");
     for (int i = 0; i < meal.length; i++) {
       col.children.add(Text(meal[i]));
       if (i != meal.length - 1) {
@@ -44,24 +42,23 @@ Widget printMeal(List<dynamic>? geupsick, int idx) {
     }
 
     return col;
-  } else {
-    return Center(child: CircularProgressIndicator());
   }
 }
 
-Future<int> getGScore(
-    int foodIdx, DateTime date, String schoolCode, String ministryCode) async {
+Future<int> getGScore(int foodIdx, DateTime date, String schoolCode,
+    String ministryCode, GeupsickInfo geupsick) async {
   String meal = "";
 
-  await getMeal(date, schoolCode, ministryCode).then((value) {
-    if (value.length <= foodIdx) {
-      meal = "-2";
-    } else {
-      meal = value[foodIdx]["DDISH_NM"].toString().replaceAll("<br/>", "\n");
-    }
-  });
+  if (geupsick.mealServiceDietInfo == null) {
+    meal = "";
+    return -2;
+  }
 
-  if (meal == "-2") {
+  meal = geupsick.mealServiceDietInfo![1].row![0].dDISHNM
+      .toString()
+      .replaceAll("<br/>", "\n");
+
+  if (meal == "") {
     return -2;
   }
 

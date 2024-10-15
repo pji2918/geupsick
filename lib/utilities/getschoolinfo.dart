@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -35,7 +37,7 @@ class _SchoolChangerState extends State<SchoolChanger> {
     DropdownMenuEntry(value: "M10", label: "충청북도교육청"),
     DropdownMenuEntry(value: "N10", label: "충청남도교육청"),
     DropdownMenuEntry(value: "P10", label: "전북특별자치도교육청"),
-    DropdownMenuEntry(value: "Q10", label: "전남도교육청"),
+    DropdownMenuEntry(value: "Q10", label: "전라남도교육청"),
     DropdownMenuEntry(value: "R10", label: "경상북도교육청"),
     DropdownMenuEntry(value: "S10", label: "경상남도교육청"),
     DropdownMenuEntry(value: "T10", label: "제주특별자치도교육청"),
@@ -56,9 +58,12 @@ class _SchoolChangerState extends State<SchoolChanger> {
     if (schoolData.schoolInfo![1].row == null) {
       return Center(child: Text("검색 결과가 없습니다."));
     } else {
-      return Card.outlined(
-        child: SizedBox(
-          height: mounted ? MediaQuery.of(context).size.height * 0.5 : 0,
+      return SizedBox(
+        height: min(
+          schoolData.schoolInfo![1].row!.length * 70.0,
+          mounted ? MediaQuery.of(context).size.height * 0.6 : 100,
+        ),
+        child: Card.outlined(
           child: ListView.builder(
             shrinkWrap: true,
             itemCount: schoolData.schoolInfo![1].row!.length,
@@ -90,54 +95,61 @@ class _SchoolChangerState extends State<SchoolChanger> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: false,
       appBar: AppBar(
         title: Text("학교 변경"),
+        scrolledUnderElevation: 0,
       ),
       body: Builder(
         builder: (context) {
           return Align(
             alignment: Alignment.topCenter,
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  DropdownMenu<String>(
-                    dropdownMenuEntries: ministryList,
-                    enableFilter: false,
-                    label: Text("교육청 선택"),
-                    initialSelection: ministryList[0].value,
-                    onSelected: (String? selected) {
-                      setState(() {
-                        ministryCode = selected!;
-                      });
-                    },
-                  ),
-                  TextField(
-                    autocorrect: false,
-                    autofocus: true,
-                    decoration: InputDecoration(hintText: "학교 이름을 입력하여 검색"),
-                    onSubmitted: (value) {
-                      setState(() {
-                        schoolName = value;
-                      });
-                    },
-                  ),
-                  FutureBuilder(
+            child: IntrinsicHeight(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    DropdownMenu<String>(
+                      dropdownMenuEntries: ministryList,
+                      requestFocusOnTap: false,
+                      label: Text("교육청 선택"),
+                      initialSelection: ministryList[0].value,
+                      onSelected: (String? selected) {
+                        setState(() {
+                          ministryCode = selected!;
+                        });
+                      },
+                    ),
+                    TextField(
+                      autocorrect: false,
+                      autofocus: true,
+                      decoration: InputDecoration(hintText: "학교 이름을 입력하여 검색"),
+                      onChanged: (value) {
+                        setState(() {
+                          schoolName = value;
+                        });
+                      },
+                    ),
+                    SizedBox(height: 10),
+                    FutureBuilder(
                       future: fetchSchools(),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
                           return Center(child: CircularProgressIndicator());
                         } else if (snapshot.hasError) {
-                          return Center(child: Text("오류가 발생했습니다."));
+                          return Center(
+                              child: Text("결과가 없습니다. 더 자세히 입력해 보시는 건 어떨까요?"));
                         } else if (!snapshot.hasData || snapshot.data == null) {
                           return Container();
                         } else {
                           return snapshot.data!;
                         }
-                      }),
-                ],
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           );
