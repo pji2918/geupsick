@@ -4,9 +4,10 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'dart:convert';
 
-Future<List<dynamic>> getMeal(DateTime date) async {
+Future<List<dynamic>> getMeal(
+    DateTime date, String schoolCode, String ministryCode) async {
   var url = Uri.parse(
-      "https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=ec86c034134b4479bcbdf413fa3f2288&Type=json&ATPT_OFCDC_SC_CODE=R10&SD_SCHUL_CODE=8750767&MLSV_YMD=${DateFormat('yyyyMMdd').format(date)}");
+      "https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=ec86c034134b4479bcbdf413fa3f2288&Type=json&ATPT_OFCDC_SC_CODE=$ministryCode&SD_SCHUL_CODE=$schoolCode&MLSV_YMD=${DateFormat('yyyyMMdd').format(date)}");
   var response = await http.get(url);
   var data = json.decode(response.body);
   if (data != null && data["mealServiceDietInfo"] != null) {
@@ -48,10 +49,11 @@ Widget printMeal(List<dynamic>? geupsick, int idx) {
   }
 }
 
-Future<int> getGScore(int foodIdx, DateTime date) async {
+Future<int> getGScore(
+    int foodIdx, DateTime date, String schoolCode, String ministryCode) async {
   String meal = "";
 
-  await getMeal(date).then((value) {
+  await getMeal(date, schoolCode, ministryCode).then((value) {
     if (value.length <= foodIdx) {
       meal = "-2";
     } else {
