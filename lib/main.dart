@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dynamic_color/dynamic_color.dart';
+import 'package:geupsick/utilities/types/geupsickinfoclass.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -25,7 +26,7 @@ class _MainAppState extends State<MainApp> {
       : DateTime.now().hour <= 13
           ? 1
           : 2;
-  List<dynamic>? geupsick;
+  GeupsickInfo geupsick = GeupsickInfo();
 
   DateTime date = DateTime.now();
 
@@ -35,7 +36,7 @@ class _MainAppState extends State<MainApp> {
   @override
   void initState() {
     super.initState();
-    getMeal(date, schoolCode, ministryCode).then((data) {
+    getMeal(date, schoolCode, ministryCode, idx).then((data) {
       setState(() {
         geupsick = data;
       });
@@ -103,7 +104,8 @@ class _MainAppState extends State<MainApp> {
                             lastDate: DateTime(2050),
                           ) ??
                           date);
-                      getMeal(date, schoolCode, ministryCode).then((data) {
+                      setState(() {
+                        date = date;
                         if (date.day != DateTime.now().day) {
                           idx = 0;
                         } else {
@@ -113,17 +115,6 @@ class _MainAppState extends State<MainApp> {
                                   ? 1
                                   : 2;
                         }
-
-                        // refresh g-score
-                        getGScore(idx, date, schoolCode, ministryCode)
-                            .then((value) {
-                          setState(() {});
-                        });
-
-                        // refresh title
-                        setState(() {
-                          date = date;
-                        });
                       });
                     },
                   ),
@@ -138,16 +129,14 @@ class _MainAppState extends State<MainApp> {
                         ),
                         useRootNavigator: false,
                       );
-                      result.then((value) {
-                        schoolCode = value[0];
-                        ministryCode = value[1];
-                      });
-                      getMeal(date, schoolCode, ministryCode).then(
-                        (data) => geupsick = data,
+                      result.then(
+                        (value) {
+                          setState(() {
+                            schoolCode = value[0];
+                            ministryCode = value[1];
+                          });
+                        },
                       );
-
-                      // refresh everything
-                      setState(() {});
                     },
                     icon: Icon(Icons.school),
                     tooltip: "학교 선택",
@@ -203,7 +192,13 @@ class _MainAppState extends State<MainApp> {
                     color: Theme.of(context).colorScheme.secondaryContainer,
                     child: Padding(
                       padding: EdgeInsets.all(20),
-                      child: printMeal(geupsick, idx),
+                      child: printMeal(
+                        geupsick,
+                        date,
+                        schoolCode,
+                        ministryCode,
+                        idx,
+                      ),
                     ),
                   ),
                 ),
@@ -211,7 +206,7 @@ class _MainAppState extends State<MainApp> {
             },
           ),
           FutureBuilder(
-              future: getGScore(idx, date, schoolCode, ministryCode),
+              future: getGScore(idx, date, schoolCode, ministryCode, geupsick),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Padding(
