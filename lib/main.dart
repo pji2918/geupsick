@@ -21,11 +21,7 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-  int idx = DateTime.now().hour <= 8
-      ? 0
-      : DateTime.now().hour <= 13
-          ? 1
-          : 2;
+  int idx = 0;
   GeupsickInfo geupsick = GeupsickInfo();
 
   DateTime date = DateTime.now();
@@ -36,11 +32,6 @@ class _MainAppState extends State<MainApp> {
   @override
   void initState() {
     super.initState();
-    getMeal(date, schoolCode, ministryCode, idx).then((data) {
-      setState(() {
-        geupsick = data;
-      });
-    });
   }
 
   @override
@@ -71,8 +62,7 @@ class _MainAppState extends State<MainApp> {
             GlobalCupertinoLocalizations.delegate,
           ],
           supportedLocales: [
-            const Locale('en'),
-            const Locale('ko'),
+            const Locale('ko', 'KR'),
           ],
           theme: ThemeData(
             colorScheme: light,
@@ -106,21 +96,14 @@ class _MainAppState extends State<MainApp> {
                           date);
                       setState(() {
                         date = date;
-                        if (date.day != DateTime.now().day) {
-                          idx = 0;
-                        } else {
-                          idx = DateTime.now().hour <= 8
-                              ? 0
-                              : DateTime.now().hour <= 13
-                                  ? 1
-                                  : 2;
-                        }
                       });
                     },
                   ),
                   IconButton(
+                    icon: Icon(Icons.school),
+                    tooltip: "학교 선택",
                     onPressed: () {
-                      var result = showDialog(
+                      showDialog(
                         context: context,
                         builder: (BuildContext context) => Dialog.fullscreen(
                           child: SchoolChanger(
@@ -128,18 +111,17 @@ class _MainAppState extends State<MainApp> {
                               ministryCode: ministryCode),
                         ),
                         useRootNavigator: false,
-                      );
-                      result.then(
+                      ).then(
                         (value) {
-                          setState(() {
-                            schoolCode = value[0];
-                            ministryCode = value[1];
-                          });
+                          if (value != null) {
+                            setState(() {
+                              schoolCode = value[0];
+                              ministryCode = value[1];
+                            });
+                          }
                         },
                       );
                     },
-                    icon: Icon(Icons.school),
-                    tooltip: "학교 선택",
                   )
                 ],
               ),
@@ -192,12 +174,40 @@ class _MainAppState extends State<MainApp> {
                     color: Theme.of(context).colorScheme.secondaryContainer,
                     child: Padding(
                       padding: EdgeInsets.all(20),
-                      child: printMeal(
-                        geupsick,
-                        date,
-                        schoolCode,
-                        ministryCode,
-                        idx,
+                      child: FutureBuilder(
+                        future: getMeal(date, schoolCode, ministryCode, idx),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            geupsick = snapshot.data!;
+                            return printMeal(
+                              geupsick,
+                              date,
+                              schoolCode,
+                              ministryCode,
+                              idx,
+                            );
+                          } else if (snapshot.hasError) {
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.warning,
+                                  size: 50,
+                                ),
+                                Text(
+                                  "급식 정보를 불러올 수 없습니다",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            );
+                          } else {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                        },
                       ),
                     ),
                   ),
