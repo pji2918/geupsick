@@ -147,7 +147,8 @@ class _SchoolChangerState extends State<SchoolChanger> {
                             child: Card.outlined(
                               child: Center(
                                 child: Text(
-                                  "결과가 없습니다. 더 자세히 입력해 보시는 건 어떨까요?",
+                                  textAlign: TextAlign.center,
+                                  "결과가 없습니다.\n더 자세히 입력해 보시는 건 어떨까요?",
                                   overflow: TextOverflow.fade,
                                 ),
                               ),
