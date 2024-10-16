@@ -4,6 +4,7 @@ import 'package:geupsick/utilities/types/geupsickinfoclass.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io' show Platform;
 
 import 'utilities/functions.dart';
@@ -22,7 +23,9 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends State<MainApp> {
   int idx = 0;
+
   GeupsickInfo geupsick = GeupsickInfo();
+  int gScore = 0;
 
   DateTime date = DateTime.now();
 
@@ -32,6 +35,19 @@ class _MainAppState extends State<MainApp> {
   @override
   void initState() {
     super.initState();
+    loadAppData();
+  }
+
+  void saveAppData() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString("schoolCode", schoolCode);
+    await prefs.setString("ministryCode", ministryCode);
+  }
+
+  void loadAppData() async {
+    final prefs = await SharedPreferences.getInstance();
+    schoolCode = prefs.getString("schoolCode") ?? "";
+    ministryCode = prefs.getString("ministryCode") ?? "";
   }
 
   @override
@@ -117,6 +133,7 @@ class _MainAppState extends State<MainApp> {
                             setState(() {
                               schoolCode = value[0];
                               ministryCode = value[1];
+                              saveAppData();
                             });
                           }
                         },
@@ -162,141 +179,161 @@ class _MainAppState extends State<MainApp> {
 
   Center mainForm() {
     return Center(
-      child: Column(
-        children: [
-          Builder(
-            builder: (context) {
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: Card.filled(
-                    color: Theme.of(context).colorScheme.secondaryContainer,
-                    child: Padding(
-                      padding: EdgeInsets.all(20),
-                      child: FutureBuilder(
-                        future: getMeal(date, schoolCode, ministryCode, idx),
+      child: Builder(
+        builder: (context) {
+          return SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: FutureBuilder(
+              future: getMeal(date, schoolCode, ministryCode, idx),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.connectionState == ConnectionState.done) {
+                  geupsick = snapshot.data!;
+                  return Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: Card.filled(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .secondaryContainer,
+                            child: Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: printMeal(
+                                geupsick,
+                                date,
+                                schoolCode,
+                                ministryCode,
+                                idx,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      FutureBuilder(
+                        future: getGScore(geupsick),
                         builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            geupsick = snapshot.data!;
-                            return printMeal(
-                              geupsick,
-                              date,
-                              schoolCode,
-                              ministryCode,
-                              idx,
-                            );
-                          } else if (snapshot.hasError) {
-                            return Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.warning,
-                                  size: 50,
-                                ),
-                                Text(
-                                  "급식 정보를 불러올 수 없습니다",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: Card.filled(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .secondaryContainer,
+                                  child: Padding(
+                                    padding: EdgeInsets.all(20),
+                                    child: Center(
+                                        child: CircularProgressIndicator()),
                                   ),
                                 ),
-                              ],
+                              ),
+                            );
+                          } else if (snapshot.data == -2) {
+                            return SizedBox.shrink();
+                          } else if (snapshot.hasError || snapshot.data == -1) {
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: Card.filled(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .secondaryContainer,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(20),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.warning,
+                                          size: 50,
+                                        ),
+                                        Text(
+                                          "급식 점수를 불러올 수 없습니다",
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
                             );
                           } else {
-                            return Center(child: CircularProgressIndicator());
+                            gScore = snapshot.data!;
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: Card.filled(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .secondaryContainer,
+                                  child: Padding(
+                                    padding: EdgeInsets.all(20),
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          "G-Score:",
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Text(
+                                          gScore.toString(),
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
                           }
                         },
                       ),
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
-          FutureBuilder(
-              future: getGScore(idx, date, schoolCode, ministryCode, geupsick),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: Card.filled(
-                        color: Theme.of(context).colorScheme.secondaryContainer,
-                        child: Padding(
-                          padding: EdgeInsets.all(20),
-                          child: Center(child: CircularProgressIndicator()),
-                        ),
-                      ),
-                    ),
-                  );
-                } else if (snapshot.data == -2) {
-                  return Container();
-                } else if (snapshot.hasError || snapshot.data == -1) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: Card.filled(
-                        color: Theme.of(context).colorScheme.secondaryContainer,
-                        child: Padding(
-                          padding: const EdgeInsets.all(20),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.warning,
-                                size: 50,
-                              ),
-                              Text(
-                                "급식 점수를 불러올 수 없습니다",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+                    ],
                   );
                 } else {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: Card.filled(
-                        color: Theme.of(context).colorScheme.secondaryContainer,
-                        child: Padding(
-                          padding: EdgeInsets.all(20),
-                          child: Column(
-                            children: [
-                              Text(
-                                "G-Score:",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text(
-                                snapshot.data.toString(),
-                                style: TextStyle(
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ],
-                          ),
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.warning,
+                        size: 50,
+                      ),
+                      Text(
+                        "급식 정보를 불러올 수 없습니다",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ),
+                    ],
                   );
                 }
-              }),
-        ],
+              },
+            ),
+          );
+        },
       ),
     );
   }

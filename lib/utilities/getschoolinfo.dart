@@ -93,10 +93,10 @@ class _SchoolChangerState extends State<SchoolChanger> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: false,
       appBar: AppBar(
         title: Text("학교 변경"),
-        scrolledUnderElevation: 0.0,
+        scrolledUnderElevation: 0,
+        forceMaterialTransparency: true,
       ),
       body: Builder(
         builder: (context) {
@@ -146,12 +146,15 @@ class _SchoolChangerState extends State<SchoolChanger> {
                             height: 100,
                             child: Card.outlined(
                               child: Center(
-                                  child:
-                                      Text("결과가 없습니다. 더 자세히 입력해 보시는 건 어떨까요?")),
+                                child: Text(
+                                  "결과가 없습니다. 더 자세히 입력해 보시는 건 어떨까요?",
+                                  overflow: TextOverflow.fade,
+                                ),
+                              ),
                             ),
                           );
                         } else if (!snapshot.hasData || snapshot.data == null) {
-                          return Container();
+                          return SizedBox.shrink();
                         } else {
                           return snapshot.data!;
                         }
