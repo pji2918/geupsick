@@ -10,7 +10,6 @@ Future<GeupsickInfo> getMeal(
   var url = Uri.parse(
       "https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=ec86c034134b4479bcbdf413fa3f2288&Type=json&ATPT_OFCDC_SC_CODE=$ministryCode&SD_SCHUL_CODE=$schoolCode&MLSV_YMD=${DateFormat('yyyyMMdd').format(date)}&MMEAL_SC_CODE=${idx + 1}");
   var response = await http.get(url);
-  debugPrint(response.body);
   return GeupsickInfo.fromJson(jsonDecode(response.body));
 }
 
@@ -93,8 +92,6 @@ Future<int> getGScore(int foodIdx, DateTime date, String schoolCode,
 
   String responseText =
       completion.choices.first.message.content!.first.text ?? "-1";
-
-  debugPrint(responseText);
 
   return int.parse(responseText);
 }

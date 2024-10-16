@@ -20,7 +20,7 @@ class SchoolChanger extends StatefulWidget {
 class _SchoolChangerState extends State<SchoolChanger> {
   final String apiKey = "ec86c034134b4479bcbdf413fa3f2288";
   String schoolCode = "";
-  String ministryCode = "";
+  String ministryCode = "B10";
   String schoolName = "";
 
   List<DropdownMenuEntry<String>> ministryList = [
@@ -47,8 +47,6 @@ class _SchoolChangerState extends State<SchoolChanger> {
   @override
   void initState() {
     super.initState();
-    schoolCode = widget.schoolCode;
-    ministryCode = widget.ministryCode;
   }
 
   Future<Widget> fetchSchools() async {
@@ -98,7 +96,7 @@ class _SchoolChangerState extends State<SchoolChanger> {
       extendBodyBehindAppBar: false,
       appBar: AppBar(
         title: Text("학교 변경"),
-        scrolledUnderElevation: 0,
+        scrolledUnderElevation: 0.0,
       ),
       body: Builder(
         builder: (context) {
@@ -113,8 +111,8 @@ class _SchoolChangerState extends State<SchoolChanger> {
                     DropdownMenu<String>(
                       dropdownMenuEntries: ministryList,
                       requestFocusOnTap: false,
-                      label: Text("교육청 선택"),
-                      initialSelection: ministryList[0].value,
+                      label: Text("시도교육청 선택"),
+                      initialSelection: ministryCode,
                       onSelected: (String? selected) {
                         setState(() {
                           ministryCode = selected!;
@@ -137,10 +135,21 @@ class _SchoolChangerState extends State<SchoolChanger> {
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
+                          return SizedBox(
+                            height: 100,
+                            child: Card.outlined(
+                                child:
+                                    Center(child: CircularProgressIndicator())),
+                          );
                         } else if (snapshot.hasError) {
-                          return Center(
-                              child: Text("결과가 없습니다. 더 자세히 입력해 보시는 건 어떨까요?"));
+                          return SizedBox(
+                            height: 100,
+                            child: Card.outlined(
+                              child: Center(
+                                  child:
+                                      Text("결과가 없습니다. 더 자세히 입력해 보시는 건 어떨까요?")),
+                            ),
+                          );
                         } else if (!snapshot.hasData || snapshot.data == null) {
                           return Container();
                         } else {
