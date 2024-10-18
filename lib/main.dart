@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:io' show Platform;
+import 'package:flutter/foundation.dart';
 
 import 'utilities/functions.dart';
 import 'utilities/getschoolinfo.dart';
@@ -82,15 +82,17 @@ class _MainAppState extends State<MainApp> {
           ],
           theme: ThemeData(
             colorScheme: light,
-            fontFamily: Platform.isWindows
-                ? GoogleFonts.ibmPlexSansKr().fontFamily
-                : null,
+            fontFamily:
+                defaultTargetPlatform == TargetPlatform.windows || kIsWeb
+                    ? GoogleFonts.ibmPlexSansKr().fontFamily
+                    : null,
           ),
           darkTheme: ThemeData(
             colorScheme: dark,
-            fontFamily: Platform.isWindows
-                ? GoogleFonts.ibmPlexSansKr().fontFamily
-                : null,
+            fontFamily:
+                defaultTargetPlatform == TargetPlatform.windows || kIsWeb
+                    ? GoogleFonts.ibmPlexSansKr().fontFamily
+                    : null,
           ),
           debugShowCheckedModeBanner: false,
           home: Builder(builder: (context) {
@@ -188,7 +190,25 @@ class _MainAppState extends State<MainApp> {
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
-                } else if (snapshot.connectionState == ConnectionState.done) {
+                } else if (snapshot.hasError || snapshot.data == null) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.wifi_off,
+                        size: 50,
+                      ),
+                      Text(
+                        "급식 정보를 불러올 수 없습니다",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  );
+                } else {
                   geupsick = snapshot.data!;
                   return Column(
                     children: [
@@ -308,24 +328,6 @@ class _MainAppState extends State<MainApp> {
                             );
                           }
                         },
-                      ),
-                    ],
-                  );
-                } else {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.warning,
-                        size: 50,
-                      ),
-                      Text(
-                        "급식 정보를 불러올 수 없습니다",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
                       ),
                     ],
                   );
