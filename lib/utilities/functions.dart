@@ -2,15 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:dart_openai/dart_openai.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'dart:convert';
+
 import 'types/geupsickinfoclass.dart';
 
-Future<GeupsickInfo> getMeal(
+Future<GeupsickInfo?> getMeal(
     DateTime date, String schoolCode, String ministryCode, int idx) async {
-  var url = Uri.parse(
-      "https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=ec86c034134b4479bcbdf413fa3f2288&Type=json&ATPT_OFCDC_SC_CODE=$ministryCode&SD_SCHUL_CODE=$schoolCode&MLSV_YMD=${DateFormat('yyyyMMdd').format(date)}&MMEAL_SC_CODE=${idx + 1}");
-  var response = await http.get(url);
-  return GeupsickInfo.fromJson(jsonDecode(response.body));
+  final List<ConnectivityResult> connectivityResult =
+      await Connectivity().checkConnectivity();
+
+  if (connectivityResult.contains(ConnectivityResult.none)) {
+    return null;
+  } else {
+    var url = Uri.parse(
+        "https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=ec86c034134b4479bcbdf413fa3f2288&Type=json&ATPT_OFCDC_SC_CODE=$ministryCode&SD_SCHUL_CODE=$schoolCode&MLSV_YMD=${DateFormat('yyyyMMdd').format(date)}&MMEAL_SC_CODE=${idx + 1}");
+    var response = await http.get(url);
+    return GeupsickInfo.fromJson(jsonDecode(response.body));
+  }
 }
 
 Widget printMeal(GeupsickInfo geupsick, DateTime date, String schoolCode,
