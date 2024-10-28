@@ -12,7 +12,6 @@ dependencies:
   dynamic_color: ^1.7.0
   flutter:
     sdk: flutter
-  flutter_launcher_icons: ^0.14.1
   flutter_localizations:
     sdk: flutter
   google_fonts: ^6.2.1
@@ -21,6 +20,7 @@ dependencies:
   shared_preferences: ^2.3.2
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.14.1
   flutter_lints: ^5.0.0
 
 flutter:
