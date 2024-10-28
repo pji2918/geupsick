@@ -24,7 +24,7 @@ class GeupsickInfo {
 
 class MealServiceDietInfo {
   List<Head>? head;
-  List<Row>? row;
+  List<GRow>? row;
 
   MealServiceDietInfo({this.head, this.row});
 
@@ -36,9 +36,9 @@ class MealServiceDietInfo {
       });
     }
     if (json['row'] != null) {
-      row = <Row>[];
+      row = <GRow>[];
       json['row'].forEach((v) {
-        row!.add(Row.fromJson(v));
+        row!.add(GRow.fromJson(v));
       });
     }
   }
@@ -95,7 +95,7 @@ class RESULT {
   }
 }
 
-class Row {
+class GRow {
   String? aTPTOFCDCSCCODE;
   String? aTPTOFCDCSCNM;
   String? sDSCHULCODE;
@@ -112,7 +112,7 @@ class Row {
   String? mLSVTOYMD;
   String? lOADDTM;
 
-  Row(
+  GRow(
       {this.aTPTOFCDCSCCODE,
       this.aTPTOFCDCSCNM,
       this.sDSCHULCODE,
@@ -129,7 +129,7 @@ class Row {
       this.mLSVTOYMD,
       this.lOADDTM});
 
-  Row.fromJson(Map<String, dynamic> json) {
+  GRow.fromJson(Map<String, dynamic> json) {
     aTPTOFCDCSCCODE = json['ATPT_OFCDC_SC_CODE'];
     aTPTOFCDCSCNM = json['ATPT_OFCDC_SC_NM'];
     sDSCHULCODE = json['SD_SCHUL_CODE'];
