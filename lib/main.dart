@@ -14,6 +14,14 @@ void main() {
   runApp(MainApp());
 }
 
+bool _isLargeScreen(BuildContext context) {
+  return MediaQuery.of(context).size.width > 960.0;
+}
+
+bool _isMediumScreen(BuildContext context) {
+  return MediaQuery.of(context).size.width > 640.0;
+}
+
 class MainApp extends StatefulWidget {
   const MainApp({super.key});
 
@@ -144,32 +152,115 @@ class _MainAppState extends State<MainApp> {
                   )
                 ],
               ),
-              body: mainForm(),
-              bottomNavigationBar: NavigationBar(
-                onDestinationSelected: (int index) {
-                  setState(() {
-                    idx = index;
-                  });
-                },
-                selectedIndex: idx,
-                destinations: [
-                  NavigationDestination(
-                    icon: Icon(Icons.breakfast_dining_outlined),
-                    selectedIcon: Icon(Icons.breakfast_dining),
-                    label: "아침",
-                  ),
-                  NavigationDestination(
-                    icon: Icon(Icons.lunch_dining_outlined),
-                    selectedIcon: Icon(Icons.lunch_dining),
-                    label: "점심",
-                  ),
-                  NavigationDestination(
-                    icon: Icon(Icons.dinner_dining_outlined),
-                    selectedIcon: Icon(Icons.dinner_dining),
-                    label: "저녁",
-                  ),
-                ],
-              ),
+              body: _isMediumScreen(context)
+                  ? Row(
+                      children: [
+                        !_isLargeScreen(context)
+                            ? NavigationRail(
+                                labelType: NavigationRailLabelType.all,
+                                destinations: [
+                                  NavigationRailDestination(
+                                      icon:
+                                          Icon(Icons.breakfast_dining_outlined),
+                                      selectedIcon:
+                                          Icon(Icons.breakfast_dining),
+                                      label: Text("아침")),
+                                  NavigationRailDestination(
+                                      icon: Icon(Icons.lunch_dining_outlined),
+                                      selectedIcon: Icon(Icons.lunch_dining),
+                                      label: Text("점심")),
+                                  NavigationRailDestination(
+                                      icon: Icon(Icons.dinner_dining_outlined),
+                                      selectedIcon: Icon(Icons.dinner_dining),
+                                      label: Text("저녁")),
+                                ],
+                                selectedIndex: idx,
+                                onDestinationSelected: (value) {
+                                  setState(() {
+                                    idx = value;
+                                  });
+                                },
+                              )
+                            : Drawer(
+                                child: Column(
+                                  children: [
+                                    // DrawerHeader(
+                                    //   child: Center(
+                                    //     child: Text(
+                                    //       "급식",
+                                    //       style: TextStyle(
+                                    //         fontWeight: FontWeight.bold,
+                                    //         fontSize: 30,
+                                    //       ),
+                                    //     ),
+                                    //   ),
+                                    // ),
+                                    ListTile(
+                                      leading: Icon(Icons.breakfast_dining),
+                                      title: Text("아침"),
+                                      selected: idx == 0,
+                                      onTap: () => {
+                                        setState(() {
+                                          idx = 0;
+                                        })
+                                      },
+                                    ),
+                                    ListTile(
+                                      leading: Icon(Icons.lunch_dining),
+                                      title: Text("점심"),
+                                      selected: idx == 1,
+                                      onTap: () => {
+                                        setState(() {
+                                          idx = 1;
+                                        })
+                                      },
+                                    ),
+                                    ListTile(
+                                      leading: Icon(Icons.dinner_dining),
+                                      title: Text("저녁"),
+                                      selected: idx == 2,
+                                      onTap: () => {
+                                        setState(() {
+                                          idx = 2;
+                                        })
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                        Expanded(
+                          child: mainForm(),
+                        ),
+                      ],
+                    )
+                  : Expanded(child: mainForm()),
+              bottomNavigationBar: !_isMediumScreen(context)
+                  ? NavigationBar(
+                      onDestinationSelected: (int index) {
+                        setState(() {
+                          idx = index;
+                        });
+                      },
+                      selectedIndex: idx,
+                      destinations: [
+                        NavigationDestination(
+                          icon: Icon(Icons.breakfast_dining_outlined),
+                          selectedIcon: Icon(Icons.breakfast_dining),
+                          label: "아침",
+                        ),
+                        NavigationDestination(
+                          icon: Icon(Icons.lunch_dining_outlined),
+                          selectedIcon: Icon(Icons.lunch_dining),
+                          label: "점심",
+                        ),
+                        NavigationDestination(
+                          icon: Icon(Icons.dinner_dining_outlined),
+                          selectedIcon: Icon(Icons.dinner_dining),
+                          label: "저녁",
+                        ),
+                      ],
+                    )
+                  : null,
             );
           }),
         );
@@ -177,164 +268,157 @@ class _MainAppState extends State<MainApp> {
     );
   }
 
-  Center mainForm() {
-    return Center(
-      child: Builder(
-        builder: (context) {
-          return SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: FutureBuilder(
-              future: getMeal(date, schoolCode, ministryCode, idx),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError || snapshot.data == null) {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.wifi_off,
-                        size: 50,
+  Widget mainForm() {
+    return Builder(
+      builder: (context) {
+        return SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: FutureBuilder(
+            future: getMeal(date, schoolCode, ministryCode, idx),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError || snapshot.data == null) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.wifi_off,
+                      size: 50,
+                    ),
+                    Text(
+                      "급식 정보를 불러올 수 없습니다",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                       ),
-                      Text(
-                        "급식 정보를 불러올 수 없습니다",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  );
-                } else {
-                  geupsick = snapshot.data!;
-                  return Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          child: Card.filled(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .secondaryContainer,
-                            child: Padding(
-                              padding: const EdgeInsets.all(20),
-                              child: printMeal(
-                                geupsick,
-                                date,
-                                schoolCode,
-                                ministryCode,
-                                idx,
-                              ),
+                    ),
+                  ],
+                );
+              } else {
+                geupsick = snapshot.data!;
+                return Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: Card.filled(
+                          color:
+                              Theme.of(context).colorScheme.secondaryContainer,
+                          child: Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: printMeal(
+                              geupsick,
+                              date,
+                              schoolCode,
+                              ministryCode,
+                              idx,
                             ),
                           ),
                         ),
                       ),
-                      FutureBuilder(
-                        future: getGScore(geupsick),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width,
-                                child: Card.filled(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .secondaryContainer,
-                                  child: Padding(
-                                    padding: EdgeInsets.all(20),
-                                    child: Center(
-                                        child: CircularProgressIndicator()),
+                    ),
+                    FutureBuilder(
+                      future: getGScore(geupsick),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: Card.filled(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .secondaryContainer,
+                                child: Padding(
+                                  padding: EdgeInsets.all(20),
+                                  child: Center(
+                                      child: CircularProgressIndicator()),
+                                ),
+                              ),
+                            ),
+                          );
+                        } else if (snapshot.data == -2) {
+                          return SizedBox.shrink();
+                        } else if (snapshot.hasError || snapshot.data == -1) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: Card.filled(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .secondaryContainer,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(20),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.warning,
+                                        size: 50,
+                                      ),
+                                      Text(
+                                        "급식 점수를 불러올 수 없습니다",
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
-                            );
-                          } else if (snapshot.data == -2) {
-                            return SizedBox.shrink();
-                          } else if (snapshot.hasError || snapshot.data == -1) {
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width,
-                                child: Card.filled(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .secondaryContainer,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(20),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.warning,
-                                          size: 50,
+                            ),
+                          );
+                        } else {
+                          gScore = snapshot.data!;
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: Card.filled(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .secondaryContainer,
+                                child: Padding(
+                                  padding: EdgeInsets.all(20),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        "G-Score:",
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
                                         ),
-                                        Text(
-                                          "급식 점수를 불러올 수 없습니다",
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                      ),
+                                      Text(
+                                        gScore.toString(),
+                                        style: TextStyle(
+                                          fontSize: 20,
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
-                            );
-                          } else {
-                            gScore = snapshot.data!;
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width,
-                                child: Card.filled(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .secondaryContainer,
-                                  child: Padding(
-                                    padding: EdgeInsets.all(20),
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                          "G-Score:",
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Text(
-                                          gScore.toString(),
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          }
-                        },
-                      ),
-                    ],
-                  );
-                }
-              },
-            ),
-          );
-        },
-      ),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                );
+              }
+            },
+          ),
+        );
+      },
     );
   }
 }
