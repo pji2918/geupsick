@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:dynamic_color/dynamic_color.dart';
-import 'package:geupsick/utilities/types/geupsickinfoclass.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/foundation.dart';
 
+import 'utilities/types/geupsickinfoclass.dart';
 import 'utilities/functions.dart';
 import 'utilities/getschoolinfo.dart';
 
@@ -145,33 +145,31 @@ class _MainAppState extends State<MainApp> {
                 ],
               ),
               body: mainForm(),
-              bottomNavigationBar: Builder(builder: (context) {
-                return NavigationBar(
-                  onDestinationSelected: (int index) {
-                    setState(() {
-                      idx = index;
-                    });
-                  },
-                  selectedIndex: idx,
-                  destinations: [
-                    NavigationDestination(
-                      icon: Icon(Icons.breakfast_dining_outlined),
-                      selectedIcon: Icon(Icons.breakfast_dining),
-                      label: "아침",
-                    ),
-                    NavigationDestination(
-                      icon: Icon(Icons.lunch_dining_outlined),
-                      selectedIcon: Icon(Icons.lunch_dining),
-                      label: "점심",
-                    ),
-                    NavigationDestination(
-                      icon: Icon(Icons.dinner_dining_outlined),
-                      selectedIcon: Icon(Icons.dinner_dining),
-                      label: "저녁",
-                    ),
-                  ],
-                );
-              }),
+              bottomNavigationBar: NavigationBar(
+                onDestinationSelected: (int index) {
+                  setState(() {
+                    idx = index;
+                  });
+                },
+                selectedIndex: idx,
+                destinations: [
+                  NavigationDestination(
+                    icon: Icon(Icons.breakfast_dining_outlined),
+                    selectedIcon: Icon(Icons.breakfast_dining),
+                    label: "아침",
+                  ),
+                  NavigationDestination(
+                    icon: Icon(Icons.lunch_dining_outlined),
+                    selectedIcon: Icon(Icons.lunch_dining),
+                    label: "점심",
+                  ),
+                  NavigationDestination(
+                    icon: Icon(Icons.dinner_dining_outlined),
+                    selectedIcon: Icon(Icons.dinner_dining),
+                    label: "저녁",
+                  ),
+                ],
+              ),
             );
           }),
         );
