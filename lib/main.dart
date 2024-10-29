@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'utilities/types/geupsickinfoclass.dart';
 import 'utilities/functions.dart';
@@ -12,14 +13,6 @@ import 'utilities/getschoolinfo.dart';
 
 void main() {
   runApp(MainApp());
-}
-
-bool _isLargeScreen(BuildContext context) {
-  return MediaQuery.of(context).size.width > 960.0;
-}
-
-bool _isMediumScreen(BuildContext context) {
-  return MediaQuery.of(context).size.width > 640.0;
 }
 
 class MainApp extends StatefulWidget {
@@ -79,15 +72,14 @@ class _MainAppState extends State<MainApp> {
         }
 
         return MaterialApp(
-          title: "급식",
           localizationsDelegates: [
+            AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          supportedLocales: [
-            const Locale('ko', 'KR'),
-          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          title: "Geupsick",
           theme: ThemeData(
             colorScheme: light,
             fontFamily:
@@ -110,7 +102,7 @@ class _MainAppState extends State<MainApp> {
                 actions: [
                   IconButton(
                     icon: Icon(Icons.calendar_month),
-                    tooltip: "날짜 선택",
+                    tooltip: AppLocalizations.of(context)!.dateSelect,
                     onPressed: () async {
                       date = (await showDatePicker(
                             locale: const Locale('ko', 'KR'),
@@ -127,7 +119,7 @@ class _MainAppState extends State<MainApp> {
                   ),
                   IconButton(
                     icon: Icon(Icons.school),
-                    tooltip: "학교 선택",
+                    tooltip: AppLocalizations.of(context)!.schoolSelect,
                     onPressed: () {
                       showDialog(
                         context: context,
@@ -152,10 +144,10 @@ class _MainAppState extends State<MainApp> {
                   )
                 ],
               ),
-              body: _isMediumScreen(context)
+              body: isMediumScreen(context)
                   ? Row(
                       children: [
-                        !_isLargeScreen(context)
+                        !isLargeScreen(context)
                             ? NavigationRail(
                                 labelType: NavigationRailLabelType.all,
                                 destinations: [
@@ -164,15 +156,18 @@ class _MainAppState extends State<MainApp> {
                                           Icon(Icons.breakfast_dining_outlined),
                                       selectedIcon:
                                           Icon(Icons.breakfast_dining),
-                                      label: Text("아침")),
+                                      label: Text(AppLocalizations.of(context)!
+                                          .breakfast)),
                                   NavigationRailDestination(
                                       icon: Icon(Icons.lunch_dining_outlined),
                                       selectedIcon: Icon(Icons.lunch_dining),
-                                      label: Text("점심")),
+                                      label: Text(
+                                          AppLocalizations.of(context)!.lunch)),
                                   NavigationRailDestination(
                                       icon: Icon(Icons.dinner_dining_outlined),
                                       selectedIcon: Icon(Icons.dinner_dining),
-                                      label: Text("저녁")),
+                                      label: Text(AppLocalizations.of(context)!
+                                          .dinner)),
                                 ],
                                 selectedIndex: idx,
                                 onDestinationSelected: (value) {
@@ -197,7 +192,8 @@ class _MainAppState extends State<MainApp> {
                                     // ),
                                     ListTile(
                                       leading: Icon(Icons.breakfast_dining),
-                                      title: Text("아침"),
+                                      title: Text(AppLocalizations.of(context)!
+                                          .breakfast),
                                       selected: idx == 0,
                                       onTap: () => {
                                         setState(() {
@@ -207,7 +203,8 @@ class _MainAppState extends State<MainApp> {
                                     ),
                                     ListTile(
                                       leading: Icon(Icons.lunch_dining),
-                                      title: Text("점심"),
+                                      title: Text(
+                                          AppLocalizations.of(context)!.lunch),
                                       selected: idx == 1,
                                       onTap: () => {
                                         setState(() {
@@ -217,7 +214,8 @@ class _MainAppState extends State<MainApp> {
                                     ),
                                     ListTile(
                                       leading: Icon(Icons.dinner_dining),
-                                      title: Text("저녁"),
+                                      title: Text(
+                                          AppLocalizations.of(context)!.dinner),
                                       selected: idx == 2,
                                       onTap: () => {
                                         setState(() {
@@ -234,7 +232,7 @@ class _MainAppState extends State<MainApp> {
                       ],
                     )
                   : Expanded(child: mainForm()),
-              bottomNavigationBar: !_isMediumScreen(context)
+              bottomNavigationBar: !isMediumScreen(context)
                   ? NavigationBar(
                       onDestinationSelected: (int index) {
                         setState(() {
@@ -246,17 +244,17 @@ class _MainAppState extends State<MainApp> {
                         NavigationDestination(
                           icon: Icon(Icons.breakfast_dining_outlined),
                           selectedIcon: Icon(Icons.breakfast_dining),
-                          label: "아침",
+                          label: AppLocalizations.of(context)!.breakfast,
                         ),
                         NavigationDestination(
                           icon: Icon(Icons.lunch_dining_outlined),
                           selectedIcon: Icon(Icons.lunch_dining),
-                          label: "점심",
+                          label: AppLocalizations.of(context)!.lunch,
                         ),
                         NavigationDestination(
                           icon: Icon(Icons.dinner_dining_outlined),
                           selectedIcon: Icon(Icons.dinner_dining),
-                          label: "저녁",
+                          label: AppLocalizations.of(context)!.dinner,
                         ),
                       ],
                     )
@@ -288,7 +286,7 @@ class _MainAppState extends State<MainApp> {
                       size: 50,
                     ),
                     Text(
-                      "급식 정보를 불러올 수 없습니다",
+                      AppLocalizations.of(context)!.errorMessage,
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -315,6 +313,7 @@ class _MainAppState extends State<MainApp> {
                               schoolCode,
                               ministryCode,
                               idx,
+                              context,
                             ),
                           ),
                         ),
@@ -364,7 +363,8 @@ class _MainAppState extends State<MainApp> {
                                         size: 50,
                                       ),
                                       Text(
-                                        "급식 점수를 불러올 수 없습니다",
+                                        AppLocalizations.of(context)!
+                                            .errorMessage_GScore,
                                         style: TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,
