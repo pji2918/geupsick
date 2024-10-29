@@ -105,7 +105,7 @@ class _MainAppState extends State<MainApp> {
                     tooltip: AppLocalizations.of(context)!.dateSelect,
                     onPressed: () async {
                       date = (await showDatePicker(
-                            locale: const Locale('ko', 'KR'),
+                            locale: Localizations.localeOf(context),
                             context: context,
                             initialDate: date,
                             firstDate: DateTime(2000),
