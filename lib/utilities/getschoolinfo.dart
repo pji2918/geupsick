@@ -161,8 +161,13 @@ class _SchoolChangerState extends State<SchoolChanger> {
                           return SizedBox(
                             height: 100,
                             child: Card.outlined(
-                                child:
-                                    Center(child: CircularProgressIndicator())),
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
+                                ),
+                              ),
+                            ),
                           );
                         } else if (snapshot.hasError) {
                           return SizedBox(

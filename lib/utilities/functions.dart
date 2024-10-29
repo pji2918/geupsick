@@ -42,7 +42,11 @@ Widget printMeal(GeupsickInfo geupsick, DateTime date, String schoolCode,
   if (geupsick.mealServiceDietInfo == null) {
     col.children.add(Text(
       AppLocalizations.of(context)!.foodNotAvailable,
-      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      style: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+        color: Theme.of(context).colorScheme.onSecondaryContainer,
+      ),
     ));
     return col;
   } else {
@@ -52,13 +56,30 @@ Widget printMeal(GeupsickInfo geupsick, DateTime date, String schoolCode,
         .toString()
         .split("<br/>");
     for (int i = 0; i < meal.length; i++) {
-      col.children.add(Text(meal[i]));
+      col.children.add(
+        Text(
+          meal[i],
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSecondaryContainer,
+          ),
+        ),
+      );
       if (i != meal.length - 1) {
         col.children.add(SizedBox(height: 10));
       }
     }
 
     return col;
+  }
+}
+
+EdgeInsets getPadding(BuildContext context) {
+  if (isLargeScreen(context)) {
+    return EdgeInsets.symmetric(horizontal: 20);
+  } else if (isMediumScreen(context)) {
+    return EdgeInsets.fromLTRB(0, 0, 10, 0);
+  } else {
+    return EdgeInsets.symmetric(horizontal: 20);
   }
 }
 

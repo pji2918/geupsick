@@ -95,60 +95,65 @@ class _MainAppState extends State<MainApp> {
                     : null,
           ),
           debugShowCheckedModeBanner: false,
-          home: Builder(builder: (context) {
-            return Scaffold(
-              appBar: AppBar(
-                title: Text(DateFormat("MM월 dd일").format(date)),
-                actions: [
-                  IconButton(
-                    icon: Icon(Icons.calendar_month),
-                    tooltip: AppLocalizations.of(context)!.dateSelect,
-                    onPressed: () async {
-                      date = (await showDatePicker(
-                            locale: Localizations.localeOf(context),
-                            context: context,
-                            initialDate: date,
-                            firstDate: DateTime(2000),
-                            lastDate: DateTime(2050),
-                          ) ??
-                          date);
-                      setState(() {
-                        date = date;
-                      });
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.school),
-                    tooltip: AppLocalizations.of(context)!.schoolSelect,
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) => Dialog.fullscreen(
-                          child: SchoolChanger(
-                              schoolCode: schoolCode,
-                              ministryCode: ministryCode),
-                        ),
-                        useRootNavigator: false,
-                      ).then(
-                        (value) {
-                          if (value != null) {
-                            setState(() {
-                              schoolCode = value[0];
-                              ministryCode = value[1];
-                              saveAppData();
-                            });
-                          }
-                        },
-                      );
-                    },
-                  )
-                ],
-              ),
-              body: isMediumScreen(context)
-                  ? Row(
-                      children: [
-                        !isLargeScreen(context)
-                            ? NavigationRail(
+          home: Builder(
+            builder: (context) {
+              return Scaffold(
+                appBar: AppBar(
+                  title: Text(DateFormat("MM월 dd일").format(date)),
+                  actions: [
+                    IconButton(
+                      icon: Icon(Icons.calendar_month),
+                      tooltip: AppLocalizations.of(context)!.dateSelect,
+                      onPressed: () async {
+                        date = (await showDatePicker(
+                              locale: Localizations.localeOf(context),
+                              context: context,
+                              initialDate: date,
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime(2050),
+                            ) ??
+                            date);
+                        setState(() {
+                          date = date;
+                        });
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.school),
+                      tooltip: AppLocalizations.of(context)!.schoolSelect,
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) => Dialog.fullscreen(
+                            child: SchoolChanger(
+                                schoolCode: schoolCode,
+                                ministryCode: ministryCode),
+                          ),
+                          useRootNavigator: false,
+                        ).then(
+                          (value) {
+                            if (value != null) {
+                              setState(() {
+                                schoolCode = value[0];
+                                ministryCode = value[1];
+                                saveAppData();
+                              });
+                            }
+                          },
+                        );
+                      },
+                    )
+                  ],
+                ),
+                body: isMediumScreen(context)
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          if (!isLargeScreen(context))
+                            Flexible(
+                              flex: 1,
+                              fit: FlexFit.tight,
+                              child: NavigationRail(
                                 labelType: NavigationRailLabelType.all,
                                 destinations: [
                                   NavigationRailDestination(
@@ -164,19 +169,27 @@ class _MainAppState extends State<MainApp> {
                                       label: Text(
                                           AppLocalizations.of(context)!.lunch)),
                                   NavigationRailDestination(
-                                      icon: Icon(Icons.dinner_dining_outlined),
-                                      selectedIcon: Icon(Icons.dinner_dining),
-                                      label: Text(AppLocalizations.of(context)!
-                                          .dinner)),
+                                    icon: Icon(Icons.dinner_dining_outlined),
+                                    selectedIcon: Icon(Icons.dinner_dining),
+                                    label: Text(
+                                        AppLocalizations.of(context)!.dinner),
+                                  ),
                                 ],
                                 selectedIndex: idx,
                                 onDestinationSelected: (value) {
-                                  setState(() {
-                                    idx = value;
-                                  });
+                                  setState(
+                                    () {
+                                      idx = value;
+                                    },
+                                  );
                                 },
-                              )
-                            : Drawer(
+                              ),
+                            )
+                          else
+                            Flexible(
+                              flex: 2,
+                              fit: FlexFit.tight,
+                              child: Drawer(
                                 child: Column(
                                   children: [
                                     // DrawerHeader(
@@ -196,9 +209,11 @@ class _MainAppState extends State<MainApp> {
                                           .breakfast),
                                       selected: idx == 0,
                                       onTap: () => {
-                                        setState(() {
-                                          idx = 0;
-                                        })
+                                        setState(
+                                          () {
+                                            idx = 0;
+                                          },
+                                        )
                                       },
                                     ),
                                     ListTile(
@@ -207,9 +222,11 @@ class _MainAppState extends State<MainApp> {
                                           AppLocalizations.of(context)!.lunch),
                                       selected: idx == 1,
                                       onTap: () => {
-                                        setState(() {
-                                          idx = 1;
-                                        })
+                                        setState(
+                                          () {
+                                            idx = 1;
+                                          },
+                                        )
                                       },
                                     ),
                                     ListTile(
@@ -218,206 +235,218 @@ class _MainAppState extends State<MainApp> {
                                           AppLocalizations.of(context)!.dinner),
                                       selected: idx == 2,
                                       onTap: () => {
-                                        setState(() {
-                                          idx = 2;
-                                        })
+                                        setState(
+                                          () {
+                                            idx = 2;
+                                          },
+                                        )
                                       },
                                     ),
                                   ],
                                 ),
                               ),
-                        Expanded(
-                          child: mainForm(),
-                        ),
-                      ],
-                    )
-                  : Expanded(child: mainForm()),
-              bottomNavigationBar: !isMediumScreen(context)
-                  ? NavigationBar(
-                      onDestinationSelected: (int index) {
-                        setState(() {
-                          idx = index;
-                        });
-                      },
-                      selectedIndex: idx,
-                      destinations: [
-                        NavigationDestination(
-                          icon: Icon(Icons.breakfast_dining_outlined),
-                          selectedIcon: Icon(Icons.breakfast_dining),
-                          label: AppLocalizations.of(context)!.breakfast,
-                        ),
-                        NavigationDestination(
-                          icon: Icon(Icons.lunch_dining_outlined),
-                          selectedIcon: Icon(Icons.lunch_dining),
-                          label: AppLocalizations.of(context)!.lunch,
-                        ),
-                        NavigationDestination(
-                          icon: Icon(Icons.dinner_dining_outlined),
-                          selectedIcon: Icon(Icons.dinner_dining),
-                          label: AppLocalizations.of(context)!.dinner,
-                        ),
-                      ],
-                    )
-                  : null,
-            );
-          }),
+                            ),
+                          Flexible(
+                            flex: 7,
+                            fit: FlexFit.tight,
+                            child: mainForm(),
+                          ),
+                        ],
+                      )
+                    : mainForm(),
+                bottomNavigationBar:
+                    !isMediumScreen(context) && !isLargeScreen(context)
+                        ? NavigationBar(
+                            onDestinationSelected: (int index) {
+                              setState(() {
+                                idx = index;
+                              });
+                            },
+                            selectedIndex: idx,
+                            destinations: [
+                              NavigationDestination(
+                                icon: Icon(Icons.breakfast_dining_outlined),
+                                selectedIcon: Icon(Icons.breakfast_dining),
+                                label: AppLocalizations.of(context)!.breakfast,
+                              ),
+                              NavigationDestination(
+                                icon: Icon(Icons.lunch_dining_outlined),
+                                selectedIcon: Icon(Icons.lunch_dining),
+                                label: AppLocalizations.of(context)!.lunch,
+                              ),
+                              NavigationDestination(
+                                icon: Icon(Icons.dinner_dining_outlined),
+                                selectedIcon: Icon(Icons.dinner_dining),
+                                label: AppLocalizations.of(context)!.dinner,
+                              ),
+                            ],
+                          )
+                        : null,
+              );
+            },
+          ),
         );
       },
     );
   }
 
   Widget mainForm() {
-    return Builder(
-      builder: (context) {
-        return SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: FutureBuilder(
-            future: getMeal(date, schoolCode, ministryCode, idx),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError || snapshot.data == null) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.wifi_off,
-                      size: 50,
+    return FutureBuilder(
+      future: getMeal(date, schoolCode, ministryCode, idx),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+          );
+        } else if (snapshot.hasError || snapshot.data == null) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.wifi_off,
+                size: 50,
+              ),
+              Text(
+                AppLocalizations.of(context)!.errorMessage,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          );
+        } else {
+          geupsick = snapshot.data!;
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                padding: getPadding(context),
+                child: Card.filled(
+                  color: Theme.of(context).colorScheme.secondaryContainer,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: printMeal(
+                      geupsick,
+                      date,
+                      schoolCode,
+                      ministryCode,
+                      idx,
+                      context,
                     ),
-                    Text(
-                      AppLocalizations.of(context)!.errorMessage,
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                );
-              } else {
-                geupsick = snapshot.data!;
-                return Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                  ),
+                ),
+              ),
+              FutureBuilder(
+                future: getGScore(geupsick),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Padding(
+                      padding: getPadding(context),
                       child: SizedBox(
-                        width: MediaQuery.of(context).size.width,
+                        child: Card.filled(
+                          color:
+                              Theme.of(context).colorScheme.secondaryContainer,
+                          child: Padding(
+                            padding: EdgeInsets.all(20),
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSecondaryContainer,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  } else if (snapshot.data == -2) {
+                    return SizedBox.shrink();
+                  } else if (snapshot.hasError || snapshot.data == -1) {
+                    return Padding(
+                      padding: getPadding(context),
+                      child: SizedBox(
                         child: Card.filled(
                           color:
                               Theme.of(context).colorScheme.secondaryContainer,
                           child: Padding(
                             padding: const EdgeInsets.all(20),
-                            child: printMeal(
-                              geupsick,
-                              date,
-                              schoolCode,
-                              ministryCode,
-                              idx,
-                              context,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.warning,
+                                  size: 50,
+                                ),
+                                Text(
+                                  AppLocalizations.of(context)!
+                                      .errorMessage_GScore,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    FutureBuilder(
-                      future: getGScore(geupsick),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              child: Card.filled(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .secondaryContainer,
-                                child: Padding(
-                                  padding: EdgeInsets.all(20),
-                                  child: Center(
-                                      child: CircularProgressIndicator()),
-                                ),
-                              ),
-                            ),
-                          );
-                        } else if (snapshot.data == -2) {
-                          return SizedBox.shrink();
-                        } else if (snapshot.hasError || snapshot.data == -1) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              child: Card.filled(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .secondaryContainer,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(20),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.warning,
-                                        size: 50,
-                                      ),
-                                      Text(
-                                        AppLocalizations.of(context)!
-                                            .errorMessage_GScore,
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
+                    );
+                  } else {
+                    gScore = snapshot.data!;
+                    return Padding(
+                      padding: getPadding(context),
+                      child: SizedBox(
+                        child: Card.filled(
+                          color:
+                              Theme.of(context).colorScheme.secondaryContainer,
+                          child: Padding(
+                            padding: EdgeInsets.all(20),
+                            child: Column(
+                              children: [
+                                Text(
+                                  "G-Score:",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondaryContainer,
                                   ),
                                 ),
-                              ),
-                            ),
-                          );
-                        } else {
-                          gScore = snapshot.data!;
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              child: Card.filled(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .secondaryContainer,
-                                child: Padding(
-                                  padding: EdgeInsets.all(20),
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        "G-Score:",
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                Card.filled(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8),
+                                    child: Text(
+                                      gScore.toString(),
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSecondary,
                                       ),
-                                      Text(
-                                        gScore.toString(),
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                    ],
+                                    ),
                                   ),
                                 ),
-                              ),
+                              ],
                             ),
-                          );
-                        }
-                      },
-                    ),
-                  ],
-                );
-              }
-            },
-          ),
-        );
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ],
+          );
+        }
       },
     );
   }
