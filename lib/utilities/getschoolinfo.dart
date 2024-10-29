@@ -1,8 +1,8 @@
 import 'dart:math';
-
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'types/schoolinfoclass.dart';
 
@@ -23,26 +23,7 @@ class _SchoolChangerState extends State<SchoolChanger> {
   String ministryCode = "B10";
   String schoolName = "";
 
-  List<DropdownMenuEntry<String>> ministryList = [
-    DropdownMenuEntry(value: "B10", label: "서울특별시교육청"),
-    DropdownMenuEntry(value: "C10", label: "부산광역시교육청"),
-    DropdownMenuEntry(value: "D10", label: "대구광역시교육청"),
-    DropdownMenuEntry(value: "E10", label: "인천광역시교육청"),
-    DropdownMenuEntry(value: "F10", label: "광주광역시교육청"),
-    DropdownMenuEntry(value: "G10", label: "대전광역시교육청"),
-    DropdownMenuEntry(value: "H10", label: "울산광역시교육청"),
-    DropdownMenuEntry(value: "I10", label: "세종특별자치시교육청"),
-    DropdownMenuEntry(value: "J10", label: "경기도교육청"),
-    DropdownMenuEntry(value: "K10", label: "강원특별자치도교육청"),
-    DropdownMenuEntry(value: "M10", label: "충청북도교육청"),
-    DropdownMenuEntry(value: "N10", label: "충청남도교육청"),
-    DropdownMenuEntry(value: "P10", label: "전북특별자치도교육청"),
-    DropdownMenuEntry(value: "Q10", label: "전라남도교육청"),
-    DropdownMenuEntry(value: "R10", label: "경상북도교육청"),
-    DropdownMenuEntry(value: "S10", label: "경상남도교육청"),
-    DropdownMenuEntry(value: "T10", label: "제주특별자치도교육청"),
-    DropdownMenuEntry(value: "V10", label: "재외한국학교교육청"),
-  ];
+  List<DropdownMenuEntry<String>> ministryList = [];
 
   @override
   void initState() {
@@ -53,8 +34,8 @@ class _SchoolChangerState extends State<SchoolChanger> {
     var response = await http.get(Uri.parse(
         "https://open.neis.go.kr/hub/schoolInfo?KEY=$apiKey&Type=json&ATPT_OFCDC_SC_CODE=$ministryCode&SCHUL_NM=$schoolName"));
     SchoolData schoolData = SchoolData.fromJson(jsonDecode(response.body));
-    if (schoolData.schoolInfo![1].row == null) {
-      return Center(child: Text("검색 결과가 없습니다."));
+    if (schoolData.schoolInfo![1].row == null && mounted) {
+      return Center(child: Text(AppLocalizations.of(context)!.noSearchResults));
     } else {
       return SizedBox(
         height: min(
@@ -78,7 +59,8 @@ class _SchoolChangerState extends State<SchoolChanger> {
                   Navigator.pop(context, [schoolCode, ministryCode]);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text("학교가 변경되었습니다."),
+                      content:
+                          Text(AppLocalizations.of(context)!.schoolChanged),
                     ),
                   );
                 },
@@ -92,9 +74,47 @@ class _SchoolChangerState extends State<SchoolChanger> {
 
   @override
   Widget build(BuildContext context) {
+    ministryList = [
+      DropdownMenuEntry(
+          value: "B10", label: AppLocalizations.of(context)!.ministry_Seoul),
+      DropdownMenuEntry(
+          value: "C10", label: AppLocalizations.of(context)!.ministry_Busan),
+      DropdownMenuEntry(
+          value: "D10", label: AppLocalizations.of(context)!.ministry_Daegu),
+      DropdownMenuEntry(
+          value: "E10", label: AppLocalizations.of(context)!.ministry_Incheon),
+      DropdownMenuEntry(
+          value: "F10", label: AppLocalizations.of(context)!.ministry_Gwangju),
+      DropdownMenuEntry(
+          value: "G10", label: AppLocalizations.of(context)!.ministry_Daejeon),
+      DropdownMenuEntry(
+          value: "H10", label: AppLocalizations.of(context)!.ministry_Ulsan),
+      DropdownMenuEntry(
+          value: "I10", label: AppLocalizations.of(context)!.ministry_Sejong),
+      DropdownMenuEntry(
+          value: "J10", label: AppLocalizations.of(context)!.ministry_Gyeonggi),
+      DropdownMenuEntry(
+          value: "K10", label: AppLocalizations.of(context)!.ministry_Gangwon),
+      DropdownMenuEntry(
+          value: "M10", label: AppLocalizations.of(context)!.ministry_Chungbuk),
+      DropdownMenuEntry(
+          value: "N10", label: AppLocalizations.of(context)!.ministry_Chungnam),
+      DropdownMenuEntry(
+          value: "P10", label: AppLocalizations.of(context)!.ministry_Jeonbuk),
+      DropdownMenuEntry(
+          value: "Q10", label: AppLocalizations.of(context)!.ministry_Jeonnam),
+      DropdownMenuEntry(
+          value: "R10",
+          label: AppLocalizations.of(context)!.ministry_Gyeongbuk),
+      DropdownMenuEntry(
+          value: "S10",
+          label: AppLocalizations.of(context)!.ministry_Gyeongnam),
+      DropdownMenuEntry(
+          value: "T10", label: AppLocalizations.of(context)!.ministry_Jeju),
+    ];
     return Scaffold(
       appBar: AppBar(
-        title: Text("학교 변경"),
+        title: Text(AppLocalizations.of(context)!.schoolChanger),
         scrolledUnderElevation: 0,
         forceMaterialTransparency: true,
       ),
@@ -111,7 +131,8 @@ class _SchoolChangerState extends State<SchoolChanger> {
                     DropdownMenu<String>(
                       dropdownMenuEntries: ministryList,
                       requestFocusOnTap: false,
-                      label: Text("시도교육청 선택"),
+                      label:
+                          Text(AppLocalizations.of(context)!.ministrySelection),
                       initialSelection: ministryCode,
                       onSelected: (String? selected) {
                         setState(() {
@@ -122,7 +143,9 @@ class _SchoolChangerState extends State<SchoolChanger> {
                     TextField(
                       autocorrect: false,
                       autofocus: true,
-                      decoration: InputDecoration(hintText: "학교 이름을 입력하여 검색"),
+                      decoration: InputDecoration(
+                          hintText: AppLocalizations.of(context)!
+                              .schoolSearchPlaceholder),
                       onChanged: (value) {
                         setState(() {
                           schoolName = value;
@@ -148,7 +171,8 @@ class _SchoolChangerState extends State<SchoolChanger> {
                               child: Center(
                                 child: Text(
                                   textAlign: TextAlign.center,
-                                  "결과가 없습니다.\n더 자세히 입력해 보시는 건 어떨까요?",
+                                  AppLocalizations.of(context)!
+                                      .searchNotAccurate,
                                   overflow: TextOverflow.fade,
                                 ),
                               ),

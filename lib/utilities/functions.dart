@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'dart:convert';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'types/geupsickinfoclass.dart';
 
@@ -22,8 +23,16 @@ Future<GeupsickInfo?> getMeal(
   }
 }
 
+bool isLargeScreen(BuildContext context) {
+  return MediaQuery.of(context).size.width > 960.0;
+}
+
+bool isMediumScreen(BuildContext context) {
+  return MediaQuery.of(context).size.width > 640.0;
+}
+
 Widget printMeal(GeupsickInfo geupsick, DateTime date, String schoolCode,
-    String ministryCode, int idx) {
+    String ministryCode, int idx, BuildContext context) {
   Column col = Column(
     mainAxisAlignment: MainAxisAlignment.center,
     mainAxisSize: MainAxisSize.min,
@@ -32,7 +41,7 @@ Widget printMeal(GeupsickInfo geupsick, DateTime date, String schoolCode,
 
   if (geupsick.mealServiceDietInfo == null) {
     col.children.add(Text(
-      "급식이 없습니다.",
+      AppLocalizations.of(context)!.foodNotAvailable,
       style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
     ));
     return col;
