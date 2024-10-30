@@ -99,7 +99,11 @@ class _MainAppState extends State<MainApp> {
             builder: (context) {
               return Scaffold(
                 appBar: AppBar(
-                  title: Text(DateFormat("MM월 dd일").format(date)),
+                  title: Text(
+                    DateFormat.MMMd(
+                      Localizations.localeOf(context).languageCode,
+                    ).format(date),
+                  ),
                   actions: [
                     IconButton(
                       icon: Icon(Icons.calendar_month),
