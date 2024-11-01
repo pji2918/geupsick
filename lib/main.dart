@@ -117,9 +117,11 @@ class _MainAppState extends State<MainApp> {
                               lastDate: DateTime(2050),
                             ) ??
                             date);
-                        setState(() {
-                          date = date;
-                        });
+                        setState(
+                          () {
+                            date = date;
+                          },
+                        );
                       },
                     ),
                     IconButton(
@@ -137,11 +139,13 @@ class _MainAppState extends State<MainApp> {
                         ).then(
                           (value) {
                             if (value != null) {
-                              setState(() {
-                                schoolCode = value[0];
-                                ministryCode = value[1];
-                                saveAppData();
-                              });
+                              setState(
+                                () {
+                                  schoolCode = value[0];
+                                  ministryCode = value[1];
+                                  saveAppData();
+                                },
+                              );
                             }
                           },
                         );
@@ -161,22 +165,25 @@ class _MainAppState extends State<MainApp> {
                                 labelType: NavigationRailLabelType.all,
                                 destinations: [
                                   NavigationRailDestination(
-                                      icon:
-                                          Icon(Icons.breakfast_dining_outlined),
-                                      selectedIcon:
-                                          Icon(Icons.breakfast_dining),
-                                      label: Text(AppLocalizations.of(context)!
-                                          .breakfast)),
+                                    icon: Icon(Icons.breakfast_dining_outlined),
+                                    selectedIcon: Icon(Icons.breakfast_dining),
+                                    label: Text(
+                                      AppLocalizations.of(context)!.breakfast,
+                                    ),
+                                  ),
                                   NavigationRailDestination(
-                                      icon: Icon(Icons.lunch_dining_outlined),
-                                      selectedIcon: Icon(Icons.lunch_dining),
-                                      label: Text(
-                                          AppLocalizations.of(context)!.lunch)),
+                                    icon: Icon(Icons.lunch_dining_outlined),
+                                    selectedIcon: Icon(Icons.lunch_dining),
+                                    label: Text(
+                                      AppLocalizations.of(context)!.lunch,
+                                    ),
+                                  ),
                                   NavigationRailDestination(
                                     icon: Icon(Icons.dinner_dining_outlined),
                                     selectedIcon: Icon(Icons.dinner_dining),
                                     label: Text(
-                                        AppLocalizations.of(context)!.dinner),
+                                      AppLocalizations.of(context)!.dinner,
+                                    ),
                                   ),
                                 ],
                                 selectedIndex: idx,
@@ -262,9 +269,11 @@ class _MainAppState extends State<MainApp> {
                     !isMediumScreen(context) && !isLargeScreen(context)
                         ? NavigationBar(
                             onDestinationSelected: (int index) {
-                              setState(() {
-                                idx = index;
-                              });
+                              setState(
+                                () {
+                                  idx = index;
+                                },
+                              );
                             },
                             selectedIndex: idx,
                             destinations: [
