@@ -37,6 +37,13 @@ class _MainAppState extends State<MainApp> {
   void initState() {
     super.initState();
     loadAppData();
+    if (date.hour <= 9) {
+      idx = 0;
+    } else if (date.hour <= 13) {
+      idx = 1;
+    } else {
+      idx = 2;
+    }
   }
 
   void saveAppData() async {
@@ -117,11 +124,7 @@ class _MainAppState extends State<MainApp> {
                               lastDate: DateTime(2050),
                             ) ??
                             date);
-                        setState(
-                          () {
-                            date = date;
-                          },
-                        );
+                        setState(() => date = date);
                       },
                     ),
                     IconButton(
