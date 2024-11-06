@@ -7,8 +7,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'types/schoolinfoclass.dart';
 
 class SchoolChanger extends StatefulWidget {
-  const SchoolChanger(
-      {super.key, required this.schoolCode, required this.ministryCode});
+  const SchoolChanger({
+    super.key,
+    required this.schoolCode,
+    required this.ministryCode,
+  });
 
   final String schoolCode;
   final String ministryCode;
