@@ -116,14 +116,14 @@ class _MainAppState extends State<MainApp> {
                       icon: Icon(Icons.calendar_month),
                       tooltip: AppLocalizations.of(context)!.dateSelect,
                       onPressed: () async {
-                        date = (await showDatePicker(
+                        date = await showDatePicker(
                               locale: Localizations.localeOf(context),
                               context: context,
                               initialDate: date,
                               firstDate: DateTime(2000),
                               lastDate: DateTime(2050),
                             ) ??
-                            date);
+                            date;
                         setState(() => date = date);
                       },
                     ),
@@ -134,8 +134,9 @@ class _MainAppState extends State<MainApp> {
                         context: context,
                         builder: (BuildContext context) => Dialog.fullscreen(
                           child: SchoolChanger(
-                              schoolCode: schoolCode,
-                              ministryCode: ministryCode),
+                            schoolCode: schoolCode,
+                            ministryCode: ministryCode,
+                          ),
                         ),
                         useRootNavigator: false,
                       ).then(
@@ -212,22 +213,25 @@ class _MainAppState extends State<MainApp> {
                                     // ),
                                     ListTile(
                                       leading: Icon(Icons.breakfast_dining),
-                                      title: Text(AppLocalizations.of(context)!
-                                          .breakfast),
+                                      title: Text(
+                                        AppLocalizations.of(context)!.breakfast,
+                                      ),
                                       selected: idx == 0,
                                       onTap: () => setState(() => idx = 0),
                                     ),
                                     ListTile(
                                       leading: Icon(Icons.lunch_dining),
                                       title: Text(
-                                          AppLocalizations.of(context)!.lunch),
+                                        AppLocalizations.of(context)!.lunch,
+                                      ),
                                       selected: idx == 1,
                                       onTap: () => setState(() => idx = 1),
                                     ),
                                     ListTile(
                                       leading: Icon(Icons.dinner_dining),
                                       title: Text(
-                                          AppLocalizations.of(context)!.dinner),
+                                        AppLocalizations.of(context)!.dinner,
+                                      ),
                                       selected: idx == 2,
                                       onTap: () => setState(() => idx = 2),
                                     ),
@@ -409,7 +413,8 @@ class _MainAppState extends State<MainApp> {
                                       Theme.of(context).colorScheme.secondary,
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 8),
+                                      horizontal: 8,
+                                    ),
                                     child: Text(
                                       gScore.toString(),
                                       style: TextStyle(
