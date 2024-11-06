@@ -51,10 +51,8 @@ class _SchoolChangerState extends State<SchoolChanger> {
                 title: Text(schoolData.schoolInfo![1].row![index].sCHULNM!),
                 subtitle: Text(schoolData.schoolInfo![1].row![index].oRGRDNMA!),
                 onTap: () {
-                  setState(() {
-                    schoolCode =
-                        schoolData.schoolInfo![1].row![index].sDSCHULCODE!;
-                  });
+                  setState(() => schoolCode =
+                      schoolData.schoolInfo![1].row![index].sDSCHULCODE!);
                   // pass values to parent widget
                   Navigator.pop(context, [schoolCode, ministryCode]);
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -135,9 +133,7 @@ class _SchoolChangerState extends State<SchoolChanger> {
                           Text(AppLocalizations.of(context)!.ministrySelection),
                       initialSelection: ministryCode,
                       onSelected: (String? selected) {
-                        setState(() {
-                          ministryCode = selected!;
-                        });
+                        setState(() => ministryCode = selected!);
                       },
                     ),
                     TextField(
@@ -147,9 +143,7 @@ class _SchoolChangerState extends State<SchoolChanger> {
                           hintText: AppLocalizations.of(context)!
                               .schoolSearchPlaceholder),
                       onChanged: (value) {
-                        setState(() {
-                          schoolName = value;
-                        });
+                        setState(() => schoolName = value);
                       },
                     ),
                     SizedBox(height: 10),

@@ -130,30 +130,28 @@ class _MainAppState extends State<MainApp> {
                     IconButton(
                       icon: Icon(Icons.school),
                       tooltip: AppLocalizations.of(context)!.schoolSelect,
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) => Dialog.fullscreen(
-                            child: SchoolChanger(
-                                schoolCode: schoolCode,
-                                ministryCode: ministryCode),
-                          ),
-                          useRootNavigator: false,
-                        ).then(
-                          (value) {
-                            if (value != null) {
-                              setState(
-                                () {
-                                  schoolCode = value[0];
-                                  ministryCode = value[1];
-                                  saveAppData();
-                                },
-                              );
-                            }
-                          },
-                        );
-                      },
-                    )
+                      onPressed: () => showDialog(
+                        context: context,
+                        builder: (BuildContext context) => Dialog.fullscreen(
+                          child: SchoolChanger(
+                              schoolCode: schoolCode,
+                              ministryCode: ministryCode),
+                        ),
+                        useRootNavigator: false,
+                      ).then(
+                        (value) {
+                          if (value != null) {
+                            setState(
+                              () {
+                                schoolCode = value[0];
+                                ministryCode = value[1];
+                                saveAppData();
+                              },
+                            );
+                          }
+                        },
+                      ),
+                    ),
                   ],
                 ),
                 body: isMediumScreen(context)
@@ -190,13 +188,8 @@ class _MainAppState extends State<MainApp> {
                                   ),
                                 ],
                                 selectedIndex: idx,
-                                onDestinationSelected: (value) {
-                                  setState(
-                                    () {
-                                      idx = value;
-                                    },
-                                  );
-                                },
+                                onDestinationSelected: (value) =>
+                                    setState(() => idx = value),
                               ),
                             )
                           else
@@ -222,39 +215,21 @@ class _MainAppState extends State<MainApp> {
                                       title: Text(AppLocalizations.of(context)!
                                           .breakfast),
                                       selected: idx == 0,
-                                      onTap: () => {
-                                        setState(
-                                          () {
-                                            idx = 0;
-                                          },
-                                        )
-                                      },
+                                      onTap: () => setState(() => idx = 0),
                                     ),
                                     ListTile(
                                       leading: Icon(Icons.lunch_dining),
                                       title: Text(
                                           AppLocalizations.of(context)!.lunch),
                                       selected: idx == 1,
-                                      onTap: () => {
-                                        setState(
-                                          () {
-                                            idx = 1;
-                                          },
-                                        )
-                                      },
+                                      onTap: () => setState(() => idx = 1),
                                     ),
                                     ListTile(
                                       leading: Icon(Icons.dinner_dining),
                                       title: Text(
                                           AppLocalizations.of(context)!.dinner),
                                       selected: idx == 2,
-                                      onTap: () => {
-                                        setState(
-                                          () {
-                                            idx = 2;
-                                          },
-                                        )
-                                      },
+                                      onTap: () => setState(() => idx = 2),
                                     ),
                                   ],
                                 ),
@@ -271,13 +246,8 @@ class _MainAppState extends State<MainApp> {
                 bottomNavigationBar:
                     !isMediumScreen(context) && !isLargeScreen(context)
                         ? NavigationBar(
-                            onDestinationSelected: (int index) {
-                              setState(
-                                () {
-                                  idx = index;
-                                },
-                              );
-                            },
+                            onDestinationSelected: (int index) =>
+                                setState(() => idx = index),
                             selectedIndex: idx,
                             destinations: [
                               NavigationDestination(
