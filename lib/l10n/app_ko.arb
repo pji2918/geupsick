@@ -112,15 +112,15 @@
     "@errorMessage_GScore": {
         "description": "급식 점수를 불러오는데 실패했을 때 나타나는 에러 메시지입니다."
     },
-    "foodNotAvailable": "급식이 없습니다",
+    "foodNotAvailable": "급식이 없습니다.",
     "@foodNotAvailable": {
         "description": "급식 정보가 없을 때 나타나는 메시지입니다."
     },
-    "noSearchResults": "검색 결과가 없습니다",
+    "noSearchResults": "검색 결과가 없습니다.",
     "@noSearchResults": {
         "description": "검색 결과가 없을 때 나타나는 메시지입니다."
     },
-    "schoolChanged": "학교가 변경되었습니다",
+    "schoolChanged": "학교가 변경되었습니다.",
     "@schoolChanged": {
         "description": "학교가 변경되었을 때 나타나는 메시지입니다."
     },

@@ -26,10 +26,10 @@
     "ministry_Gyeongbuk": "Gyeongsangbukdo Office of Education",
     "ministry_Gyeongnam": "Gyeongsangnamdo Office of Education",
     "ministry_Jeju": "Jeju Special Self-Governing Province Office of Education",
-    "errorMessage": "Failed to load meal information",
-    "errorMessage_GScore": "Failed to load G-Score",
+    "errorMessage": "Failed to load meal information.",
+    "errorMessage_GScore": "Failed to load G-Score.",
     "foodNotAvailable": "Food not available",
-    "noSearchResults": "No search results",
-    "schoolChanged": "School changed",
+    "noSearchResults": "No search results.",
+    "schoolChanged": "School changed.",
     "searchNotAccurate": "No Results.\nHow about entering more details?"
 }
