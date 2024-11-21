@@ -19,15 +19,15 @@ flutter_launcher_icons:
 
   web:
     generate: true
-    image_path: "assets/icon/icon.webp"
+    # image_path: "assets/icon/icon.webp"
     background_color: "#FFFFFF"
     theme_color: "#000000"
 
   windows:
     generate: true
-    image_path: "assets/icon/icon.webp"
+    # image_path: "assets/icon/icon.webp"
     icon_size: 48 # min:48, max:256, default: 48
 
   macos:
     generate: true
-    image_path: "assets/icon/icon.webp"
+    # image_path: "assets/icon/icon.webp"
