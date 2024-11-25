@@ -57,7 +57,7 @@ android {
         }
         debug {
             splits.abi.enable = false
-            splits.density.enable = false
+//            splits.density.enable = false
             aaptOptions.cruncherEnabled = false
             ext.alwaysUpdateBuildId = false
         }
