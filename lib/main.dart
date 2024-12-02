@@ -41,8 +41,11 @@ class _MainAppState extends State<MainApp> {
       idx = 0;
     } else if (date.hour <= 13) {
       idx = 1;
-    } else {
+    } else if (date.hour <= 19) {
       idx = 2;
+    } else {
+      date = date.add(Duration(days: 1));
+      idx = 0;
     }
   }
 
@@ -150,6 +153,7 @@ class _MainAppState extends State<MainApp> {
                               },
                             );
                           }
+                          idx = 0;
                         },
                       ),
                     ),
