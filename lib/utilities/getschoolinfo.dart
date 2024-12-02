@@ -114,6 +114,7 @@ class _SchoolChangerState extends State<SchoolChanger> {
           value: "T10", label: AppLocalizations.of(context)!.ministry_Jeju),
     ];
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.schoolChanger),
         scrolledUnderElevation: 0,
