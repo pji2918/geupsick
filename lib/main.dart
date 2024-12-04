@@ -119,7 +119,7 @@ class _MainAppState extends State<MainApp> {
                       icon: Icon(Icons.calendar_month),
                       tooltip: AppLocalizations.of(context)!.dateSelect,
                       onPressed: () async {
-                        date = await showDatePicker(
+                        DateTime newDate = await showDatePicker(
                               locale: Localizations.localeOf(context),
                               context: context,
                               initialDate: date,
@@ -127,7 +127,9 @@ class _MainAppState extends State<MainApp> {
                               lastDate: DateTime(2050),
                             ) ??
                             date;
-                        setState(() => date = date);
+                        if (date != newDate) {
+                          setState(() => date = newDate);
+                        }
                       },
                     ),
                     IconButton(
@@ -144,7 +146,7 @@ class _MainAppState extends State<MainApp> {
                         useRootNavigator: false,
                       ).then(
                         (value) {
-                          if (value != null) {
+                          if (value != null && schoolCode != value[0]) {
                             setState(
                               () {
                                 schoolCode = value[0];
@@ -152,8 +154,8 @@ class _MainAppState extends State<MainApp> {
                                 saveAppData();
                               },
                             );
+                            idx = 0;
                           }
-                          idx = 0;
                         },
                       ),
                     ),
@@ -193,8 +195,11 @@ class _MainAppState extends State<MainApp> {
                                   ),
                                 ],
                                 selectedIndex: idx,
-                                onDestinationSelected: (value) =>
-                                    setState(() => idx = value),
+                                onDestinationSelected: (value) {
+                                  if (idx != value) {
+                                    setState(() => idx = value);
+                                  }
+                                },
                               ),
                             )
                           else
@@ -204,24 +209,17 @@ class _MainAppState extends State<MainApp> {
                               child: Drawer(
                                 child: Column(
                                   children: [
-                                    // DrawerHeader(
-                                    //   child: Center(
-                                    //     child: Text(
-                                    //       "급식",
-                                    //       style: TextStyle(
-                                    //         fontWeight: FontWeight.bold,
-                                    //         fontSize: 30,
-                                    //       ),
-                                    //     ),
-                                    //   ),
-                                    // ),
                                     ListTile(
                                       leading: Icon(Icons.breakfast_dining),
                                       title: Text(
                                         AppLocalizations.of(context)!.breakfast,
                                       ),
                                       selected: idx == 0,
-                                      onTap: () => setState(() => idx = 0),
+                                      onTap: () {
+                                        if (idx != 0) {
+                                          setState(() => idx = 0);
+                                        }
+                                      },
                                     ),
                                     ListTile(
                                       leading: Icon(Icons.lunch_dining),
@@ -229,7 +227,11 @@ class _MainAppState extends State<MainApp> {
                                         AppLocalizations.of(context)!.lunch,
                                       ),
                                       selected: idx == 1,
-                                      onTap: () => setState(() => idx = 1),
+                                      onTap: () {
+                                        if (idx != 1) {
+                                          setState(() => idx = 1);
+                                        }
+                                      },
                                     ),
                                     ListTile(
                                       leading: Icon(Icons.dinner_dining),
@@ -237,7 +239,11 @@ class _MainAppState extends State<MainApp> {
                                         AppLocalizations.of(context)!.dinner,
                                       ),
                                       selected: idx == 2,
-                                      onTap: () => setState(() => idx = 2),
+                                      onTap: () {
+                                        if (idx != 2) {
+                                          setState(() => idx = 2);
+                                        }
+                                      },
                                     ),
                                   ],
                                 ),
@@ -254,8 +260,11 @@ class _MainAppState extends State<MainApp> {
                 bottomNavigationBar:
                     !isMediumScreen(context) && !isLargeScreen(context)
                         ? NavigationBar(
-                            onDestinationSelected: (int index) =>
-                                setState(() => idx = index),
+                            onDestinationSelected: (int index) {
+                              if (idx != index) {
+                                setState(() => idx = index);
+                              }
+                            },
                             selectedIndex: idx,
                             destinations: [
                               NavigationDestination(
