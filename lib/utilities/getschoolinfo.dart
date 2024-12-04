@@ -42,7 +42,7 @@ class _SchoolChangerState extends State<SchoolChanger> {
     } else {
       return SizedBox(
         height: min(
-          schoolData.schoolInfo![1].row!.length * 70.0,
+          schoolData.schoolInfo![1].row!.length * 75.0,
           mounted ? MediaQuery.of(context).size.height * 0.6 : 100,
         ),
         child: Card.outlined(
@@ -54,8 +54,10 @@ class _SchoolChangerState extends State<SchoolChanger> {
                 title: Text(schoolData.schoolInfo![1].row![index].sCHULNM!),
                 subtitle: Text(schoolData.schoolInfo![1].row![index].oRGRDNMA!),
                 onTap: () {
-                  setState(() => schoolCode =
-                      schoolData.schoolInfo![1].row![index].sDSCHULCODE!);
+                  setState(
+                    () => schoolCode =
+                        schoolData.schoolInfo![1].row![index].sDSCHULCODE!,
+                  );
                   // pass values to parent widget
                   Navigator.pop(context, [schoolCode, ministryCode]);
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -114,7 +116,6 @@ class _SchoolChangerState extends State<SchoolChanger> {
           value: "T10", label: AppLocalizations.of(context)!.ministry_Jeju),
     ];
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.schoolChanger),
         scrolledUnderElevation: 0,
@@ -122,75 +123,66 @@ class _SchoolChangerState extends State<SchoolChanger> {
       ),
       body: Builder(
         builder: (context) {
-          return Align(
-            alignment: Alignment.topCenter,
-            child: IntrinsicHeight(
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    DropdownMenu<String>(
-                      dropdownMenuEntries: ministryList,
-                      requestFocusOnTap: false,
-                      label:
-                          Text(AppLocalizations.of(context)!.ministrySelection),
-                      initialSelection: ministryCode,
-                      onSelected: (String? selected) {
-                        setState(() => ministryCode = selected!);
-                      },
-                    ),
-                    TextField(
-                      autocorrect: false,
-                      autofocus: true,
-                      decoration: InputDecoration(
-                          hintText: AppLocalizations.of(context)!
-                              .schoolSearchPlaceholder),
-                      onChanged: (value) {
-                        setState(() => schoolName = value);
-                      },
-                    ),
-                    SizedBox(height: 10),
-                    FutureBuilder(
-                      future: fetchSchools(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return SizedBox(
-                            height: 100,
-                            child: Card.outlined(
-                              child: Center(
-                                child: CircularProgressIndicator(
-                                  color:
-                                      Theme.of(context).colorScheme.onSurface,
-                                ),
-                              ),
-                            ),
-                          );
-                        } else if (snapshot.hasError) {
-                          return SizedBox(
-                            height: 100,
-                            child: Card.outlined(
-                              child: Center(
-                                child: Text(
-                                  textAlign: TextAlign.center,
-                                  AppLocalizations.of(context)!
-                                      .searchNotAccurate,
-                                  overflow: TextOverflow.fade,
-                                ),
-                              ),
-                            ),
-                          );
-                        } else if (!snapshot.hasData || snapshot.data == null) {
-                          return SizedBox.shrink();
-                        } else {
-                          return snapshot.data!;
-                        }
-                      },
-                    ),
-                  ],
+          return Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                DropdownMenu<String>(
+                  dropdownMenuEntries: ministryList,
+                  requestFocusOnTap: false,
+                  label: Text(AppLocalizations.of(context)!.ministrySelection),
+                  initialSelection: ministryCode,
+                  onSelected: (String? selected) {
+                    setState(() => ministryCode = selected!);
+                  },
                 ),
-              ),
+                TextField(
+                  autocorrect: false,
+                  autofocus: true,
+                  decoration: InputDecoration(
+                      hintText: AppLocalizations.of(context)!
+                          .schoolSearchPlaceholder),
+                  onChanged: (value) {
+                    setState(() => schoolName = value);
+                  },
+                ),
+                SizedBox(height: 10),
+                FutureBuilder(
+                  future: fetchSchools(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return SizedBox(
+                        height: 100,
+                        child: Card.outlined(
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
+                          ),
+                        ),
+                      );
+                    } else if (snapshot.hasError) {
+                      return SizedBox(
+                        height: 100,
+                        child: Card.outlined(
+                          child: Center(
+                            child: Text(
+                              textAlign: TextAlign.center,
+                              AppLocalizations.of(context)!.searchNotAccurate,
+                              overflow: TextOverflow.fade,
+                            ),
+                          ),
+                        ),
+                      );
+                    } else if (!snapshot.hasData || snapshot.data == null) {
+                      return SizedBox.shrink();
+                    } else {
+                      return snapshot.data!;
+                    }
+                  },
+                ),
+              ],
             ),
           );
         },
