@@ -123,66 +123,73 @@ class _SchoolChangerState extends State<SchoolChanger> {
       ),
       body: Builder(
         builder: (context) {
-          return Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                DropdownMenu<String>(
-                  dropdownMenuEntries: ministryList,
-                  requestFocusOnTap: false,
-                  label: Text(AppLocalizations.of(context)!.ministrySelection),
-                  initialSelection: ministryCode,
-                  onSelected: (String? selected) {
-                    setState(() => ministryCode = selected!);
-                  },
-                ),
-                TextField(
-                  autocorrect: false,
-                  autofocus: true,
-                  decoration: InputDecoration(
-                      hintText: AppLocalizations.of(context)!
-                          .schoolSearchPlaceholder),
-                  onChanged: (value) {
-                    setState(() => schoolName = value);
-                  },
-                ),
-                SizedBox(height: 10),
-                FutureBuilder(
-                  future: fetchSchools(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return SizedBox(
-                        height: 100,
-                        child: Card.outlined(
-                          child: Center(
-                            child: CircularProgressIndicator(
-                              color: Theme.of(context).colorScheme.onSurface,
+          return SafeArea(
+            left: false,
+            right: false,
+            top: false,
+            bottom: true,
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  DropdownMenu<String>(
+                    dropdownMenuEntries: ministryList,
+                    requestFocusOnTap: false,
+                    label:
+                        Text(AppLocalizations.of(context)!.ministrySelection),
+                    initialSelection: ministryCode,
+                    onSelected: (String? selected) {
+                      setState(() => ministryCode = selected!);
+                    },
+                  ),
+                  TextField(
+                    autocorrect: false,
+                    autofocus: true,
+                    decoration: InputDecoration(
+                        hintText: AppLocalizations.of(context)!
+                            .schoolSearchPlaceholder),
+                    onChanged: (value) {
+                      setState(() => schoolName = value);
+                    },
+                  ),
+                  SizedBox(height: 10),
+                  FutureBuilder(
+                    future: fetchSchools(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return SizedBox(
+                          height: 100,
+                          child: Card.outlined(
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                color: Theme.of(context).colorScheme.onSurface,
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    } else if (snapshot.hasError) {
-                      return SizedBox(
-                        height: 100,
-                        child: Card.outlined(
-                          child: Center(
-                            child: Text(
-                              textAlign: TextAlign.center,
-                              AppLocalizations.of(context)!.searchNotAccurate,
-                              overflow: TextOverflow.fade,
+                        );
+                      } else if (snapshot.hasError) {
+                        return SizedBox(
+                          height: 100,
+                          child: Card.outlined(
+                            child: Center(
+                              child: Text(
+                                textAlign: TextAlign.center,
+                                AppLocalizations.of(context)!.searchNotAccurate,
+                                overflow: TextOverflow.fade,
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    } else if (!snapshot.hasData || snapshot.data == null) {
-                      return SizedBox.shrink();
-                    } else {
-                      return snapshot.data!;
-                    }
-                  },
-                ),
-              ],
+                        );
+                      } else if (!snapshot.hasData || snapshot.data == null) {
+                        return SizedBox.shrink();
+                      } else {
+                        return snapshot.data!;
+                      }
+                    },
+                  ),
+                ],
+              ),
             ),
           );
         },
