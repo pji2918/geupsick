@@ -115,50 +115,89 @@ class _MainAppState extends State<MainApp> {
                     ).format(date),
                   ),
                   actions: [
-                    IconButton(
-                      icon: Icon(Icons.calendar_month),
-                      tooltip: AppLocalizations.of(context)!.dateSelect,
-                      onPressed: () async {
-                        DateTime newDate = await showDatePicker(
-                              locale: Localizations.localeOf(context),
-                              context: context,
-                              initialDate: date,
-                              firstDate: DateTime(2000),
-                              lastDate: DateTime(2050),
-                            ) ??
-                            date;
-                        if (date != newDate) {
-                          setState(() => date = newDate);
-                        }
-                      },
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.school),
-                      tooltip: AppLocalizations.of(context)!.schoolSelect,
-                      onPressed: () => showDialog(
-                        context: context,
-                        builder: (BuildContext context) => Dialog.fullscreen(
-                          child: SchoolChanger(
-                            schoolCode: schoolCode,
-                            ministryCode: ministryCode,
+                    Builder(builder: (context) {
+                      return MenuAnchor(
+                        menuChildren: [
+                          MenuItemButton(
+                            child: SizedBox(
+                              width: 125,
+                              child: Wrap(
+                                spacing: 5,
+                                crossAxisAlignment: WrapCrossAlignment.center,
+                                children: [
+                                  Icon(Icons.calendar_month),
+                                  Text(
+                                      AppLocalizations.of(context)!.dateSelect),
+                                ],
+                              ),
+                            ),
+                            onPressed: () async {
+                              DateTime newDate = await showDatePicker(
+                                    locale: Localizations.localeOf(context),
+                                    context: context,
+                                    initialDate: date,
+                                    firstDate: DateTime(1972, 11, 21),
+                                    lastDate: DateTime(2222, 2, 22),
+                                  ) ??
+                                  date;
+                              if (date != newDate) {
+                                setState(() => date = newDate);
+                              }
+                            },
                           ),
-                        ),
-                        useRootNavigator: false,
-                      ).then(
-                        (value) {
-                          if (value != null && schoolCode != value[0]) {
-                            setState(
-                              () {
-                                schoolCode = value[0];
-                                ministryCode = value[1];
-                                saveAppData();
+                          MenuItemButton(
+                            child: SizedBox(
+                              width: 125,
+                              child: Wrap(
+                                crossAxisAlignment: WrapCrossAlignment.center,
+                                spacing: 5,
+                                children: [
+                                  Icon(Icons.school),
+                                  Text(AppLocalizations.of(context)!
+                                      .schoolSelect),
+                                ],
+                              ),
+                            ),
+                            onPressed: () => showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  Dialog.fullscreen(
+                                child: SchoolChanger(
+                                  schoolCode: schoolCode,
+                                  ministryCode: ministryCode,
+                                ),
+                              ),
+                              useRootNavigator: false,
+                            ).then(
+                              (value) {
+                                if (value != null && schoolCode != value[0]) {
+                                  setState(
+                                    () {
+                                      schoolCode = value[0];
+                                      ministryCode = value[1];
+                                      saveAppData();
+                                    },
+                                  );
+                                  idx = 0;
+                                }
                               },
-                            );
-                            idx = 0;
-                          }
+                            ),
+                          ),
+                        ],
+                        builder: (_, MenuController controller, Widget? child) {
+                          return IconButton(
+                            onPressed: () {
+                              if (controller.isOpen) {
+                                controller.close();
+                              } else {
+                                controller.open();
+                              }
+                            },
+                            icon: const Icon(Icons.more_vert),
+                          );
                         },
-                      ),
-                    ),
+                      );
+                    }),
                   ],
                 ),
                 body: isMediumScreen(context)
