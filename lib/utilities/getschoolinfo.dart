@@ -136,10 +136,11 @@ class _SchoolChangerState extends State<SchoolChanger> {
                   DropdownMenu<String>(
                     dropdownMenuEntries: ministryList,
                     requestFocusOnTap: false,
-                    label:
-                        Text(AppLocalizations.of(context)!.ministrySelection),
+                    label: Text(
+                      AppLocalizations.of(context)!.ministrySelection,
+                    ),
                     initialSelection: ministryCode,
-                    onSelected: (String? selected) {
+                    onSelected: (selected) {
                       setState(() => ministryCode = selected!);
                     },
                   ),
