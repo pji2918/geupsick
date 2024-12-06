@@ -1,8 +1,46 @@
 {
     "@@locale": "ko",
+    "ok": "확인",
+    "@ok": {
+        "description": "OK."
+    },
+    "cancel": "취소",
+    "@cancel": {
+        "description": "Cancel."
+    },
     "about": "정보",
     "@about": {
         "description": "앱의 정보를 표시하는 버튼"
+    },
+    "gscoreSection": "G-Score",
+    "@gscoreSection": {
+        "description": "G-Score 설정 섹션 제목"
+    },
+    "generalSection": "일반",
+    "@generalSection": {},
+    "aboutDesc": "앱의 정보를 표시합니다.",
+    "@aboutDesc": {},
+    "goBack": "뒤로 가기",
+    "@goBack": {},
+    "openAIApiKeyTitle": "OpenAI API 키",
+    "@openAIApiKeyTitle": {
+        "description": "설정 창에서 OpenAI API 키를 설정하는 버튼의 제목"
+    },
+    "openAIApiKeyDesc": "OpenAI API 키를 설정합니다.",
+    "@openAIApiKeyDesc": {
+        "description": "설정 창에서 OpenAI API 키를 설정하는 버튼의 설명"
+    },
+    "openAIApiKeyPlaceHolder": "OpenAI API 키를 여기에 입력하세요",
+    "@openAIApiKeyPlaceHolder": {
+        "description": "설정 창에서 OpenAI API 키를 설정하는 TextField의 Placeholder"
+    },
+    "useGScore": "G-Score 사용",
+    "@useGScore": {
+        "description": "G-Score 사용 여부 제어 스위치 제목"
+    },
+    "useGScoreDesc": "G-Score (급식 평가 시스템) 사용 여부를 설정합니다.",
+    "@useGScoreDesc": {
+        "description": "G-Score 사용 여부 제어 스위치 설명"
     },
     "settings": "설정",
     "@settings": {

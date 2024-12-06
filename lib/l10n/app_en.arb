@@ -33,5 +33,16 @@
     "foodNotAvailable": "Food not available",
     "noSearchResults": "No search results.",
     "schoolChanged": "School changed.",
-    "searchNotAccurate": "No Results.\nHow about entering more details?"
+    "searchNotAccurate": "No Results.\nHow about entering more details?",
+    "ok": "OK",
+    "cancel": "Cancel",
+    "gscoreSection": "G-Score Settings",
+    "generalSection": "General",
+    "aboutDesc": "Show About Screen.",
+    "goBack": "Go Back",
+    "openAIApiKeyTitle": "OpenAI API Key",
+    "openAIApiKeyDesc": "Enter Your OpenAI API Key Here.",
+    "openAIApiKeyPlaceHolder": "Enter Your OpenAI API Key Here",
+    "useGScore": "Use G-Score",
+    "useGScoreDesc": "Whether Use G-Score(Meal Rating System)."
 }
