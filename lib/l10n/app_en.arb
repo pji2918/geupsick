@@ -1,6 +1,7 @@
 {
     "@@locale": "en",
     "about": "About",
+    "settings": "Settings",
     "geupsick": "Geupsick",
     "schoolSelect": "School Select",
     "dateSelect": "Date Select",

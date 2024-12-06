@@ -4,6 +4,10 @@
     "@about": {
         "description": "앱의 정보를 표시하는 버튼"
     },
+    "settings": "설정",
+    "@settings": {
+        "description": "설정 페이지에서 뜨는 헤더"
+    },
     "geupsick": "급식",
     "@geupsick": {
         "description": "\"급식\"을 의미합니다."

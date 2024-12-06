@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:dynamic_color/dynamic_color.dart';
+import 'package:geupsick/settings.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 import 'utilities/types/geupsickinfoclass.dart';
 import 'utilities/functions.dart';
@@ -155,8 +155,10 @@ class _MainAppState extends State<MainApp> {
                                   spacing: 5,
                                   children: [
                                     Icon(Icons.school),
-                                    Text(AppLocalizations.of(context)!
-                                        .schoolSelect),
+                                    Text(
+                                      AppLocalizations.of(context)!
+                                          .schoolSelect,
+                                    )
                                   ],
                                 ),
                               ),
@@ -192,28 +194,20 @@ class _MainAppState extends State<MainApp> {
                                   crossAxisAlignment: WrapCrossAlignment.center,
                                   spacing: 5,
                                   children: [
-                                    Icon(Icons.info),
-                                    Text(AppLocalizations.of(context)!.about)
+                                    Icon(Icons.settings),
+                                    Text(AppLocalizations.of(context)!.settings)
                                   ],
                                 ),
                               ),
-                              onPressed: () async {
-                                PackageInfo packageInfo =
-                                    await PackageInfo.fromPlatform();
-                                if (context.mounted) {
-                                  showAboutDialog(
-                                    context: context,
-                                    applicationName: packageInfo.appName,
-                                    applicationVersion: packageInfo.version,
-                                    applicationIcon: Image.asset(
-                                      "assets/icon/icon.webp",
-                                      width: 100,
-                                      height: 100,
-                                    ),
-                                  );
-                                }
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Settings(),
+                                  ),
+                                ).then((value) => setState(() {}));
                               },
-                            )
+                            ),
                           ],
                           builder:
                               (_, MenuController controller, Widget? child) {
