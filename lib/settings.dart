@@ -48,7 +48,7 @@ class _SettingsState extends State<Settings> {
                 );
               },
               icon: Icon(Icons.arrow_back),
-              tooltip: "Go Back",
+              tooltip: AppLocalizations.of(context)!.goBack,
             ),
           ),
           body: SafeArea(
@@ -62,15 +62,16 @@ class _SettingsState extends State<Settings> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
                         child: Text(
-                          "G-Score Settings",
+                          AppLocalizations.of(context)!.gscoreSection,
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.primary,
                           ),
                         ),
                       ),
                       SwitchListTile(
-                        title: Text("Use G-Score"),
-                        subtitle: Text("Whether Use G-Score."),
+                        title: Text(AppLocalizations.of(context)!.useGScore),
+                        subtitle:
+                            Text(AppLocalizations.of(context)!.useGScoreDesc),
                         value: useGScore,
                         onChanged: (value) => setState(
                           () {
@@ -79,8 +80,10 @@ class _SettingsState extends State<Settings> {
                         ),
                       ),
                       ListTile(
-                        title: Text("OpenAI API Key"),
-                        subtitle: Text("Enter Your OpenAI API Key Here."),
+                        title: Text(
+                            AppLocalizations.of(context)!.openAIApiKeyTitle),
+                        subtitle: Text(
+                            AppLocalizations.of(context)!.openAIApiKeyDesc),
                         enabled: useGScore,
                         onTap: () {
                           String tempkey = openAIApiKey;
@@ -90,7 +93,8 @@ class _SettingsState extends State<Settings> {
                             context: context,
                             builder: (context) {
                               return AlertDialog(
-                                title: Text("OpenAI API Key"),
+                                title: Text(AppLocalizations.of(context)!
+                                    .openAIApiKeyTitle),
                                 content: SizedBox(
                                   width: 250,
                                   height: 100,
@@ -99,8 +103,8 @@ class _SettingsState extends State<Settings> {
                                       controller: textController,
                                       obscureText: true,
                                       decoration: InputDecoration(
-                                        hintText:
-                                            "Enter Your OpenAI API Key Here",
+                                        hintText: AppLocalizations.of(context)!
+                                            .openAIApiKeyPlaceHolder,
                                       ),
                                       onChanged: (value) => tempkey = value,
                                       onSubmitted: (value) {
@@ -114,12 +118,14 @@ class _SettingsState extends State<Settings> {
                                   TextButton(
                                     onPressed: () =>
                                         Navigator.of(context).pop(openAIApiKey),
-                                    child: Text("Cancel"),
+                                    child: Text(
+                                        AppLocalizations.of(context)!.cancel),
                                   ),
                                   TextButton(
                                     onPressed: () =>
                                         Navigator.of(context).pop(tempkey),
-                                    child: Text("OK"),
+                                    child:
+                                        Text(AppLocalizations.of(context)!.ok),
                                   ),
                                 ],
                               );
@@ -134,15 +140,15 @@ class _SettingsState extends State<Settings> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
                         child: Text(
-                          "General",
+                          AppLocalizations.of(context)!.generalSection,
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.primary,
                           ),
                         ),
                       ),
                       ListTile(
-                        title: Text("About"),
-                        subtitle: Text("Show About Screen."),
+                        title: Text(AppLocalizations.of(context)!.about),
+                        subtitle: Text(AppLocalizations.of(context)!.aboutDesc),
                         onTap: () async {
                           PackageInfo packageInfo =
                               await PackageInfo.fromPlatform();
