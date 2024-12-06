@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'dart:convert';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'types/geupsickinfoclass.dart';
 
@@ -88,6 +89,8 @@ EdgeInsets getPadding(BuildContext context) {
 Future<int> getGScore(GeupsickInfo geupsick) async {
   String meal = "";
 
+  SharedPreferences pref = await SharedPreferences.getInstance();
+
   if (geupsick.mealServiceDietInfo == null) {
     return -2;
   } else {
@@ -95,8 +98,14 @@ Future<int> getGScore(GeupsickInfo geupsick) async {
         .toString()
         .replaceAll("<br/>", "\n");
 
-    OpenAI.apiKey =
-        "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";
+    if (pref.getBool("useGScore") == false ||
+        pref.getString("openAIApiKey") == "" ||
+        pref.getString("openAIApiKey") == null) {
+      return -2;
+    } else {
+      OpenAI.apiKey = pref.getString("openAIApiKey")!;
+    }
+
     OpenAI.requestsTimeOut = Duration(seconds: 15);
     final systemMessage = OpenAIChatCompletionChoiceMessageModel(
       role: OpenAIChatMessageRole.system,

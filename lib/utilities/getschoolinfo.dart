@@ -148,8 +148,9 @@ class _SchoolChangerState extends State<SchoolChanger> {
                     autocorrect: false,
                     autofocus: true,
                     decoration: InputDecoration(
-                        hintText: AppLocalizations.of(context)!
-                            .schoolSearchPlaceholder),
+                      hintText:
+                          AppLocalizations.of(context)!.schoolSearchPlaceholder,
+                    ),
                     onChanged: (value) {
                       setState(() => schoolName = value);
                     },
