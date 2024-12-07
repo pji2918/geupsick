@@ -1,7 +1,9 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -34,7 +36,7 @@ class _SettingsState extends State<Settings> {
         value.setBool("useGScore", useGScore);
         value.setString("openAIApiKey", openAIApiKey);
         if (context.mounted) {
-          Navigator.of(cxt).pop();
+          Navigator.of(cxt).maybePop();
         }
       },
     );
@@ -45,7 +47,6 @@ class _SettingsState extends State<Settings> {
     return Builder(
       builder: (context) {
         return PopScope(
-          canPop: false,
           onPopInvokedWithResult: (didPop, result) {
             if (didPop) {
               exit(context);
@@ -107,23 +108,57 @@ class _SettingsState extends State<Settings> {
                                   title: Text(AppLocalizations.of(context)!
                                       .openAIApiKeyTitle),
                                   content: SizedBox(
-                                    width: 250,
+                                    width:
+                                        MediaQuery.sizeOf(context).width * 0.75,
                                     height: 100,
-                                    child: Center(
-                                      child: TextField(
-                                        controller: textController,
-                                        obscureText: true,
-                                        decoration: InputDecoration(
-                                          hintText:
-                                              AppLocalizations.of(context)!
-                                                  .openAIApiKeyPlaceHolder,
+                                    child: Column(
+                                      children: [
+                                        Text.rich(
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                          ),
+                                          TextSpan(
+                                            text:
+                                                "To Learn How to Get OpenAI API Key, ",
+                                            children: [
+                                              TextSpan(
+                                                text: "Click Here.",
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary,
+                                                ),
+                                                recognizer:
+                                                    TapGestureRecognizer()
+                                                      ..onTap = () {
+                                                        launchUrl(
+                                                          Uri.parse(
+                                                            "https://platform.openai.com/api-keys",
+                                                          ),
+                                                        );
+                                                      },
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                        onChanged: (value) => tempkey = value,
-                                        onSubmitted: (value) {
-                                          Navigator.of(context).pop(value);
-                                        },
-                                        autocorrect: false,
-                                      ),
+                                        Center(
+                                          child: TextField(
+                                            controller: textController,
+                                            obscureText: true,
+                                            decoration: InputDecoration(
+                                              hintText:
+                                                  AppLocalizations.of(context)!
+                                                      .openAIApiKeyPlaceHolder,
+                                            ),
+                                            onChanged: (value) =>
+                                                tempkey = value,
+                                            onSubmitted: (value) {
+                                              Navigator.of(context).pop(value);
+                                            },
+                                            autocorrect: false,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                   actions: [
