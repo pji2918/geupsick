@@ -44,24 +44,25 @@ class _SettingsState extends State<Settings> {
   Widget build(BuildContext context) {
     return Builder(
       builder: (context) {
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(AppLocalizations.of(context)!.settings),
-            leading: IconButton(
-              onPressed: () {
-                exit(context);
-              },
-              icon: Icon(Icons.arrow_back),
-              tooltip: AppLocalizations.of(context)!.goBack,
+        return PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (didPop, result) {
+            if (didPop) {
+              exit(context);
+            }
+          },
+          child: Scaffold(
+            appBar: AppBar(
+              title: Text(AppLocalizations.of(context)!.settings),
+              leading: IconButton(
+                onPressed: () {
+                  exit(context);
+                },
+                icon: Icon(Icons.arrow_back),
+                tooltip: AppLocalizations.of(context)!.goBack,
+              ),
             ),
-          ),
-          body: PopScope(
-            onPopInvokedWithResult: (isPop, result) {
-              if (isPop) {
-                exit(context);
-              }
-            },
-            child: SafeArea(
+            body: SafeArea(
               top: false,
               child: Flex(
                 direction: Axis.vertical,
