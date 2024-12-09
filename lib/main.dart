@@ -234,6 +234,7 @@ class _MainAppState extends State<MainApp> {
                                     label: Text(
                                       AppLocalizations.of(context)!.breakfast,
                                     ),
+                                    disabled: schoolCode.isEmpty,
                                   ),
                                   NavigationRailDestination(
                                     icon: Icon(Icons.lunch_dining_outlined),
@@ -241,6 +242,7 @@ class _MainAppState extends State<MainApp> {
                                     label: Text(
                                       AppLocalizations.of(context)!.lunch,
                                     ),
+                                    disabled: schoolCode.isEmpty,
                                   ),
                                   NavigationRailDestination(
                                     icon: Icon(Icons.dinner_dining_outlined),
@@ -248,6 +250,7 @@ class _MainAppState extends State<MainApp> {
                                     label: Text(
                                       AppLocalizations.of(context)!.dinner,
                                     ),
+                                    disabled: schoolCode.isEmpty,
                                   ),
                                 ],
                                 selectedIndex: idx,
@@ -266,6 +269,7 @@ class _MainAppState extends State<MainApp> {
                                 child: Column(
                                   children: [
                                     ListTile(
+                                      enabled: schoolCode.isNotEmpty,
                                       leading: Icon(Icons.breakfast_dining),
                                       title: Text(
                                         AppLocalizations.of(context)!.breakfast,
@@ -278,6 +282,7 @@ class _MainAppState extends State<MainApp> {
                                       },
                                     ),
                                     ListTile(
+                                      enabled: schoolCode.isNotEmpty,
                                       leading: Icon(Icons.lunch_dining),
                                       title: Text(
                                         AppLocalizations.of(context)!.lunch,
@@ -290,6 +295,7 @@ class _MainAppState extends State<MainApp> {
                                       },
                                     ),
                                     ListTile(
+                                      enabled: schoolCode.isNotEmpty,
                                       leading: Icon(Icons.dinner_dining),
                                       title: Text(
                                         AppLocalizations.of(context)!.dinner,
@@ -324,16 +330,19 @@ class _MainAppState extends State<MainApp> {
                             selectedIndex: idx,
                             destinations: [
                               NavigationDestination(
+                                enabled: schoolCode.isNotEmpty,
                                 icon: Icon(Icons.breakfast_dining_outlined),
                                 selectedIcon: Icon(Icons.breakfast_dining),
                                 label: AppLocalizations.of(context)!.breakfast,
                               ),
                               NavigationDestination(
+                                enabled: schoolCode.isNotEmpty,
                                 icon: Icon(Icons.lunch_dining_outlined),
                                 selectedIcon: Icon(Icons.lunch_dining),
                                 label: AppLocalizations.of(context)!.lunch,
                               ),
                               NavigationDestination(
+                                enabled: schoolCode.isNotEmpty,
                                 icon: Icon(Icons.dinner_dining_outlined),
                                 selectedIcon: Icon(Icons.dinner_dining),
                                 label: AppLocalizations.of(context)!.dinner,
@@ -381,7 +390,7 @@ class _MainAppState extends State<MainApp> {
   }
 
   Widget mainForm(BuildContext context) {
-    if (schoolCode == "" || schoolCode.isEmpty) {
+    if (schoolCode.isEmpty) {
       return Padding(
         padding: getPadding(context),
         child: Column(
