@@ -392,23 +392,26 @@ class _MainAppState extends State<MainApp> {
           future: getMeal(date, schoolCode, ministryCode, idx),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Card.filled(
-                    color: Theme.of(context).colorScheme.secondaryContainer,
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSecondaryContainer,
+              return Padding(
+                padding: getPadding(context),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Card.filled(
+                      color: Theme.of(context).colorScheme.secondaryContainer,
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSecondaryContainer,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               );
             } else if (snapshot.hasError || snapshot.data == null) {
               return Column(
