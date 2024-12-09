@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:geupsick/settings.dart';
@@ -14,6 +15,14 @@ import 'utilities/getschoolinfo.dart';
 
 void main() {
   runApp(MainApp());
+}
+
+class AppScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+      };
 }
 
 class MainApp extends StatefulWidget {
@@ -83,6 +92,7 @@ class _MainAppState extends State<MainApp> {
         }
 
         return MaterialApp(
+          scrollBehavior: AppScrollBehavior(),
           localizationsDelegates: [
             AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
@@ -360,164 +370,200 @@ class _MainAppState extends State<MainApp> {
     );
   }
 
+  PageController pageController = PageController(
+    initialPage: 999,
+    keepPage: false,
+  );
+
   Widget mainForm() {
-    return FutureBuilder(
-      future: getMeal(date, schoolCode, ministryCode, idx),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: CircularProgressIndicator(
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-          );
-        } else if (snapshot.hasError || snapshot.data == null) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.wifi_off,
-                size: 50,
-              ),
-              Text(
-                AppLocalizations.of(context)!.errorMessage,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          );
-        } else {
-          geupsick = snapshot.data!;
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
-                padding: getPadding(context),
-                child: Card.filled(
-                  color: Theme.of(context).colorScheme.secondaryContainer,
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: printMeal(
-                      geupsick,
-                      date,
-                      schoolCode,
-                      ministryCode,
-                      idx,
-                      context,
+    return PageView.builder(
+      controller: pageController,
+      onPageChanged: (value) {
+        setState(() {
+          if (value > pageController.page!) {
+            date = date.add(Duration(days: 1));
+          } else {
+            date = date.add(Duration(days: -1));
+          }
+        });
+      },
+      itemBuilder: (context, index) {
+        return FutureBuilder(
+          future: getMeal(date, schoolCode, ministryCode, idx),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Card.filled(
+                    color: Theme.of(context).colorScheme.secondaryContainer,
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSecondaryContainer,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-              FutureBuilder(
-                future: getGScore(geupsick),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Padding(
-                      padding: getPadding(context),
-                      child: SizedBox(
-                        child: Card.filled(
-                          color:
-                              Theme.of(context).colorScheme.secondaryContainer,
-                          child: Padding(
-                            padding: EdgeInsets.all(20),
-                            child: Center(
-                              child: CircularProgressIndicator(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onSecondaryContainer,
-                              ),
-                            ),
-                          ),
+                ],
+              );
+            } else if (snapshot.hasError || snapshot.data == null) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.wifi_off,
+                    size: 50,
+                  ),
+                  Text(
+                    AppLocalizations.of(context)!.errorMessage,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              );
+            } else {
+              geupsick = snapshot.data!;
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Padding(
+                    padding: getPadding(context),
+                    child: Card.filled(
+                      color: Theme.of(context).colorScheme.secondaryContainer,
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: printMeal(
+                          geupsick,
+                          date,
+                          schoolCode,
+                          ministryCode,
+                          idx,
+                          context,
                         ),
                       ),
-                    );
-                  } else if (snapshot.data == -2) {
-                    return SizedBox.shrink();
-                  } else if (snapshot.hasError || snapshot.data == -1) {
-                    return Padding(
-                      padding: getPadding(context),
-                      child: SizedBox(
-                        child: Card.filled(
-                          color:
-                              Theme.of(context).colorScheme.secondaryContainer,
-                          child: Padding(
-                            padding: const EdgeInsets.all(20),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.warning,
-                                  size: 50,
-                                ),
-                                Text(
-                                  AppLocalizations.of(context)!
-                                      .errorMessage_GScore,
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  } else {
-                    gScore = snapshot.data!;
-                    return Padding(
-                      padding: getPadding(context),
-                      child: SizedBox(
-                        child: Card.filled(
-                          color:
-                              Theme.of(context).colorScheme.secondaryContainer,
-                          child: Padding(
-                            padding: EdgeInsets.all(20),
-                            child: Column(
-                              children: [
-                                Text(
-                                  "G-Score:",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  FutureBuilder(
+                    future: getGScore(geupsick),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Padding(
+                          padding: getPadding(context),
+                          child: SizedBox(
+                            child: Card.filled(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .secondaryContainer,
+                              child: Padding(
+                                padding: EdgeInsets.all(20),
+                                child: Center(
+                                  child: CircularProgressIndicator(
                                     color: Theme.of(context)
                                         .colorScheme
                                         .onSecondaryContainer,
                                   ),
                                 ),
-                                Card.filled(
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 8,
-                                    ),
-                                    child: Text(
-                                      gScore.toString(),
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSecondary,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                    );
-                  }
-                },
-              ),
-            ],
-          );
-        }
+                        );
+                      } else if (snapshot.data == -2) {
+                        return SizedBox.shrink();
+                      } else if (snapshot.hasError || snapshot.data == -1) {
+                        return Padding(
+                          padding: getPadding(context),
+                          child: SizedBox(
+                            child: Card.filled(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .secondaryContainer,
+                              child: Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.warning,
+                                      size: 50,
+                                    ),
+                                    Text(
+                                      AppLocalizations.of(context)!
+                                          .errorMessage_GScore,
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      } else {
+                        gScore = snapshot.data!;
+                        return Padding(
+                          padding: getPadding(context),
+                          child: SizedBox(
+                            child: Card.filled(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .secondaryContainer,
+                              child: Padding(
+                                padding: EdgeInsets.all(20),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      "G-Score:",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSecondaryContainer,
+                                      ),
+                                    ),
+                                    Card.filled(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                        ),
+                                        child: Text(
+                                          gScore.toString(),
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSecondary,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ],
+              );
+            }
+          },
+        );
       },
     );
   }
