@@ -8,7 +8,7 @@
 PRODUCT_NAME = geupsick
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.geupsick
+PRODUCT_BUNDLE_IDENTIFIER = com.pji2918.geupsick
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2024 com.example. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2024 pji2918. All rights reserved.

@@ -2,10 +2,14 @@
     "@@locale": "ko",
     "menu": "메뉴",
     "@menu": {},
-    "getOpenAIApiKey": "OpenAI API 키를 얻으려면, ",
+    "getOpenAIApiKey": "OpenAI API 키를 얻으려면 ",
     "@getOpenAIApiKey": {},
     "clickHere": "여기를 누르세요.",
     "@clickHere": {},
+    "schoolNotSelectedTitle": "학교가 선택되지 않았습니다",
+    "@schoolNotSelectedTitle": {},
+    "schoolNotSelectedDesc": "학교를 선택하여 시작하세요.",
+    "@schoolNotSelectedDesc": {},
     "ok": "확인",
     "@ok": {
         "description": "OK."
