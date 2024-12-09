@@ -118,11 +118,13 @@ class _SettingsState extends State<Settings> {
                                             fontSize: 12,
                                           ),
                                           TextSpan(
-                                            text:
-                                                "To Learn How to Get OpenAI API Key, ",
+                                            text: AppLocalizations.of(context)!
+                                                .getOpenAIApiKey,
                                             children: [
                                               TextSpan(
-                                                text: "Click Here.",
+                                                text: AppLocalizations.of(
+                                                        context)!
+                                                    .clickHere,
                                                 style: TextStyle(
                                                   color: Theme.of(context)
                                                       .colorScheme
