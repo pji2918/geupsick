@@ -1,5 +1,11 @@
 {
     "@@locale": "ko",
+    "menu": "메뉴",
+    "@menu": {},
+    "getOpenAIApiKey": "OpenAI API 키를 얻으려면, ",
+    "@getOpenAIApiKey": {},
+    "clickHere": "여기를 누르세요.",
+    "@clickHere": {},
     "ok": "확인",
     "@ok": {
         "description": "OK."

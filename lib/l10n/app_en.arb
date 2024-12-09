@@ -44,5 +44,8 @@
     "openAIApiKeyDesc": "Enter Your OpenAI API Key Here.",
     "openAIApiKeyPlaceHolder": "Enter Your OpenAI API Key Here",
     "useGScore": "Use G-Score",
-    "useGScoreDesc": "Whether Use G-Score(Meal Rating System)."
+    "useGScoreDesc": "Whether Use G-Score(Meal Rating System).",
+    "getOpenAIApiKey": "To Get OpenAI API Key, ",
+    "clickHere": "Click Here.",
+    "menu": "Menu"
 }

@@ -220,6 +220,7 @@ class _MainAppState extends State<MainApp> {
                                 }
                               },
                               icon: const Icon(Icons.more_vert),
+                              tooltip: AppLocalizations.of(context)!.menu,
                             );
                           },
                         );
