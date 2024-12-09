@@ -16,7 +16,7 @@ dependencies {
 }
 
 android {
-    namespace = "com.example.geupsick"
+    namespace = "com.pji2918.geupsick"
     compileSdk = 35
     ndkVersion = "28.0.12433566"
 

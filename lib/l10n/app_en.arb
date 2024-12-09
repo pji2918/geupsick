@@ -47,5 +47,7 @@
     "useGScoreDesc": "Whether Use G-Score(Meal Rating System).",
     "getOpenAIApiKey": "To Get OpenAI API Key, ",
     "clickHere": "Click Here.",
-    "menu": "Menu"
+    "menu": "Menu",
+    "schoolNotSelectedTitle": "SCHOOL NOT SELECTED",
+    "schoolNotSelectedDesc": "School is not selected.\nSelect School to Get Started."
 }
