@@ -208,10 +208,21 @@ class _SettingsState extends State<Settings> {
                                 applicationName: packageInfo.appName,
                                 applicationVersion: packageInfo.version,
                                 applicationLegalese: "by pji2918",
-                                applicationIcon: Image.asset(
-                                  "assets/icon/icon.webp",
+                                applicationIcon: SizedBox(
                                   width: 100,
                                   height: 100,
+                                  child: Center(
+                                    child: Text(
+                                      "급",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 48,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurface,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               );
                             }
