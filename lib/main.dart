@@ -158,6 +158,7 @@ class _MainAppState extends State<MainApp> {
                               },
                             ),
                             MenuItemButton(
+                              onPressed: () => selectSchool(context),
                               child: SizedBox(
                                 width: 125,
                                 child: Wrap(
@@ -171,30 +172,6 @@ class _MainAppState extends State<MainApp> {
                                     )
                                   ],
                                 ),
-                              ),
-                              onPressed: () => showDialog(
-                                context: context,
-                                builder: (BuildContext context) =>
-                                    Dialog.fullscreen(
-                                  child: SchoolChanger(
-                                    schoolCode: schoolCode,
-                                    ministryCode: ministryCode,
-                                  ),
-                                ),
-                                useRootNavigator: false,
-                              ).then(
-                                (value) {
-                                  if (value != null && schoolCode != value[0]) {
-                                    setState(
-                                      () {
-                                        schoolCode = value[0];
-                                        ministryCode = value[1];
-                                        saveAppData();
-                                      },
-                                    );
-                                    idx = 0;
-                                  }
-                                },
                               ),
                             ),
                             MenuItemButton(
@@ -329,11 +306,11 @@ class _MainAppState extends State<MainApp> {
                           Flexible(
                             flex: 7,
                             fit: FlexFit.tight,
-                            child: mainForm(),
+                            child: mainForm(context),
                           ),
                         ],
                       )
-                    : mainForm(),
+                    : mainForm(context),
                 bottomNavigationBar:
                     !isMediumScreen(context) && !isLargeScreen(context)
                         ? NavigationBar(
@@ -375,7 +352,76 @@ class _MainAppState extends State<MainApp> {
     keepPage: false,
   );
 
-  Widget mainForm() {
+  void selectSchool(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => Dialog.fullscreen(
+        child: SchoolChanger(
+          schoolCode: schoolCode,
+          ministryCode: ministryCode,
+        ),
+      ),
+      useRootNavigator: false,
+    ).then(
+      (value) {
+        if (value != null && schoolCode != value[0]) {
+          setState(
+            () {
+              schoolCode = value[0];
+              ministryCode = value[1];
+              saveAppData();
+            },
+          );
+          idx = 0;
+        }
+      },
+    );
+  }
+
+  Widget mainForm(BuildContext context) {
+    if (schoolCode == "" || schoolCode.isEmpty) {
+      return Padding(
+        padding: getPadding(context),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Card.filled(
+              color: Theme.of(context).colorScheme.secondaryContainer,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    Text(
+                      AppLocalizations.of(context)!.schoolNotSelectedTitle,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(
+                      height: 25,
+                    ),
+                    Text(
+                      AppLocalizations.of(context)!.schoolNotSelectedDesc,
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    FilledButton(
+                      onPressed: () => selectSchool(context),
+                      child: Text(AppLocalizations.of(context)!.schoolSelect),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
     return PageView.builder(
       controller: pageController,
       onPageChanged: (value) {
