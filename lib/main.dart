@@ -169,7 +169,7 @@ class _MainAppState extends State<MainApp> {
                                     Text(
                                       AppLocalizations.of(context)!
                                           .schoolSelect,
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),
@@ -182,7 +182,9 @@ class _MainAppState extends State<MainApp> {
                                   spacing: 5,
                                   children: [
                                     Icon(Icons.settings),
-                                    Text(AppLocalizations.of(context)!.settings)
+                                    Text(
+                                      AppLocalizations.of(context)!.settings,
+                                    ),
                                   ],
                                 ),
                               ),
