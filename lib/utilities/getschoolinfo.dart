@@ -130,7 +130,6 @@ class _SchoolChangerState extends State<SchoolChanger> {
                   child: DropdownMenu<String>(
                     menuHeight:
                         300, // caused by https://github.com/flutter/flutter/issues/123395. will removed when it resolved.
-                    expandedInsets: EdgeInsets.zero,
                     dropdownMenuEntries: ministryList,
                     requestFocusOnTap: false,
                     label: Text(
