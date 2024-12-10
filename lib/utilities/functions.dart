@@ -44,6 +44,7 @@ Widget printMeal(GeupsickInfo geupsick, DateTime date, String schoolCode,
     col.children.add(
       Text(
         AppLocalizations.of(context)!.foodNotAvailable,
+        textAlign: TextAlign.center,
         style: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,
@@ -62,6 +63,7 @@ Widget printMeal(GeupsickInfo geupsick, DateTime date, String schoolCode,
       col.children.add(
         Text(
           meal[i],
+          textAlign: TextAlign.center,
           style: TextStyle(
             color: Theme.of(context).colorScheme.onSecondaryContainer,
           ),

@@ -121,7 +121,7 @@ class _MainAppState extends State<MainApp> {
               return Scaffold(
                 appBar: AppBar(
                   title: Text(
-                    DateFormat.MMMd(
+                    DateFormat.MMMEd(
                       Localizations.localeOf(context).languageCode,
                     ).format(date),
                   ),
@@ -360,7 +360,6 @@ class _MainAppState extends State<MainApp> {
 
   PageController pageController = PageController(
     initialPage: 999,
-    keepPage: false,
   );
 
   void selectSchool(BuildContext context) {

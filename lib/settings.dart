@@ -30,13 +30,13 @@ class _SettingsState extends State<Settings> {
     );
   }
 
-  void exit(BuildContext cxt) {
+  void exit(BuildContext context) {
     SharedPreferences.getInstance().then(
       (value) {
         value.setBool("useGScore", useGScore);
         value.setString("openAIApiKey", openAIApiKey);
         if (context.mounted) {
-          Navigator.of(cxt).maybePop();
+          Navigator.of(context).maybePop();
         }
       },
     );
