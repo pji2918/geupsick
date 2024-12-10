@@ -60,15 +60,15 @@ class _MainAppState extends State<MainApp> {
   }
 
   void saveAppData() async {
-    final prefs = await SharedPreferences.getInstance();
+    SharedPreferencesAsync prefs = SharedPreferencesAsync();
     await prefs.setString("schoolCode", schoolCode);
     await prefs.setString("ministryCode", ministryCode);
   }
 
   void loadAppData() async {
-    final prefs = await SharedPreferences.getInstance();
-    schoolCode = prefs.getString("schoolCode") ?? "";
-    ministryCode = prefs.getString("ministryCode") ?? "";
+    SharedPreferencesAsync prefs = SharedPreferencesAsync();
+    schoolCode = await prefs.getString("schoolCode") ?? "";
+    ministryCode = await prefs.getString("ministryCode") ?? "";
   }
 
   @override

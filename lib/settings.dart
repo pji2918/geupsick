@@ -16,30 +16,26 @@ class _SettingsState extends State<Settings> {
   bool useGScore = false;
   String openAIApiKey = "";
 
+  void loadData() async {
+    SharedPreferencesAsync prefs = SharedPreferencesAsync();
+    useGScore = await prefs.getBool("useGScore") ?? false;
+    openAIApiKey = await prefs.getString("openAIApiKey") ?? "";
+  }
+
   @override
   void initState() {
     super.initState();
-
-    SharedPreferences.getInstance().then(
-      (value) {
-        setState(() {
-          useGScore = value.getBool("useGScore") ?? false;
-          openAIApiKey = value.getString("openAIApiKey") ?? "";
-        });
-      },
-    );
+    loadData();
   }
 
-  void exit(BuildContext context) {
-    SharedPreferences.getInstance().then(
-      (value) {
-        value.setBool("useGScore", useGScore);
-        value.setString("openAIApiKey", openAIApiKey);
-        if (context.mounted) {
-          Navigator.of(context).maybePop();
-        }
-      },
-    );
+  void exit(BuildContext context) async {
+    SharedPreferencesAsync prefs = SharedPreferencesAsync();
+
+    await prefs.setBool("useGScore", useGScore);
+    await prefs.setString("openAIApiKey", openAIApiKey);
+    if (context.mounted) {
+      Navigator.of(context).maybePop();
+    }
   }
 
   @override
