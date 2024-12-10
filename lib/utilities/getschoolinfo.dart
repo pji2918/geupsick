@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -41,13 +40,9 @@ class _SchoolChangerState extends State<SchoolChanger> {
       return Center(child: Text(AppLocalizations.of(context)!.noSearchResults));
     } else {
       return SizedBox(
-        height: min(
-          schoolData.schoolInfo![1].row!.length * 75.0,
-          mounted ? MediaQuery.of(context).size.height * 0.6 : 100,
-        ),
+        // height: mounted ? MediaQuery.sizeOf(context).height * 0.6 : 100,
         child: Card.outlined(
           child: ListView.builder(
-            shrinkWrap: true,
             itemCount: schoolData.schoolInfo![1].row!.length,
             itemBuilder: (context, index) {
               return ListTile(
@@ -116,6 +111,7 @@ class _SchoolChangerState extends State<SchoolChanger> {
           value: "T10", label: AppLocalizations.of(context)!.ministry_Jeju),
     ];
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.schoolChanger),
         scrolledUnderElevation: 0,
@@ -123,17 +119,18 @@ class _SchoolChangerState extends State<SchoolChanger> {
       ),
       body: Builder(
         builder: (context) {
-          return SafeArea(
-            left: false,
-            right: false,
-            top: false,
-            bottom: true,
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  DropdownMenu<String>(
+          return Padding(
+            padding: const EdgeInsets.all(20),
+            child: Flex(
+              direction: Axis.vertical,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Flexible(
+                  flex: 4,
+                  child: DropdownMenu<String>(
+                    menuHeight:
+                        300, // caused by https://github.com/flutter/flutter/issues/123395. will remove when it resolved.
+                    expandedInsets: EdgeInsets.zero,
                     dropdownMenuEntries: ministryList,
                     requestFocusOnTap: false,
                     label: Text(
@@ -144,7 +141,10 @@ class _SchoolChangerState extends State<SchoolChanger> {
                       setState(() => ministryCode = selected!);
                     },
                   ),
-                  TextField(
+                ),
+                Flexible(
+                  flex: 4,
+                  child: TextField(
                     autocorrect: false,
                     autofocus: true,
                     decoration: InputDecoration(
@@ -155,8 +155,13 @@ class _SchoolChangerState extends State<SchoolChanger> {
                       setState(() => schoolName = value);
                     },
                   ),
-                  SizedBox(height: 10),
-                  FutureBuilder(
+                ),
+                Spacer(
+                  flex: 1,
+                ),
+                Expanded(
+                  flex: 20,
+                  child: FutureBuilder(
                     future: fetchSchools(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
@@ -190,8 +195,8 @@ class _SchoolChangerState extends State<SchoolChanger> {
                       }
                     },
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           );
         },
