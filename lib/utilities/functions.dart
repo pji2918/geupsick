@@ -91,7 +91,7 @@ EdgeInsets getPadding(BuildContext context) {
 Future<int> getGScore(GeupsickInfo geupsick) async {
   String meal = "";
 
-  SharedPreferences pref = await SharedPreferences.getInstance();
+  SharedPreferencesAsync pref = SharedPreferencesAsync();
 
   if (geupsick.mealServiceDietInfo == null) {
     return -2;
@@ -100,12 +100,12 @@ Future<int> getGScore(GeupsickInfo geupsick) async {
         .toString()
         .replaceAll("<br/>", "\n");
 
-    if (pref.getBool("useGScore") == false ||
-        pref.getString("openAIApiKey") == "" ||
-        pref.getString("openAIApiKey") == null) {
+    if (await pref.getBool("useGScore") == false ||
+        await pref.getString("openAIApiKey") == "" ||
+        await pref.getString("openAIApiKey") == null) {
       return -2;
     } else {
-      OpenAI.apiKey = pref.getString("openAIApiKey")!;
+      OpenAI.apiKey = (await pref.getString("openAIApiKey"))!;
     }
 
     OpenAI.requestsTimeOut = Duration(seconds: 15);
