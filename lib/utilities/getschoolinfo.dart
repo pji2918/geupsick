@@ -129,7 +129,7 @@ class _SchoolChangerState extends State<SchoolChanger> {
                   flex: 4,
                   child: DropdownMenu<String>(
                     menuHeight:
-                        300, // caused by https://github.com/flutter/flutter/issues/123395. will remove when it resolved.
+                        300, // caused by https://github.com/flutter/flutter/issues/123395. will removed when it resolved.
                     expandedInsets: EdgeInsets.zero,
                     dropdownMenuEntries: ministryList,
                     requestFocusOnTap: false,
