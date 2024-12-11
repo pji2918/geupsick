@@ -39,32 +39,28 @@ class _SchoolChangerState extends State<SchoolChanger> {
     if (schoolData.schoolInfo![1].row == null && mounted) {
       return Center(child: Text(AppLocalizations.of(context)!.noSearchResults));
     } else {
-      return SizedBox(
-        // height: mounted ? MediaQuery.sizeOf(context).height * 0.6 : 100,
-        child: Card.outlined(
-          child: ListView.builder(
-            itemCount: schoolData.schoolInfo![1].row!.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(schoolData.schoolInfo![1].row![index].sCHULNM!),
-                subtitle: Text(schoolData.schoolInfo![1].row![index].oRGRDNMA!),
-                onTap: () {
-                  setState(
-                    () => schoolCode =
-                        schoolData.schoolInfo![1].row![index].sDSCHULCODE!,
-                  );
-                  // pass values to parent widget
-                  Navigator.pop(context, [schoolCode, ministryCode]);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content:
-                          Text(AppLocalizations.of(context)!.schoolChanged),
-                    ),
-                  );
-                },
-              );
-            },
-          ),
+      return Card.outlined(
+        child: ListView.builder(
+          itemCount: schoolData.schoolInfo![1].row!.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              title: Text(schoolData.schoolInfo![1].row![index].sCHULNM!),
+              subtitle: Text(schoolData.schoolInfo![1].row![index].oRGRDNMA!),
+              onTap: () {
+                setState(
+                  () => schoolCode =
+                      schoolData.schoolInfo![1].row![index].sDSCHULCODE!,
+                );
+                // pass values to parent widget
+                Navigator.pop(context, [schoolCode, ministryCode]);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(AppLocalizations.of(context)!.schoolChanged),
+                  ),
+                );
+              },
+            );
+          },
         ),
       );
     }
@@ -121,12 +117,10 @@ class _SchoolChangerState extends State<SchoolChanger> {
         builder: (context) {
           return Padding(
             padding: const EdgeInsets.all(20),
-            child: Flex(
-              direction: Axis.vertical,
-              mainAxisAlignment: MainAxisAlignment.start,
+            child: Column(
               children: [
                 Flexible(
-                  flex: 4,
+                  flex: 1,
                   child: DropdownMenu<String>(
                     menuHeight:
                         300, // caused by https://github.com/flutter/flutter/issues/123395. will be removed when it resolved.
@@ -142,9 +136,8 @@ class _SchoolChangerState extends State<SchoolChanger> {
                   ),
                 ),
                 Flexible(
-                  flex: 4,
+                  flex: 1,
                   child: TextField(
-                    autocorrect: false,
                     autofocus: true,
                     decoration: InputDecoration(
                       hintText:
@@ -159,31 +152,25 @@ class _SchoolChangerState extends State<SchoolChanger> {
                   flex: 1,
                 ),
                 Expanded(
-                  flex: 20,
+                  flex: 5,
                   child: FutureBuilder(
                     future: fetchSchools(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return SizedBox(
-                          height: 100,
-                          child: Card.outlined(
-                            child: Center(
-                              child: CircularProgressIndicator(
-                                color: Theme.of(context).colorScheme.onSurface,
-                              ),
+                        return Card.outlined(
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: Theme.of(context).colorScheme.onSurface,
                             ),
                           ),
                         );
                       } else if (snapshot.hasError) {
-                        return SizedBox(
-                          height: 100,
-                          child: Card.outlined(
-                            child: Center(
-                              child: Text(
-                                textAlign: TextAlign.center,
-                                AppLocalizations.of(context)!.searchNotAccurate,
-                                overflow: TextOverflow.fade,
-                              ),
+                        return Card.outlined(
+                          child: Center(
+                            child: Text(
+                              textAlign: TextAlign.center,
+                              AppLocalizations.of(context)!.searchNotAccurate,
+                              overflow: TextOverflow.fade,
                             ),
                           ),
                         );
