@@ -138,8 +138,9 @@ class _MainAppState extends State<MainApp> {
                                   crossAxisAlignment: WrapCrossAlignment.center,
                                   children: [
                                     Icon(Icons.calendar_month),
-                                    Text(AppLocalizations.of(context)!
-                                        .dateSelect),
+                                    Text(
+                                      AppLocalizations.of(context)!.dateSelect,
+                                    ),
                                   ],
                                 ),
                               ),
@@ -266,46 +267,52 @@ class _MainAppState extends State<MainApp> {
                               flex: 2,
                               fit: FlexFit.tight,
                               child: Drawer(
-                                child: Column(
+                                child: ListView(
                                   children: [
-                                    ListTile(
-                                      enabled: schoolCode.isNotEmpty,
-                                      leading: Icon(Icons.breakfast_dining),
-                                      title: Text(
-                                        AppLocalizations.of(context)!.breakfast,
-                                      ),
-                                      selected: idx == 0,
-                                      onTap: () {
-                                        if (idx != 0) {
-                                          setState(() => idx = 0);
-                                        }
-                                      },
-                                    ),
-                                    ListTile(
-                                      enabled: schoolCode.isNotEmpty,
-                                      leading: Icon(Icons.lunch_dining),
-                                      title: Text(
-                                        AppLocalizations.of(context)!.lunch,
-                                      ),
-                                      selected: idx == 1,
-                                      onTap: () {
-                                        if (idx != 1) {
-                                          setState(() => idx = 1);
-                                        }
-                                      },
-                                    ),
-                                    ListTile(
-                                      enabled: schoolCode.isNotEmpty,
-                                      leading: Icon(Icons.dinner_dining),
-                                      title: Text(
-                                        AppLocalizations.of(context)!.dinner,
-                                      ),
-                                      selected: idx == 2,
-                                      onTap: () {
-                                        if (idx != 2) {
-                                          setState(() => idx = 2);
-                                        }
-                                      },
+                                    Column(
+                                      children: [
+                                        ListTile(
+                                          enabled: schoolCode.isNotEmpty,
+                                          leading: Icon(Icons.breakfast_dining),
+                                          title: Text(
+                                            AppLocalizations.of(context)!
+                                                .breakfast,
+                                          ),
+                                          selected: idx == 0,
+                                          onTap: () {
+                                            if (idx != 0) {
+                                              setState(() => idx = 0);
+                                            }
+                                          },
+                                        ),
+                                        ListTile(
+                                          enabled: schoolCode.isNotEmpty,
+                                          leading: Icon(Icons.lunch_dining),
+                                          title: Text(
+                                            AppLocalizations.of(context)!.lunch,
+                                          ),
+                                          selected: idx == 1,
+                                          onTap: () {
+                                            if (idx != 1) {
+                                              setState(() => idx = 1);
+                                            }
+                                          },
+                                        ),
+                                        ListTile(
+                                          enabled: schoolCode.isNotEmpty,
+                                          leading: Icon(Icons.dinner_dining),
+                                          title: Text(
+                                            AppLocalizations.of(context)!
+                                                .dinner,
+                                          ),
+                                          selected: idx == 2,
+                                          onTap: () {
+                                            if (idx != 2) {
+                                              setState(() => idx = 2);
+                                            }
+                                          },
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
@@ -357,10 +364,6 @@ class _MainAppState extends State<MainApp> {
       },
     );
   }
-
-  PageController pageController = PageController(
-    initialPage: 999,
-  );
 
   void selectSchool(BuildContext context) {
     showDialog(
@@ -432,6 +435,10 @@ class _MainAppState extends State<MainApp> {
       );
     }
 
+    PageController pageController = PageController(
+      initialPage: 999,
+    );
+
     return PageView.builder(
       controller: pageController,
       onPageChanged: (value) {
@@ -489,134 +496,142 @@ class _MainAppState extends State<MainApp> {
               );
             } else {
               geupsick = snapshot.data!;
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+              return ListView(
                 children: [
-                  Padding(
-                    padding: getPadding(context),
-                    child: Card.filled(
-                      color: Theme.of(context).colorScheme.secondaryContainer,
-                      child: Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: printMeal(
-                          geupsick,
-                          date,
-                          schoolCode,
-                          ministryCode,
-                          idx,
-                          context,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Padding(
+                        padding: getPadding(context),
+                        child: Card.filled(
+                          color:
+                              Theme.of(context).colorScheme.secondaryContainer,
+                          child: Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: printMeal(
+                              geupsick,
+                              date,
+                              schoolCode,
+                              ministryCode,
+                              idx,
+                              context,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                  FutureBuilder(
-                    future: getGScore(geupsick),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Padding(
-                          padding: getPadding(context),
-                          child: SizedBox(
-                            child: Card.filled(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .secondaryContainer,
-                              child: Padding(
-                                padding: EdgeInsets.all(20),
-                                child: Center(
-                                  child: CircularProgressIndicator(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSecondaryContainer,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      } else if (snapshot.data == -2) {
-                        return SizedBox.shrink();
-                      } else if (snapshot.hasError || snapshot.data == -1) {
-                        return Padding(
-                          padding: getPadding(context),
-                          child: SizedBox(
-                            child: Card.filled(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .secondaryContainer,
-                              child: Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.warning,
-                                      size: 50,
-                                    ),
-                                    Text(
-                                      AppLocalizations.of(context)!
-                                          .errorMessage_GScore,
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      } else {
-                        gScore = snapshot.data!;
-                        return Padding(
-                          padding: getPadding(context),
-                          child: SizedBox(
-                            child: Card.filled(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .secondaryContainer,
-                              child: Padding(
-                                padding: EdgeInsets.all(20),
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      "G-Score:",
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
+                      FutureBuilder(
+                        future: getGScore(geupsick),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Padding(
+                              padding: getPadding(context),
+                              child: SizedBox(
+                                child: Card.filled(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .secondaryContainer,
+                                  child: Padding(
+                                    padding: EdgeInsets.all(20),
+                                    child: Center(
+                                      child: CircularProgressIndicator(
                                         color: Theme.of(context)
                                             .colorScheme
                                             .onSecondaryContainer,
                                       ),
                                     ),
-                                    Card.filled(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 8,
-                                        ),
-                                        child: Text(
-                                          gScore.toString(),
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onSecondary,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        );
-                      }
-                    },
+                            );
+                          } else if (snapshot.data == -2) {
+                            return SizedBox.shrink();
+                          } else if (snapshot.hasError || snapshot.data == -1) {
+                            return Padding(
+                              padding: getPadding(context),
+                              child: SizedBox(
+                                child: Card.filled(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .secondaryContainer,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(20),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.warning,
+                                          size: 50,
+                                        ),
+                                        Text(
+                                          AppLocalizations.of(context)!
+                                              .errorMessage_GScore,
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          } else {
+                            gScore = snapshot.data!;
+                            return Padding(
+                              padding: getPadding(context),
+                              child: SizedBox(
+                                child: Card.filled(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .secondaryContainer,
+                                  child: Padding(
+                                    padding: EdgeInsets.all(20),
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          "G-Score:",
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSecondaryContainer,
+                                          ),
+                                        ),
+                                        Card.filled(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .secondary,
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 8,
+                                            ),
+                                            child: Text(
+                                              gScore.toString(),
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onSecondary,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    ],
                   ),
                 ],
               );
