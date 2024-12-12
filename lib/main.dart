@@ -126,93 +126,87 @@ class _MainAppState extends State<MainApp> {
                     ).format(date),
                   ),
                   actions: [
-                    Builder(
-                      builder: (context) {
-                        return MenuAnchor(
-                          menuChildren: [
-                            MenuItemButton(
-                              child: SizedBox(
-                                width: 125,
-                                child: Wrap(
-                                  spacing: 5,
-                                  crossAxisAlignment: WrapCrossAlignment.center,
-                                  children: [
-                                    Icon(Icons.calendar_month),
-                                    Text(
-                                      AppLocalizations.of(context)!.dateSelect,
-                                    ),
-                                  ],
+                    MenuAnchor(
+                      menuChildren: [
+                        MenuItemButton(
+                          child: SizedBox(
+                            width: 125,
+                            child: Wrap(
+                              spacing: 5,
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              children: [
+                                Icon(Icons.calendar_month),
+                                Text(
+                                  AppLocalizations.of(context)!.dateSelect,
                                 ),
-                              ),
-                              onPressed: () async {
-                                DateTime newDate = await showDatePicker(
-                                      locale: Localizations.localeOf(context),
-                                      context: context,
-                                      initialDate: date,
-                                      firstDate: DateTime(1972, 11, 21),
-                                      lastDate: DateTime(2222, 2, 22),
-                                    ) ??
-                                    date;
-                                if (date != newDate) {
-                                  setState(() => date = newDate);
-                                }
-                              },
+                              ],
                             ),
-                            MenuItemButton(
-                              onPressed: () => selectSchool(context),
-                              child: SizedBox(
-                                width: 125,
-                                child: Wrap(
-                                  crossAxisAlignment: WrapCrossAlignment.center,
-                                  spacing: 5,
-                                  children: [
-                                    Icon(Icons.school),
-                                    Text(
-                                      AppLocalizations.of(context)!
-                                          .schoolSelect,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            MenuItemButton(
-                              child: SizedBox(
-                                width: 125,
-                                child: Wrap(
-                                  crossAxisAlignment: WrapCrossAlignment.center,
-                                  spacing: 5,
-                                  children: [
-                                    Icon(Icons.settings),
-                                    Text(
-                                      AppLocalizations.of(context)!.settings,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => Settings(),
-                                  ),
-                                ).then((value) => setState(() {}));
-                              },
-                            ),
-                          ],
-                          builder:
-                              (_, MenuController controller, Widget? child) {
-                            return IconButton(
-                              onPressed: () {
-                                if (controller.isOpen) {
-                                  controller.close();
-                                } else {
-                                  controller.open();
-                                }
-                              },
-                              icon: const Icon(Icons.more_vert),
-                              tooltip: AppLocalizations.of(context)!.menu,
-                            );
+                          ),
+                          onPressed: () async {
+                            DateTime newDate = await showDatePicker(
+                                  locale: Localizations.localeOf(context),
+                                  context: context,
+                                  initialDate: date,
+                                  firstDate: DateTime(1972, 11, 21),
+                                  lastDate: DateTime(2222, 2, 22),
+                                ) ??
+                                date;
+                            if (date != newDate) {
+                              setState(() => date = newDate);
+                            }
                           },
+                        ),
+                        MenuItemButton(
+                          onPressed: () => selectSchool(context),
+                          child: SizedBox(
+                            width: 125,
+                            child: Wrap(
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              spacing: 5,
+                              children: [
+                                Icon(Icons.school),
+                                Text(
+                                  AppLocalizations.of(context)!.schoolSelect,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        MenuItemButton(
+                          child: SizedBox(
+                            width: 125,
+                            child: Wrap(
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              spacing: 5,
+                              children: [
+                                Icon(Icons.settings),
+                                Text(
+                                  AppLocalizations.of(context)!.settings,
+                                ),
+                              ],
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Settings(),
+                              ),
+                            ).then((value) => setState(() {}));
+                          },
+                        ),
+                      ],
+                      builder: (_, controller, child) {
+                        return IconButton(
+                          onPressed: () {
+                            if (controller.isOpen) {
+                              controller.close();
+                            } else {
+                              controller.open();
+                            }
+                          },
+                          icon: const Icon(Icons.more_vert),
+                          tooltip: AppLocalizations.of(context)!.menu,
                         );
                       },
                     ),
@@ -334,8 +328,6 @@ class _MainAppState extends State<MainApp> {
                                 setState(() => idx = index);
                               }
                             },
-                            backgroundColor:
-                                Theme.of(context).colorScheme.surfaceContainer,
                             selectedIndex: idx,
                             destinations: [
                               NavigationDestination(
