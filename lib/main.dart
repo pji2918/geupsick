@@ -435,7 +435,7 @@ class _MainAppState extends State<MainApp> {
       );
     }
 
-    PageController pageController = PageController(
+    final PageController pageController = PageController(
       initialPage: 999,
     );
 
