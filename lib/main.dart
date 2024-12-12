@@ -334,6 +334,8 @@ class _MainAppState extends State<MainApp> {
                                 setState(() => idx = index);
                               }
                             },
+                            backgroundColor:
+                                Theme.of(context).colorScheme.surfaceContainer,
                             selectedIndex: idx,
                             destinations: [
                               NavigationDestination(
