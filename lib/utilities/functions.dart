@@ -14,11 +14,13 @@ Future<GeupsickInfo?> getMeal(
   final List<ConnectivityResult> connectivityResult =
       await Connectivity().checkConnectivity();
 
+  final String key = "ec86c034134b4479bcbdf413fa3f2288";
+
   if (connectivityResult.contains(ConnectivityResult.none)) {
     return null;
   } else {
     var url = Uri.parse(
-        "https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=ec86c034134b4479bcbdf413fa3f2288&Type=json&ATPT_OFCDC_SC_CODE=$ministryCode&SD_SCHUL_CODE=$schoolCode&MLSV_YMD=${DateFormat('yyyyMMdd').format(date)}&MMEAL_SC_CODE=${idx + 1}");
+        "https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=$key&Type=json&ATPT_OFCDC_SC_CODE=$ministryCode&SD_SCHUL_CODE=$schoolCode&MLSV_YMD=${DateFormat('yyyyMMdd').format(date)}&MMEAL_SC_CODE=${idx + 1}");
     var response = await http.get(url);
     return GeupsickInfo.fromJson(jsonDecode(response.body));
   }
