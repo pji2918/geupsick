@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:geupsick/l10n/app_localizations.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -78,20 +78,22 @@ class _SettingsState extends State<Settings> {
                         ),
                         SwitchListTile(
                           title: Text(AppLocalizations.of(context)!.useGScore),
-                          subtitle:
-                              Text(AppLocalizations.of(context)!.useGScoreDesc),
-                          value: useGScore,
-                          onChanged: (value) => setState(
-                            () {
-                              useGScore = value;
-                            },
+                          subtitle: Text(
+                            AppLocalizations.of(context)!.useGScoreDesc,
                           ),
+                          value: useGScore,
+                          onChanged:
+                              (value) => setState(() {
+                                useGScore = value;
+                              }),
                         ),
                         ListTile(
                           title: Text(
-                              AppLocalizations.of(context)!.openAIApiKeyTitle),
+                            AppLocalizations.of(context)!.openAIApiKeyTitle,
+                          ),
                           subtitle: Text(
-                              AppLocalizations.of(context)!.openAIApiKeyDesc),
+                            AppLocalizations.of(context)!.openAIApiKeyDesc,
+                          ),
                           enabled: useGScore,
                           onTap: () {
                             String tempkey = openAIApiKey;
@@ -101,8 +103,11 @@ class _SettingsState extends State<Settings> {
                               context: context,
                               builder: (context) {
                                 return AlertDialog(
-                                  title: Text(AppLocalizations.of(context)!
-                                      .openAIApiKeyTitle),
+                                  title: Text(
+                                    AppLocalizations.of(
+                                      context,
+                                    )!.openAIApiKeyTitle,
+                                  ),
                                   content: SizedBox(
                                     width:
                                         MediaQuery.sizeOf(context).width * 0.75,
@@ -110,21 +115,23 @@ class _SettingsState extends State<Settings> {
                                     child: Column(
                                       children: [
                                         Text.rich(
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                          ),
+                                          style: TextStyle(fontSize: 12),
                                           TextSpan(
-                                            text: AppLocalizations.of(context)!
-                                                .getOpenAIApiKey,
+                                            text:
+                                                AppLocalizations.of(
+                                                  context,
+                                                )!.getOpenAIApiKey,
                                             children: [
                                               TextSpan(
-                                                text: AppLocalizations.of(
-                                                        context)!
-                                                    .clickHere,
+                                                text:
+                                                    AppLocalizations.of(
+                                                      context,
+                                                    )!.clickHere,
                                                 style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .primary,
+                                                  color:
+                                                      Theme.of(
+                                                        context,
+                                                      ).colorScheme.primary,
                                                 ),
                                                 recognizer:
                                                     TapGestureRecognizer()
@@ -145,11 +152,12 @@ class _SettingsState extends State<Settings> {
                                             obscureText: true,
                                             decoration: InputDecoration(
                                               hintText:
-                                                  AppLocalizations.of(context)!
-                                                      .openAIApiKeyPlaceHolder,
+                                                  AppLocalizations.of(
+                                                    context,
+                                                  )!.openAIApiKeyPlaceHolder,
                                             ),
-                                            onChanged: (value) =>
-                                                tempkey = value,
+                                            onChanged:
+                                                (value) => tempkey = value,
                                             onSubmitted: (value) {
                                               Navigator.of(context).pop(value);
                                             },
@@ -161,25 +169,29 @@ class _SettingsState extends State<Settings> {
                                   ),
                                   actions: [
                                     TextButton(
-                                      onPressed: () => Navigator.of(context)
-                                          .pop(openAIApiKey),
+                                      onPressed:
+                                          () => Navigator.of(
+                                            context,
+                                          ).pop(openAIApiKey),
                                       child: Text(
-                                          AppLocalizations.of(context)!.cancel),
+                                        AppLocalizations.of(context)!.cancel,
+                                      ),
                                     ),
                                     TextButton(
-                                      onPressed: () =>
-                                          Navigator.of(context).pop(tempkey),
+                                      onPressed:
+                                          () => Navigator.of(
+                                            context,
+                                          ).pop(tempkey),
                                       child: Text(
-                                          AppLocalizations.of(context)!.ok),
+                                        AppLocalizations.of(context)!.ok,
+                                      ),
                                     ),
                                   ],
                                 );
                               },
-                            ).then(
-                              (value) {
-                                openAIApiKey = value;
-                              },
-                            );
+                            ).then((value) {
+                              openAIApiKey = value;
+                            });
                           },
                         ),
                         Padding(
@@ -193,8 +205,9 @@ class _SettingsState extends State<Settings> {
                         ),
                         ListTile(
                           title: Text(AppLocalizations.of(context)!.about),
-                          subtitle:
-                              Text(AppLocalizations.of(context)!.aboutDesc),
+                          subtitle: Text(
+                            AppLocalizations.of(context)!.aboutDesc,
+                          ),
                           onTap: () async {
                             PackageInfo packageInfo =
                                 await PackageInfo.fromPlatform();
@@ -213,9 +226,10 @@ class _SettingsState extends State<Settings> {
                                       style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         fontSize: 48,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSurface,
+                                        color:
+                                            Theme.of(
+                                              context,
+                                            ).colorScheme.onSurface,
                                       ),
                                     ),
                                   ),
