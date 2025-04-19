@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:geupsick/l10n/app_localizations.dart';
 
 import 'types/schoolinfoclass.dart';
 
@@ -33,8 +33,11 @@ class _SchoolChangerState extends State<SchoolChanger> {
   }
 
   Future<Widget> fetchSchools() async {
-    var response = await http.get(Uri.parse(
-        "https://open.neis.go.kr/hub/schoolInfo?KEY=$apiKey&Type=json&ATPT_OFCDC_SC_CODE=$ministryCode&SCHUL_NM=$schoolName"));
+    var response = await http.get(
+      Uri.parse(
+        "https://open.neis.go.kr/hub/schoolInfo?KEY=$apiKey&Type=json&ATPT_OFCDC_SC_CODE=$ministryCode&SCHUL_NM=$schoolName",
+      ),
+    );
     SchoolData schoolData = SchoolData.fromJson(jsonDecode(response.body));
     if (schoolData.schoolInfo![1].row == null && mounted) {
       return Center(child: Text(AppLocalizations.of(context)!.noSearchResults));
@@ -48,8 +51,9 @@ class _SchoolChangerState extends State<SchoolChanger> {
               subtitle: Text(schoolData.schoolInfo![1].row![index].oRGRDNMA!),
               onTap: () {
                 setState(
-                  () => schoolCode =
-                      schoolData.schoolInfo![1].row![index].sDSCHULCODE!,
+                  () =>
+                      schoolCode =
+                          schoolData.schoolInfo![1].row![index].sDSCHULCODE!,
                 );
                 // pass values to parent widget
                 Navigator.pop(context, [schoolCode, ministryCode]);
@@ -70,41 +74,73 @@ class _SchoolChangerState extends State<SchoolChanger> {
   Widget build(BuildContext context) {
     ministryList = [
       DropdownMenuEntry(
-          value: "B10", label: AppLocalizations.of(context)!.ministry_Seoul),
+        value: "B10",
+        label: AppLocalizations.of(context)!.ministry_Seoul,
+      ),
       DropdownMenuEntry(
-          value: "C10", label: AppLocalizations.of(context)!.ministry_Busan),
+        value: "C10",
+        label: AppLocalizations.of(context)!.ministry_Busan,
+      ),
       DropdownMenuEntry(
-          value: "D10", label: AppLocalizations.of(context)!.ministry_Daegu),
+        value: "D10",
+        label: AppLocalizations.of(context)!.ministry_Daegu,
+      ),
       DropdownMenuEntry(
-          value: "E10", label: AppLocalizations.of(context)!.ministry_Incheon),
+        value: "E10",
+        label: AppLocalizations.of(context)!.ministry_Incheon,
+      ),
       DropdownMenuEntry(
-          value: "F10", label: AppLocalizations.of(context)!.ministry_Gwangju),
+        value: "F10",
+        label: AppLocalizations.of(context)!.ministry_Gwangju,
+      ),
       DropdownMenuEntry(
-          value: "G10", label: AppLocalizations.of(context)!.ministry_Daejeon),
+        value: "G10",
+        label: AppLocalizations.of(context)!.ministry_Daejeon,
+      ),
       DropdownMenuEntry(
-          value: "H10", label: AppLocalizations.of(context)!.ministry_Ulsan),
+        value: "H10",
+        label: AppLocalizations.of(context)!.ministry_Ulsan,
+      ),
       DropdownMenuEntry(
-          value: "I10", label: AppLocalizations.of(context)!.ministry_Sejong),
+        value: "I10",
+        label: AppLocalizations.of(context)!.ministry_Sejong,
+      ),
       DropdownMenuEntry(
-          value: "J10", label: AppLocalizations.of(context)!.ministry_Gyeonggi),
+        value: "J10",
+        label: AppLocalizations.of(context)!.ministry_Gyeonggi,
+      ),
       DropdownMenuEntry(
-          value: "K10", label: AppLocalizations.of(context)!.ministry_Gangwon),
+        value: "K10",
+        label: AppLocalizations.of(context)!.ministry_Gangwon,
+      ),
       DropdownMenuEntry(
-          value: "M10", label: AppLocalizations.of(context)!.ministry_Chungbuk),
+        value: "M10",
+        label: AppLocalizations.of(context)!.ministry_Chungbuk,
+      ),
       DropdownMenuEntry(
-          value: "N10", label: AppLocalizations.of(context)!.ministry_Chungnam),
+        value: "N10",
+        label: AppLocalizations.of(context)!.ministry_Chungnam,
+      ),
       DropdownMenuEntry(
-          value: "P10", label: AppLocalizations.of(context)!.ministry_Jeonbuk),
+        value: "P10",
+        label: AppLocalizations.of(context)!.ministry_Jeonbuk,
+      ),
       DropdownMenuEntry(
-          value: "Q10", label: AppLocalizations.of(context)!.ministry_Jeonnam),
+        value: "Q10",
+        label: AppLocalizations.of(context)!.ministry_Jeonnam,
+      ),
       DropdownMenuEntry(
-          value: "R10",
-          label: AppLocalizations.of(context)!.ministry_Gyeongbuk),
+        value: "R10",
+        label: AppLocalizations.of(context)!.ministry_Gyeongbuk,
+      ),
       DropdownMenuEntry(
-          value: "S10",
-          label: AppLocalizations.of(context)!.ministry_Gyeongnam),
+        value: "S10",
+        label: AppLocalizations.of(context)!.ministry_Gyeongnam,
+      ),
       DropdownMenuEntry(
-          value: "T10", label: AppLocalizations.of(context)!.ministry_Jeju),
+        value: "T10",
+        label: AppLocalizations.of(context)!.ministry_Jeju,
+      ),
     ];
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -148,9 +184,7 @@ class _SchoolChangerState extends State<SchoolChanger> {
                     },
                   ),
                 ),
-                Spacer(
-                  flex: 1,
-                ),
+                Spacer(flex: 1),
                 Expanded(
                   flex: 5,
                   child: FutureBuilder(

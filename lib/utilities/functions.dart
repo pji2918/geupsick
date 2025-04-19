@@ -4,13 +4,17 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'dart:convert';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:geupsick/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'types/geupsickinfoclass.dart';
 
 Future<GeupsickInfo?> getMeal(
-    DateTime date, String schoolCode, String ministryCode, int idx) async {
+  DateTime date,
+  String schoolCode,
+  String ministryCode,
+  int idx,
+) async {
   final List<ConnectivityResult> connectivityResult =
       await Connectivity().checkConnectivity();
 
@@ -20,7 +24,8 @@ Future<GeupsickInfo?> getMeal(
     return null;
   } else {
     var url = Uri.parse(
-        "https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=$key&Type=json&ATPT_OFCDC_SC_CODE=$ministryCode&SD_SCHUL_CODE=$schoolCode&MLSV_YMD=${DateFormat('yyyyMMdd').format(date)}&MMEAL_SC_CODE=${idx + 1}");
+      "https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=$key&Type=json&ATPT_OFCDC_SC_CODE=$ministryCode&SD_SCHUL_CODE=$schoolCode&MLSV_YMD=${DateFormat('yyyyMMdd').format(date)}&MMEAL_SC_CODE=${idx + 1}",
+    );
     var response = await http.get(url);
     return GeupsickInfo.fromJson(jsonDecode(response.body));
   }
@@ -34,8 +39,14 @@ bool isMediumScreen(BuildContext context) {
   return MediaQuery.of(context).size.width > 640.0;
 }
 
-Widget printMeal(GeupsickInfo geupsick, DateTime date, String schoolCode,
-    String ministryCode, int idx, BuildContext context) {
+Widget printMeal(
+  GeupsickInfo geupsick,
+  DateTime date,
+  String schoolCode,
+  String ministryCode,
+  int idx,
+  BuildContext context,
+) {
   Column col = Column(
     mainAxisAlignment: MainAxisAlignment.center,
     mainAxisSize: MainAxisSize.min,
@@ -58,9 +69,9 @@ Widget printMeal(GeupsickInfo geupsick, DateTime date, String schoolCode,
   } else {
     List<String> meal = [];
 
-    meal = geupsick.mealServiceDietInfo![1].row![0].dDISHNM
-        .toString()
-        .split("<br/>");
+    meal = geupsick.mealServiceDietInfo![1].row![0].dDISHNM.toString().split(
+      "<br/>",
+    );
     for (int i = 0; i < meal.length; i++) {
       col.children.add(
         Text(
@@ -131,10 +142,7 @@ Future<int> getGScore(GeupsickInfo geupsick) async {
       ],
     );
 
-    final requestMessages = [
-      systemMessage,
-      userMessage,
-    ];
+    final requestMessages = [systemMessage, userMessage];
 
     OpenAIChatCompletionModel completion = await OpenAI.instance.chat.create(
       model: "gpt-4o-mini",

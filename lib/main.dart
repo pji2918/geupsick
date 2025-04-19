@@ -7,7 +7,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:geupsick/l10n/app_localizations.dart';
 
 import 'utilities/types/geupsickinfoclass.dart';
 import 'utilities/functions.dart';
@@ -20,9 +20,9 @@ void main() {
 class AppScrollBehavior extends MaterialScrollBehavior {
   @override
   Set<PointerDeviceKind> get dragDevices => {
-        PointerDeviceKind.touch,
-        PointerDeviceKind.mouse,
-      };
+    PointerDeviceKind.touch,
+    PointerDeviceKind.mouse,
+  };
 }
 
 class MainApp extends StatefulWidget {
@@ -82,9 +82,7 @@ class _MainAppState extends State<MainApp> {
           light = lightDynamic.harmonized();
           dark = darkDynamic.harmonized();
         } else {
-          light = ColorScheme.fromSeed(
-            seedColor: Colors.deepPurple,
-          );
+          light = ColorScheme.fromSeed(seedColor: Colors.deepPurple);
           dark = ColorScheme.fromSeed(
             seedColor: Colors.deepPurple,
             brightness: Brightness.dark,
@@ -136,14 +134,13 @@ class _MainAppState extends State<MainApp> {
                               crossAxisAlignment: WrapCrossAlignment.center,
                               children: [
                                 Icon(Icons.calendar_month),
-                                Text(
-                                  AppLocalizations.of(context)!.dateSelect,
-                                ),
+                                Text(AppLocalizations.of(context)!.dateSelect),
                               ],
                             ),
                           ),
                           onPressed: () async {
-                            DateTime newDate = await showDatePicker(
+                            DateTime newDate =
+                                await showDatePicker(
                                   locale: Localizations.localeOf(context),
                                   context: context,
                                   initialDate: date,
@@ -180,9 +177,7 @@ class _MainAppState extends State<MainApp> {
                               spacing: 5,
                               children: [
                                 Icon(Icons.settings),
-                                Text(
-                                  AppLocalizations.of(context)!.settings,
-                                ),
+                                Text(AppLocalizations.of(context)!.settings),
                               ],
                             ),
                           ),
@@ -212,144 +207,155 @@ class _MainAppState extends State<MainApp> {
                     ),
                   ],
                 ),
-                body: isMediumScreen(context)
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          if (!isLargeScreen(context))
-                            Flexible(
-                              flex: 1,
-                              fit: FlexFit.tight,
-                              child: NavigationRail(
-                                labelType: NavigationRailLabelType.all,
-                                destinations: [
-                                  NavigationRailDestination(
-                                    icon: Icon(Icons.breakfast_dining_outlined),
-                                    selectedIcon: Icon(Icons.breakfast_dining),
-                                    label: Text(
-                                      AppLocalizations.of(context)!.breakfast,
+                body:
+                    isMediumScreen(context)
+                        ? Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            if (!isLargeScreen(context))
+                              Flexible(
+                                flex: 1,
+                                fit: FlexFit.tight,
+                                child: NavigationRail(
+                                  labelType: NavigationRailLabelType.all,
+                                  destinations: [
+                                    NavigationRailDestination(
+                                      icon: Icon(
+                                        Icons.breakfast_dining_outlined,
+                                      ),
+                                      selectedIcon: Icon(
+                                        Icons.breakfast_dining,
+                                      ),
+                                      label: Text(
+                                        AppLocalizations.of(context)!.breakfast,
+                                      ),
+                                      disabled: schoolCode.isEmpty,
                                     ),
-                                    disabled: schoolCode.isEmpty,
-                                  ),
-                                  NavigationRailDestination(
-                                    icon: Icon(Icons.lunch_dining_outlined),
-                                    selectedIcon: Icon(Icons.lunch_dining),
-                                    label: Text(
-                                      AppLocalizations.of(context)!.lunch,
+                                    NavigationRailDestination(
+                                      icon: Icon(Icons.lunch_dining_outlined),
+                                      selectedIcon: Icon(Icons.lunch_dining),
+                                      label: Text(
+                                        AppLocalizations.of(context)!.lunch,
+                                      ),
+                                      disabled: schoolCode.isEmpty,
                                     ),
-                                    disabled: schoolCode.isEmpty,
-                                  ),
-                                  NavigationRailDestination(
-                                    icon: Icon(Icons.dinner_dining_outlined),
-                                    selectedIcon: Icon(Icons.dinner_dining),
-                                    label: Text(
-                                      AppLocalizations.of(context)!.dinner,
-                                    ),
-                                    disabled: schoolCode.isEmpty,
-                                  ),
-                                ],
-                                selectedIndex: idx,
-                                onDestinationSelected: (value) {
-                                  if (idx != value) {
-                                    setState(() => idx = value);
-                                  }
-                                },
-                              ),
-                            )
-                          else
-                            Flexible(
-                              flex: 2,
-                              fit: FlexFit.tight,
-                              child: Drawer(
-                                child: ListView(
-                                  children: [
-                                    Column(
-                                      children: [
-                                        ListTile(
-                                          enabled: schoolCode.isNotEmpty,
-                                          leading: Icon(Icons.breakfast_dining),
-                                          title: Text(
-                                            AppLocalizations.of(context)!
-                                                .breakfast,
-                                          ),
-                                          selected: idx == 0,
-                                          onTap: () {
-                                            if (idx != 0) {
-                                              setState(() => idx = 0);
-                                            }
-                                          },
-                                        ),
-                                        ListTile(
-                                          enabled: schoolCode.isNotEmpty,
-                                          leading: Icon(Icons.lunch_dining),
-                                          title: Text(
-                                            AppLocalizations.of(context)!.lunch,
-                                          ),
-                                          selected: idx == 1,
-                                          onTap: () {
-                                            if (idx != 1) {
-                                              setState(() => idx = 1);
-                                            }
-                                          },
-                                        ),
-                                        ListTile(
-                                          enabled: schoolCode.isNotEmpty,
-                                          leading: Icon(Icons.dinner_dining),
-                                          title: Text(
-                                            AppLocalizations.of(context)!
-                                                .dinner,
-                                          ),
-                                          selected: idx == 2,
-                                          onTap: () {
-                                            if (idx != 2) {
-                                              setState(() => idx = 2);
-                                            }
-                                          },
-                                        ),
-                                      ],
+                                    NavigationRailDestination(
+                                      icon: Icon(Icons.dinner_dining_outlined),
+                                      selectedIcon: Icon(Icons.dinner_dining),
+                                      label: Text(
+                                        AppLocalizations.of(context)!.dinner,
+                                      ),
+                                      disabled: schoolCode.isEmpty,
                                     ),
                                   ],
+                                  selectedIndex: idx,
+                                  onDestinationSelected: (value) {
+                                    if (idx != value) {
+                                      setState(() => idx = value);
+                                    }
+                                  },
+                                ),
+                              )
+                            else
+                              Flexible(
+                                flex: 2,
+                                fit: FlexFit.tight,
+                                child: Drawer(
+                                  child: ListView(
+                                    children: [
+                                      Column(
+                                        children: [
+                                          ListTile(
+                                            enabled: schoolCode.isNotEmpty,
+                                            leading: Icon(
+                                              Icons.breakfast_dining,
+                                            ),
+                                            title: Text(
+                                              AppLocalizations.of(
+                                                context,
+                                              )!.breakfast,
+                                            ),
+                                            selected: idx == 0,
+                                            onTap: () {
+                                              if (idx != 0) {
+                                                setState(() => idx = 0);
+                                              }
+                                            },
+                                          ),
+                                          ListTile(
+                                            enabled: schoolCode.isNotEmpty,
+                                            leading: Icon(Icons.lunch_dining),
+                                            title: Text(
+                                              AppLocalizations.of(
+                                                context,
+                                              )!.lunch,
+                                            ),
+                                            selected: idx == 1,
+                                            onTap: () {
+                                              if (idx != 1) {
+                                                setState(() => idx = 1);
+                                              }
+                                            },
+                                          ),
+                                          ListTile(
+                                            enabled: schoolCode.isNotEmpty,
+                                            leading: Icon(Icons.dinner_dining),
+                                            title: Text(
+                                              AppLocalizations.of(
+                                                context,
+                                              )!.dinner,
+                                            ),
+                                            selected: idx == 2,
+                                            onTap: () {
+                                              if (idx != 2) {
+                                                setState(() => idx = 2);
+                                              }
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
+                            Flexible(
+                              flex: 7,
+                              fit: FlexFit.tight,
+                              child: mainForm(context),
                             ),
-                          Flexible(
-                            flex: 7,
-                            fit: FlexFit.tight,
-                            child: mainForm(context),
-                          ),
-                        ],
-                      )
-                    : mainForm(context),
+                          ],
+                        )
+                        : mainForm(context),
                 bottomNavigationBar:
                     !isMediumScreen(context) && !isLargeScreen(context)
                         ? NavigationBar(
-                            onDestinationSelected: (int index) {
-                              if (idx != index) {
-                                setState(() => idx = index);
-                              }
-                            },
-                            selectedIndex: idx,
-                            destinations: [
-                              NavigationDestination(
-                                enabled: schoolCode.isNotEmpty,
-                                icon: Icon(Icons.breakfast_dining_outlined),
-                                selectedIcon: Icon(Icons.breakfast_dining),
-                                label: AppLocalizations.of(context)!.breakfast,
-                              ),
-                              NavigationDestination(
-                                enabled: schoolCode.isNotEmpty,
-                                icon: Icon(Icons.lunch_dining_outlined),
-                                selectedIcon: Icon(Icons.lunch_dining),
-                                label: AppLocalizations.of(context)!.lunch,
-                              ),
-                              NavigationDestination(
-                                enabled: schoolCode.isNotEmpty,
-                                icon: Icon(Icons.dinner_dining_outlined),
-                                selectedIcon: Icon(Icons.dinner_dining),
-                                label: AppLocalizations.of(context)!.dinner,
-                              ),
-                            ],
-                          )
+                          onDestinationSelected: (int index) {
+                            if (idx != index) {
+                              setState(() => idx = index);
+                            }
+                          },
+                          selectedIndex: idx,
+                          destinations: [
+                            NavigationDestination(
+                              enabled: schoolCode.isNotEmpty,
+                              icon: Icon(Icons.breakfast_dining_outlined),
+                              selectedIcon: Icon(Icons.breakfast_dining),
+                              label: AppLocalizations.of(context)!.breakfast,
+                            ),
+                            NavigationDestination(
+                              enabled: schoolCode.isNotEmpty,
+                              icon: Icon(Icons.lunch_dining_outlined),
+                              selectedIcon: Icon(Icons.lunch_dining),
+                              label: AppLocalizations.of(context)!.lunch,
+                            ),
+                            NavigationDestination(
+                              enabled: schoolCode.isNotEmpty,
+                              icon: Icon(Icons.dinner_dining_outlined),
+                              selectedIcon: Icon(Icons.dinner_dining),
+                              label: AppLocalizations.of(context)!.dinner,
+                            ),
+                          ],
+                        )
                         : null,
               );
             },
@@ -362,27 +368,24 @@ class _MainAppState extends State<MainApp> {
   void selectSchool(BuildContext context) {
     showDialog(
       context: context,
-      builder: (BuildContext context) => Dialog.fullscreen(
-        child: SchoolChanger(
-          schoolCode: schoolCode,
-          ministryCode: ministryCode,
-        ),
-      ),
+      builder:
+          (BuildContext context) => Dialog.fullscreen(
+            child: SchoolChanger(
+              schoolCode: schoolCode,
+              ministryCode: ministryCode,
+            ),
+          ),
       useRootNavigator: false,
-    ).then(
-      (value) {
-        if (value != null && schoolCode != value[0]) {
-          setState(
-            () {
-              schoolCode = value[0];
-              ministryCode = value[1];
-              saveAppData();
-            },
-          );
-          idx = 0;
-        }
-      },
-    );
+    ).then((value) {
+      if (value != null && schoolCode != value[0]) {
+        setState(() {
+          schoolCode = value[0];
+          ministryCode = value[1];
+          saveAppData();
+        });
+        idx = 0;
+      }
+    });
   }
 
   Widget mainForm(BuildContext context) {
@@ -406,16 +409,12 @@ class _MainAppState extends State<MainApp> {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(
-                      height: 25,
-                    ),
+                    SizedBox(height: 25),
                     Text(
                       AppLocalizations.of(context)!.schoolNotSelectedDesc,
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
+                    SizedBox(height: 10),
                     FilledButton(
                       onPressed: () => selectSchool(context),
                       child: Text(AppLocalizations.of(context)!.schoolSelect),
@@ -429,9 +428,7 @@ class _MainAppState extends State<MainApp> {
       );
     }
 
-    final PageController pageController = PageController(
-      initialPage: 999,
-    );
+    final PageController pageController = PageController(initialPage: 999);
 
     return PageView.builder(
       controller: pageController,
@@ -460,9 +457,10 @@ class _MainAppState extends State<MainApp> {
                         padding: const EdgeInsets.all(20),
                         child: Center(
                           child: CircularProgressIndicator(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSecondaryContainer,
+                            color:
+                                Theme.of(
+                                  context,
+                                ).colorScheme.onSecondaryContainer,
                           ),
                         ),
                       ),
@@ -475,16 +473,10 @@ class _MainAppState extends State<MainApp> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Icon(
-                    Icons.wifi_off,
-                    size: 50,
-                  ),
+                  Icon(Icons.wifi_off, size: 50),
                   Text(
                     AppLocalizations.of(context)!.errorMessage,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ],
               );
@@ -522,16 +514,18 @@ class _MainAppState extends State<MainApp> {
                               padding: getPadding(context),
                               child: SizedBox(
                                 child: Card.filled(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .secondaryContainer,
+                                  color:
+                                      Theme.of(
+                                        context,
+                                      ).colorScheme.secondaryContainer,
                                   child: Padding(
                                     padding: EdgeInsets.all(20),
                                     child: Center(
                                       child: CircularProgressIndicator(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSecondaryContainer,
+                                        color:
+                                            Theme.of(
+                                              context,
+                                            ).colorScheme.onSecondaryContainer,
                                       ),
                                     ),
                                   ),
@@ -545,9 +539,10 @@ class _MainAppState extends State<MainApp> {
                               padding: getPadding(context),
                               child: SizedBox(
                                 child: Card.filled(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .secondaryContainer,
+                                  color:
+                                      Theme.of(
+                                        context,
+                                      ).colorScheme.secondaryContainer,
                                   child: Padding(
                                     padding: const EdgeInsets.all(20),
                                     child: Column(
@@ -556,13 +551,11 @@ class _MainAppState extends State<MainApp> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        Icon(
-                                          Icons.warning,
-                                          size: 50,
-                                        ),
+                                        Icon(Icons.warning, size: 50),
                                         Text(
-                                          AppLocalizations.of(context)!
-                                              .errorMessage_GScore,
+                                          AppLocalizations.of(
+                                            context,
+                                          )!.errorMessage_GScore,
                                           style: TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold,
@@ -580,9 +573,10 @@ class _MainAppState extends State<MainApp> {
                               padding: getPadding(context),
                               child: SizedBox(
                                 child: Card.filled(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .secondaryContainer,
+                                  color:
+                                      Theme.of(
+                                        context,
+                                      ).colorScheme.secondaryContainer,
                                   child: Padding(
                                     padding: EdgeInsets.all(20),
                                     child: Column(
@@ -592,15 +586,17 @@ class _MainAppState extends State<MainApp> {
                                           style: TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onSecondaryContainer,
+                                            color:
+                                                Theme.of(context)
+                                                    .colorScheme
+                                                    .onSecondaryContainer,
                                           ),
                                         ),
                                         Card.filled(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .secondary,
+                                          color:
+                                              Theme.of(
+                                                context,
+                                              ).colorScheme.secondary,
                                           child: Padding(
                                             padding: const EdgeInsets.symmetric(
                                               horizontal: 8,
@@ -609,9 +605,10 @@ class _MainAppState extends State<MainApp> {
                                               gScore.toString(),
                                               style: TextStyle(
                                                 fontSize: 20,
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .onSecondary,
+                                                color:
+                                                    Theme.of(
+                                                      context,
+                                                    ).colorScheme.onSecondary,
                                               ),
                                             ),
                                           ),
