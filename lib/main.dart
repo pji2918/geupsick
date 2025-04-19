@@ -102,14 +102,18 @@ class _MainAppState extends State<MainApp> {
           theme: ThemeData(
             colorScheme: light,
             fontFamily:
-                defaultTargetPlatform == TargetPlatform.windows || kIsWeb
+                defaultTargetPlatform == TargetPlatform.windows ||
+                        defaultTargetPlatform == TargetPlatform.macOS ||
+                        kIsWeb
                     ? GoogleFonts.ibmPlexSansKr().fontFamily
                     : null,
           ),
           darkTheme: ThemeData(
             colorScheme: dark,
             fontFamily:
-                defaultTargetPlatform == TargetPlatform.windows || kIsWeb
+                defaultTargetPlatform == TargetPlatform.windows ||
+                        defaultTargetPlatform == TargetPlatform.macOS ||
+                        kIsWeb
                     ? GoogleFonts.ibmPlexSansKr().fontFamily
                     : null,
           ),
