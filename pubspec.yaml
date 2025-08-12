@@ -7,7 +7,7 @@ environment:
   sdk: ^3.7.2
 
 dependencies:
-  connectivity_plus: ^6.1.4
+  connectivity_plus: ^6.1.5
   dart_openai: ^5.1.0
   dynamic_color: ^1.8.1
   flutter:
