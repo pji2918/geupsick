@@ -7,11 +7,11 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/foundation.dart';
-import 'package:geupsick/l10n/app_localizations.dart';
 
 import 'utilities/types/geupsickinfoclass.dart';
 import 'utilities/functions.dart';
 import 'utilities/getschoolinfo.dart';
+import 'l10n/app_localizations.dart';
 
 void main() {
   runApp(MainApp());
@@ -102,18 +102,14 @@ class _MainAppState extends State<MainApp> {
           theme: ThemeData(
             colorScheme: light,
             fontFamily:
-                defaultTargetPlatform == TargetPlatform.windows ||
-                        defaultTargetPlatform == TargetPlatform.macOS ||
-                        kIsWeb
+                defaultTargetPlatform == TargetPlatform.windows || kIsWeb
                     ? GoogleFonts.ibmPlexSansKr().fontFamily
                     : null,
           ),
           darkTheme: ThemeData(
             colorScheme: dark,
             fontFamily:
-                defaultTargetPlatform == TargetPlatform.windows ||
-                        defaultTargetPlatform == TargetPlatform.macOS ||
-                        kIsWeb
+                defaultTargetPlatform == TargetPlatform.windows || kIsWeb
                     ? GoogleFonts.ibmPlexSansKr().fontFamily
                     : null,
           ),
