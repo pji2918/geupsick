@@ -21,7 +21,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get schoolNotSelectedTitle => 'SCHOOL NOT SELECTED';
 
   @override
-  String get schoolNotSelectedDesc => 'School is not selected.\nSelect School to Get Started.';
+  String get schoolNotSelectedDesc =>
+      'School is not selected.\nSelect School to Get Started.';
 
   @override
   String get ok => 'OK';
@@ -138,7 +139,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ministry_Gyeongnam => 'Gyeongsangnamdo Office of Education';
 
   @override
-  String get ministry_Jeju => 'Jeju Special Self-Governing Province Office of Education';
+  String get ministry_Jeju =>
+      'Jeju Special Self-Governing Province Office of Education';
 
   @override
   String get errorMessage => 'Failed to load meal information.';
@@ -156,5 +158,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get schoolChanged => 'School changed.';
 
   @override
-  String get searchNotAccurate => 'No Results.\nHow about entering more details?';
+  String get searchNotAccurate =>
+      'No Results.\nHow about entering more details?';
 }
