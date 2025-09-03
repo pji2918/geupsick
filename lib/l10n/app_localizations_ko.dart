@@ -12,7 +12,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get menu => '메뉴';
 
   @override
-  String get getOpenAIApiKey => 'OpenAI API 키를 얻으려면 ';
+  String get getAiApiKey => 'AI API 키를 얻으려면 ';
 
   @override
   String get clickHere => '여기를 누르세요.';
@@ -45,13 +45,13 @@ class AppLocalizationsKo extends AppLocalizations {
   String get goBack => '뒤로 가기';
 
   @override
-  String get openAIApiKeyTitle => 'OpenAI API 키';
+  String get aiApiKeyTitle => 'AI API 키';
 
   @override
-  String get openAIApiKeyDesc => 'OpenAI API 키를 설정합니다.';
+  String get aiApiKeyDesc => 'AI API 키를 설정합니다.';
 
   @override
-  String get openAIApiKeyPlaceHolder => 'OpenAI API 키를 여기에 입력하세요';
+  String get aiApiKeyPlaceHolder => 'AI API 키를 여기에 입력하세요';
 
   @override
   String get useGScore => 'G-Score 사용';

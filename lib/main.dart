@@ -535,6 +535,7 @@ class _MainAppState extends State<MainApp> {
                           } else if (snapshot.data == -2) {
                             return SizedBox.shrink();
                           } else if (snapshot.hasError || snapshot.data == -1) {
+                            debugPrint(snapshot.error.toString());
                             return Padding(
                               padding: getPadding(context),
                               child: SizedBox(

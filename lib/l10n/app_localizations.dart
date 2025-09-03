@@ -104,11 +104,11 @@ abstract class AppLocalizations {
   /// **'메뉴'**
   String get menu;
 
-  /// No description provided for @getOpenAIApiKey.
+  /// No description provided for @getAiApiKey.
   ///
   /// In ko, this message translates to:
-  /// **'OpenAI API 키를 얻으려면 '**
-  String get getOpenAIApiKey;
+  /// **'AI API 키를 얻으려면 '**
+  String get getAiApiKey;
 
   /// No description provided for @clickHere.
   ///
@@ -170,23 +170,23 @@ abstract class AppLocalizations {
   /// **'뒤로 가기'**
   String get goBack;
 
-  /// 설정 창에서 OpenAI API 키를 설정하는 버튼의 제목
+  /// 설정 창에서 AI API 키를 설정하는 버튼의 제목
   ///
   /// In ko, this message translates to:
-  /// **'OpenAI API 키'**
-  String get openAIApiKeyTitle;
+  /// **'AI API 키'**
+  String get aiApiKeyTitle;
 
-  /// 설정 창에서 OpenAI API 키를 설정하는 버튼의 설명
+  /// 설정 창에서 AI API 키를 설정하는 버튼의 설명
   ///
   /// In ko, this message translates to:
-  /// **'OpenAI API 키를 설정합니다.'**
-  String get openAIApiKeyDesc;
+  /// **'AI API 키를 설정합니다.'**
+  String get aiApiKeyDesc;
 
-  /// 설정 창에서 OpenAI API 키를 설정하는 TextField의 Placeholder
+  /// 설정 창에서 AI API 키를 설정하는 TextField의 Placeholder
   ///
   /// In ko, this message translates to:
-  /// **'OpenAI API 키를 여기에 입력하세요'**
-  String get openAIApiKeyPlaceHolder;
+  /// **'AI API 키를 여기에 입력하세요'**
+  String get aiApiKeyPlaceHolder;
 
   /// G-Score 사용 여부 제어 스위치 제목
   ///

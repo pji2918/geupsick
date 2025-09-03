@@ -2,8 +2,8 @@
     "@@locale": "ko",
     "menu": "메뉴",
     "@menu": {},
-    "getOpenAIApiKey": "OpenAI API 키를 얻으려면 ",
-    "@getOpenAIApiKey": {},
+    "getAiApiKey": "AI API 키를 얻으려면 ",
+    "@getAiApiKey": {},
     "clickHere": "여기를 누르세요.",
     "@clickHere": {},
     "schoolNotSelectedTitle": "학교가 선택되지 않았습니다",
@@ -32,17 +32,17 @@
     "@aboutDesc": {},
     "goBack": "뒤로 가기",
     "@goBack": {},
-    "openAIApiKeyTitle": "OpenAI API 키",
-    "@openAIApiKeyTitle": {
-        "description": "설정 창에서 OpenAI API 키를 설정하는 버튼의 제목"
+    "aiApiKeyTitle": "AI API 키",
+    "@aiApiKeyTitle": {
+        "description": "설정 창에서 AI API 키를 설정하는 버튼의 제목"
     },
-    "openAIApiKeyDesc": "OpenAI API 키를 설정합니다.",
-    "@openAIApiKeyDesc": {
-        "description": "설정 창에서 OpenAI API 키를 설정하는 버튼의 설명"
+    "aiApiKeyDesc": "AI API 키를 설정합니다.",
+    "@aiApiKeyDesc": {
+        "description": "설정 창에서 AI API 키를 설정하는 버튼의 설명"
     },
-    "openAIApiKeyPlaceHolder": "OpenAI API 키를 여기에 입력하세요",
-    "@openAIApiKeyPlaceHolder": {
-        "description": "설정 창에서 OpenAI API 키를 설정하는 TextField의 Placeholder"
+    "aiApiKeyPlaceHolder": "AI API 키를 여기에 입력하세요",
+    "@aiApiKeyPlaceHolder": {
+        "description": "설정 창에서 AI API 키를 설정하는 TextField의 Placeholder"
     },
     "useGScore": "G-Score 사용",
     "@useGScore": {

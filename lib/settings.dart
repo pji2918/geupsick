@@ -12,14 +12,19 @@ class Settings extends StatefulWidget {
   State<Settings> createState() => _SettingsState();
 }
 
+enum ModelSelection { openAI, google, anthropic, xAI }
+
 class _SettingsState extends State<Settings> {
   bool useGScore = false;
-  String openAIApiKey = "";
+  String aiApiKey = "";
+  ModelSelection modelSelection = ModelSelection.openAI;
 
   void loadData() async {
     SharedPreferencesAsync prefs = SharedPreferencesAsync();
     useGScore = await prefs.getBool("useGScore") ?? false;
-    openAIApiKey = await prefs.getString("openAIApiKey") ?? "";
+    aiApiKey = await prefs.getString("aiApiKey") ?? "";
+    modelSelection =
+        ModelSelection.values[await prefs.getInt("modelSelection") ?? 0];
   }
 
   @override
@@ -32,7 +37,8 @@ class _SettingsState extends State<Settings> {
     SharedPreferencesAsync prefs = SharedPreferencesAsync();
 
     await prefs.setBool("useGScore", useGScore);
-    await prefs.setString("openAIApiKey", openAIApiKey);
+    await prefs.setString("aiApiKey", aiApiKey);
+    await prefs.setInt("modelSelection", modelSelection.index);
     if (context.mounted) {
       Navigator.of(context).maybePop();
     }
@@ -89,108 +95,183 @@ class _SettingsState extends State<Settings> {
                         ),
                         ListTile(
                           title: Text(
-                            AppLocalizations.of(context)!.openAIApiKeyTitle,
+                            AppLocalizations.of(context)!.aiApiKeyTitle,
                           ),
                           subtitle: Text(
-                            AppLocalizations.of(context)!.openAIApiKeyDesc,
+                            AppLocalizations.of(context)!.aiApiKeyDesc,
                           ),
                           enabled: useGScore,
                           onTap: () {
-                            String tempkey = openAIApiKey;
+                            String tempkey = aiApiKey;
                             TextEditingController textController =
-                                TextEditingController(text: openAIApiKey);
+                                TextEditingController(text: aiApiKey);
                             showDialog(
                               context: context,
                               builder: (context) {
-                                return AlertDialog(
-                                  title: Text(
-                                    AppLocalizations.of(
-                                      context,
-                                    )!.openAIApiKeyTitle,
-                                  ),
-                                  content: SizedBox(
-                                    width:
-                                        MediaQuery.sizeOf(context).width * 0.75,
-                                    height: 100,
-                                    child: Column(
-                                      children: [
-                                        Text.rich(
-                                          style: TextStyle(fontSize: 12),
-                                          TextSpan(
-                                            text:
-                                                AppLocalizations.of(
-                                                  context,
-                                                )!.getOpenAIApiKey,
-                                            children: [
+                                return StatefulBuilder(
+                                  builder: (context, setState) {
+                                    return AlertDialog(
+                                      title: Text(
+                                        AppLocalizations.of(
+                                          context,
+                                        )!.aiApiKeyTitle,
+                                      ),
+                                      content: SizedBox(
+                                        width:
+                                            MediaQuery.sizeOf(context).width *
+                                            0.75,
+                                        height: 300,
+                                        child: Column(
+                                          children: [
+                                            RadioGroup(
+                                              groupValue: modelSelection,
+                                              onChanged: (value) {
+                                                setState(
+                                                  () =>
+                                                      modelSelection =
+                                                          value
+                                                              as ModelSelection,
+                                                );
+                                              },
+                                              child: Column(
+                                                children: [
+                                                  ListTile(
+                                                    title: Text("OpenAI"),
+                                                    leading: Radio(
+                                                      value:
+                                                          ModelSelection.openAI,
+                                                    ),
+                                                  ),
+                                                  ListTile(
+                                                    title: Text("Google"),
+                                                    leading: Radio(
+                                                      value:
+                                                          ModelSelection.google,
+                                                    ),
+                                                  ),
+                                                  ListTile(
+                                                    title: Text("Anthropic"),
+                                                    leading: Radio(
+                                                      value:
+                                                          ModelSelection
+                                                              .anthropic,
+                                                    ),
+                                                  ),
+                                                  ListTile(
+                                                    title: Text("xAI"),
+                                                    leading: Radio(
+                                                      value: ModelSelection.xAI,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Text.rich(
+                                              style: TextStyle(fontSize: 12),
                                               TextSpan(
                                                 text:
                                                     AppLocalizations.of(
                                                       context,
-                                                    )!.clickHere,
-                                                style: TextStyle(
-                                                  color:
-                                                      Theme.of(
-                                                        context,
-                                                      ).colorScheme.primary,
-                                                ),
-                                                recognizer:
-                                                    TapGestureRecognizer()
-                                                      ..onTap = () {
-                                                        launchUrl(
-                                                          Uri.parse(
-                                                            "https://platform.openai.com/api-keys",
-                                                          ),
-                                                        );
-                                                      },
+                                                    )!.getAiApiKey,
+                                                children: [
+                                                  TextSpan(
+                                                    text:
+                                                        AppLocalizations.of(
+                                                          context,
+                                                        )!.clickHere,
+                                                    style: TextStyle(
+                                                      color:
+                                                          Theme.of(
+                                                            context,
+                                                          ).colorScheme.primary,
+                                                    ),
+                                                    recognizer:
+                                                        TapGestureRecognizer()
+                                                          ..onTap = () {
+                                                            switch (modelSelection) {
+                                                              case ModelSelection
+                                                                  .openAI:
+                                                                launchUrl(
+                                                                  Uri.parse(
+                                                                    "https://platform.openai.com/api-keys",
+                                                                  ),
+                                                                );
+                                                                break;
+                                                              case ModelSelection
+                                                                  .google:
+                                                                Uri.parse(
+                                                                  "https://aistudio.google.com/app/apikey",
+                                                                );
+                                                                break;
+                                                              case ModelSelection
+                                                                  .anthropic:
+                                                                Uri.parse(
+                                                                  "https://console.anthropic.com/account/keys",
+                                                                );
+                                                                break;
+                                                              case ModelSelection
+                                                                  .xAI:
+                                                                Uri.parse(
+                                                                  "https://x.ai/api",
+                                                                );
+                                                                break;
+                                                            }
+                                                          },
+                                                  ),
+                                                ],
                                               ),
-                                            ],
+                                            ),
+                                            Center(
+                                              child: TextField(
+                                                controller: textController,
+                                                obscureText: true,
+                                                decoration: InputDecoration(
+                                                  hintText:
+                                                      AppLocalizations.of(
+                                                        context,
+                                                      )!.aiApiKeyPlaceHolder,
+                                                ),
+                                                onChanged:
+                                                    (value) => tempkey = value,
+                                                onSubmitted: (value) {
+                                                  Navigator.of(
+                                                    context,
+                                                  ).pop(value);
+                                                },
+                                                autocorrect: false,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed:
+                                              () => Navigator.of(
+                                                context,
+                                              ).pop(aiApiKey),
+                                          child: Text(
+                                            AppLocalizations.of(
+                                              context,
+                                            )!.cancel,
                                           ),
                                         ),
-                                        Center(
-                                          child: TextField(
-                                            controller: textController,
-                                            obscureText: true,
-                                            decoration: InputDecoration(
-                                              hintText:
-                                                  AppLocalizations.of(
-                                                    context,
-                                                  )!.openAIApiKeyPlaceHolder,
-                                            ),
-                                            onChanged:
-                                                (value) => tempkey = value,
-                                            onSubmitted: (value) {
-                                              Navigator.of(context).pop(value);
-                                            },
-                                            autocorrect: false,
+                                        TextButton(
+                                          onPressed:
+                                              () => Navigator.of(
+                                                context,
+                                              ).pop(tempkey),
+                                          child: Text(
+                                            AppLocalizations.of(context)!.ok,
                                           ),
                                         ),
                                       ],
-                                    ),
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                      onPressed:
-                                          () => Navigator.of(
-                                            context,
-                                          ).pop(openAIApiKey),
-                                      child: Text(
-                                        AppLocalizations.of(context)!.cancel,
-                                      ),
-                                    ),
-                                    TextButton(
-                                      onPressed:
-                                          () => Navigator.of(
-                                            context,
-                                          ).pop(tempkey),
-                                      child: Text(
-                                        AppLocalizations.of(context)!.ok,
-                                      ),
-                                    ),
-                                  ],
+                                    );
+                                  },
                                 );
                               },
                             ).then((value) {
-                              openAIApiKey = value;
+                              aiApiKey = value;
                             });
                           },
                         ),

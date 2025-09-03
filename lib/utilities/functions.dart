@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:dart_openai/dart_openai.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'dart:convert';
 import 'package:geupsick/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:langchain/langchain.dart';
+import 'package:langchain_openai/langchain_openai.dart';
 
 import 'types/geupsickinfoclass.dart';
 
@@ -106,6 +107,8 @@ Future<int> getGScore(GeupsickInfo geupsick) async {
 
   SharedPreferencesAsync pref = SharedPreferencesAsync();
 
+  ChatOpenAI llm;
+
   if (geupsick.mealServiceDietInfo == null) {
     return -2;
   } else {
@@ -118,40 +121,23 @@ Future<int> getGScore(GeupsickInfo geupsick) async {
         await pref.getString("openAIApiKey") == null) {
       return -2;
     } else {
-      OpenAI.apiKey = (await pref.getString("openAIApiKey"))!;
+      llm = ChatOpenAI(
+        apiKey: (await pref.getString("openAIApiKey")),
+        defaultOptions: ChatOpenAIOptions(model: "gpt-5-nano"),
+      );
     }
 
-    OpenAI.requestsTimeOut = Duration(seconds: 15);
-    final systemMessage = OpenAIChatCompletionChoiceMessageModel(
-      role: OpenAIChatMessageRole.system,
-      content: [
-        OpenAIChatCompletionChoiceMessageContentItemModel.text(
-          "당신은 객관적으로 급식의 맛을 평가하는 인공지능입니다. 0부터 100까지의 정수로 평가 점수를 반환하세요. 숫자 이외에 다른 문자를 포함하면 안 됩니다."
-          "\n평가는 고기, 디저트, 카레, 튀김, 볶음밥 등의 저연령층 사이에서 맛있다고 여겨지는 음식이 많을 경우 점수를 높게 평가하세요."
-          "\n해산물, 채소, 야채 등의 저연령층 사이에서 맛없다고 여겨지는 음식이 많을 경우 점수를 낮게 평가하세요.",
-        ),
-      ],
-    );
+    final requestMessage = [
+      ChatMessage.system(
+        "당신은 객관적으로 급식의 맛을 평가하는 인공지능입니다. 0부터 100까지의 정수로 평가 점수를 반환하세요. 숫자 이외에 다른 문자를 포함하면 안 됩니다."
+        "\n평가는 고기, 디저트, 카레, 튀김, 볶음밥 등의 저연령층 사이에서 맛있다고 여겨지는 음식이 많을 경우 점수를 높게 평가하세요."
+        "\n해산물, 채소, 야채 등의 저연령층 사이에서 맛없다고 여겨지는 음식이 많을 경우 점수를 낮게 평가하세요.",
+      ),
+      ChatMessage.humanText("다음은 오늘의 학교 급식이야. 평가해 줘:\n$meal"),
+    ];
 
-    final userMessage = OpenAIChatCompletionChoiceMessageModel(
-      role: OpenAIChatMessageRole.user,
-      content: [
-        OpenAIChatCompletionChoiceMessageContentItemModel.text(
-          "다음은 오늘의 학교 급식이야. 평가해 줘:\n$meal",
-        ),
-      ],
-    );
+    var response = await llm.invoke(PromptValue.chat(requestMessage));
 
-    final requestMessages = [systemMessage, userMessage];
-
-    OpenAIChatCompletionModel completion = await OpenAI.instance.chat.create(
-      model: "gpt-4o-mini",
-      messages: requestMessages,
-    );
-
-    String responseText =
-        completion.choices.first.message.content!.first.text ?? "-1";
-
-    return int.parse(responseText);
+    return int.parse(response.outputAsString);
   }
 }
