@@ -11,7 +11,7 @@ flutter_launcher_icons:
 
   ios: true
   # image_path_ios: "assets/icon/icon.png"
-  remove_alpha_channel_ios: true
+  remove_alpha_channel_ios: false
   remove_alpha_ios: true
   # image_path_ios_dark_transparent: "assets/icon/icon_dark.png"
   # image_path_ios_tinted_grayscale: "assets/icon/icon_tinted.png"
@@ -26,7 +26,7 @@ flutter_launcher_icons:
   windows:
     generate: true
     # image_path: "assets/icon/icon.webp"
-    icon_size: 48 # min:48, max:256, default: 48
+    icon_size: 256 # min:48, max:256, default: 48
 
   macos:
     generate: true
