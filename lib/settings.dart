@@ -1,9 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:geupsick/l10n/app_localizations.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'l10n/app_localizations.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -21,10 +22,18 @@ class _SettingsState extends State<Settings> {
 
   void loadData() async {
     SharedPreferencesAsync prefs = SharedPreferencesAsync();
-    useGScore = await prefs.getBool("useGScore") ?? false;
-    aiApiKey = await prefs.getString("aiApiKey") ?? "";
-    modelSelection =
+    final bool savedUseGScore = await prefs.getBool("useGScore") ?? false;
+    final String savedAiApiKey = await prefs.getString("aiApiKey") ?? "";
+    final ModelSelection savedModelSelection =
         ModelSelection.values[await prefs.getInt("modelSelection") ?? 0];
+
+    if (!mounted) return;
+
+    setState(() {
+      useGScore = savedUseGScore;
+      aiApiKey = savedAiApiKey;
+      modelSelection = savedModelSelection;
+    });
   }
 
   @override
@@ -101,7 +110,7 @@ class _SettingsState extends State<Settings> {
                             AppLocalizations.of(context)!.aiApiKeyDesc,
                           ),
                           enabled: useGScore,
-                          onTap: () {
+                          onTap: () async {
                             String tempkey = aiApiKey;
                             TextEditingController textController =
                                 TextEditingController(text: aiApiKey);
@@ -277,7 +286,7 @@ class _SettingsState extends State<Settings> {
                                 );
                               },
                             ).then((value) {
-                              aiApiKey = value;
+                              aiApiKey = value ?? "";
                             });
                           },
                         ),
