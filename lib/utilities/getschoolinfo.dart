@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:geupsick/l10n/app_localizations.dart';
 
+import '../l10n/app_localizations.dart';
 import 'types/schoolinfoclass.dart';
 
 class SchoolChanger extends StatefulWidget {

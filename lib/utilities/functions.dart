@@ -1,35 +1,29 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'dart:convert';
-import 'package:geupsick/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:langchain/langchain.dart';
 import 'package:langchain_openai/langchain_openai.dart';
+import 'package:langchain_google/langchain_google.dart';
+import 'package:langchain_anthropic/langchain_anthropic.dart';
 
+import '../settings.dart';
+import '../l10n/app_localizations.dart';
 import 'types/geupsickinfoclass.dart';
 
 Future<GeupsickInfo?> getMeal(
   DateTime date,
-  String schoolCode,
-  String ministryCode,
-  int idx,
-) async {
-  final List<ConnectivityResult> connectivityResult =
-      await Connectivity().checkConnectivity();
-
-  final String key = "ec86c034134b4479bcbdf413fa3f2288";
-
-  if (connectivityResult.contains(ConnectivityResult.none)) {
-    return null;
-  } else {
-    var url = Uri.parse(
-      "https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=$key&Type=json&ATPT_OFCDC_SC_CODE=$ministryCode&SD_SCHUL_CODE=$schoolCode&MLSV_YMD=${DateFormat('yyyyMMdd').format(date)}&MMEAL_SC_CODE=${idx + 1}",
-    );
-    var response = await http.get(url);
-    return GeupsickInfo.fromJson(jsonDecode(response.body));
-  }
+  int idx, {
+  String schoolCode = "8851096",
+  String ministryCode = "R10",
+  String key = "ec86c034134b4479bcbdf413fa3f2288",
+}) async {
+  var url = Uri.parse(
+    "https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=$key&Type=json&ATPT_OFCDC_SC_CODE=$ministryCode&SD_SCHUL_CODE=$schoolCode&MLSV_YMD=${DateFormat('yyyyMMdd').format(date)}&MMEAL_SC_CODE=${idx + 1}",
+  );
+  var response = await http.get(url);
+  return GeupsickInfo.fromJson(jsonDecode(response.body));
 }
 
 bool isLargeScreen(BuildContext context) {
@@ -107,25 +101,12 @@ Future<int> getGScore(GeupsickInfo geupsick) async {
 
   SharedPreferencesAsync pref = SharedPreferencesAsync();
 
-  ChatOpenAI llm;
-
   if (geupsick.mealServiceDietInfo == null) {
     return -2;
   } else {
     meal = geupsick.mealServiceDietInfo![1].row![0].dDISHNM
         .toString()
         .replaceAll("<br/>", "\n");
-
-    if (await pref.getBool("useGScore") == false ||
-        await pref.getString("openAIApiKey") == "" ||
-        await pref.getString("openAIApiKey") == null) {
-      return -2;
-    } else {
-      llm = ChatOpenAI(
-        apiKey: (await pref.getString("openAIApiKey")),
-        defaultOptions: ChatOpenAIOptions(model: "gpt-5-nano"),
-      );
-    }
 
     final requestMessage = [
       ChatMessage.system(
@@ -136,8 +117,60 @@ Future<int> getGScore(GeupsickInfo geupsick) async {
       ChatMessage.humanText("다음은 오늘의 학교 급식이야. 평가해 줘:\n$meal"),
     ];
 
-    var response = await llm.invoke(PromptValue.chat(requestMessage));
-
-    return int.parse(response.outputAsString);
+    if (await pref.getBool("useGScore") == false ||
+        await pref.getString("aiApiKey") == "" ||
+        await pref.getString("aiApiKey") == null) {
+      return -2;
+    } else {
+      switch (ModelSelection.values[await pref.getInt("modelSelection") ?? 0]) {
+        case ModelSelection.openAI:
+          {
+            ChatOpenAI llm = ChatOpenAI(
+              apiKey: (await pref.getString("aiApiKey")),
+              defaultOptions: ChatOpenAIOptions(model: "gpt-5-nano"),
+            );
+            ChatResult response = await llm.invoke(
+              PromptValue.chat(requestMessage),
+            );
+            return int.parse(response.outputAsString);
+          }
+        case ModelSelection.google:
+          {
+            ChatGoogleGenerativeAI llm = ChatGoogleGenerativeAI(
+              apiKey: (await pref.getString("aiApiKey")),
+              defaultOptions: ChatGoogleGenerativeAIOptions(
+                model: "models/gemini-2.5-flash-lite",
+              ),
+            );
+            ChatResult response = await llm.invoke(
+              PromptValue.chat(requestMessage),
+            );
+            return int.parse(response.outputAsString);
+          }
+        case ModelSelection.anthropic:
+          {
+            ChatAnthropic llm = ChatAnthropic(
+              apiKey: (await pref.getString("aiApiKey")),
+              defaultOptions: ChatAnthropicOptions(model: "claude-sonnet-4-0"),
+            );
+            ChatResult response = await llm.invoke(
+              PromptValue.chat(requestMessage),
+            );
+            return int.parse(response.outputAsString);
+          }
+        case ModelSelection.xAI:
+          {
+            ChatOpenAI llm = ChatOpenAI(
+              apiKey: (await pref.getString("aiApiKey")),
+              defaultOptions: ChatOpenAIOptions(model: "grok-3-mini"),
+              baseUrl: "https://api.x.ai/v1",
+            );
+            ChatResult response = await llm.invoke(
+              PromptValue.chat(requestMessage),
+            );
+            return int.parse(response.outputAsString);
+          }
+      }
+    }
   }
 }

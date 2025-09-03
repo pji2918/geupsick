@@ -1,13 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:dynamic_color/dynamic_color.dart';
-import 'package:geupsick/settings.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/foundation.dart';
 
+import 'settings.dart';
 import 'utilities/types/geupsickinfoclass.dart';
 import 'utilities/functions.dart';
 import 'utilities/getschoolinfo.dart';
@@ -443,7 +443,12 @@ class _MainAppState extends State<MainApp> {
       },
       itemBuilder: (context, index) {
         return FutureBuilder(
-          future: getMeal(date, schoolCode, ministryCode, idx),
+          future: getMeal(
+            date,
+            schoolCode: schoolCode,
+            ministryCode: ministryCode,
+            idx,
+          ),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Padding(
