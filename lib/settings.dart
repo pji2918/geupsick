@@ -199,20 +199,26 @@ class _SettingsState extends State<Settings> {
                                                                 break;
                                                               case ModelSelection
                                                                   .google:
-                                                                Uri.parse(
-                                                                  "https://aistudio.google.com/app/apikey",
+                                                                launchUrl(
+                                                                  Uri.parse(
+                                                                    "https://aistudio.google.com/app/apikey",
+                                                                  ),
                                                                 );
                                                                 break;
                                                               case ModelSelection
                                                                   .anthropic:
-                                                                Uri.parse(
-                                                                  "https://console.anthropic.com/account/keys",
+                                                                launchUrl(
+                                                                  Uri.parse(
+                                                                    "https://console.anthropic.com/account/keys",
+                                                                  ),
                                                                 );
                                                                 break;
                                                               case ModelSelection
                                                                   .xAI:
-                                                                Uri.parse(
-                                                                  "https://x.ai/api",
+                                                                launchUrl(
+                                                                  Uri.parse(
+                                                                    "https://x.ai/api",
+                                                                  ),
                                                                 );
                                                                 break;
                                                             }
