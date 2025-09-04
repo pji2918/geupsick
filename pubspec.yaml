@@ -1,7 +1,7 @@
 name: geupsick
 description: "Get Geupsick."
 publish_to: "none"
-version: 0.3.4+16
+version: 0.4.0+17
 
 environment:
   sdk: ^3.7.2
