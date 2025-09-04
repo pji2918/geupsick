@@ -12,30 +12,30 @@ if (keystorePropertiesFile.exists()) {
 }
 
 dependencies {
-    implementation("com.google.android.material:material:1.12.0")
+    implementation('com.google.android.material:material:1.13.0')
 }
 
 android {
     namespace = "com.pji2918.geupsick"
-    compileSdk = 35
+    compileSdk = 36
     ndkVersion = "28.0.12433566"
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
+        jvmTarget = JavaVersion.VERSION_17
     }
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.pji2918.geupsick"
+        minSdk = 26
+        targetSdk = 36
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = 23
-        targetSdk = 35
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
@@ -57,8 +57,8 @@ android {
             resValue "string", "app_name", "@string/app_name_release"
         }
         debug {
-            applicationIdSuffix '.debug'
-            versionNameSuffix '-DBG'
+            applicationIdSuffix = '.debug'
+            versionNameSuffix = '-DBG'
             resValue "string", "app_name", "@string/app_name_debug"
             splits.abi.enable = false
 //            splits.density.enable = false
@@ -66,6 +66,7 @@ android {
             ext.alwaysUpdateBuildId = false
         }
     }
+    buildToolsVersion = '36.0.0'
 }
 
 flutter {
