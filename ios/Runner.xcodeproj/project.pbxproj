@@ -13,7 +13,7 @@
 		51782F21BF29809D3F9536FC /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 354A5AD63A4C4BEF1A7A9AC6 /* Pods_Runner.framework */; };
 		606DDBFDC19DE98810392BB4 /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74B32851DE6F7B176B68DC21 /* Pods_RunnerTests.framework */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
-		90AD16A42E7A24BE00F68076 /* AppleIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 90AD16A32E7A24BE00F68076 /* AppleIcon.icon */; };
+		90296DCC2E7A296200F4B92F /* AppleIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 90296DCB2E7A296200F4B92F /* AppleIcon.icon */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
@@ -57,7 +57,7 @@
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		74B32851DE6F7B176B68DC21 /* Pods_RunnerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RunnerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
-		90AD16A32E7A24BE00F68076 /* AppleIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = AppleIcon.icon; sourceTree = "<group>"; };
+		90296DCB2E7A296200F4B92F /* AppleIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; name = AppleIcon.icon; path = ../assets/icon/AppleIcon.icon; sourceTree = SOURCE_ROOT; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
 		9740EEB31CF90195004384FC /* Generated.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Generated.xcconfig; path = Flutter/Generated.xcconfig; sourceTree = "<group>"; };
 		97C146EE1CF9000F007C117D /* Runner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Runner.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -107,7 +107,6 @@
 				E1FC6F2E6C80132A28F46B72 /* Pods-RunnerTests.release.xcconfig */,
 				33B7ED6D1B21B45D2622BD5B /* Pods-RunnerTests.profile.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -140,6 +139,7 @@
 				331C8082294A63A400263BE5 /* RunnerTests */,
 				36030D428EBEF755C6360E0C /* Pods */,
 				7746A120EC3F44EE48785AB4 /* Frameworks */,
+				90296DCB2E7A296200F4B92F /* AppleIcon.icon */,
 			);
 			sourceTree = "<group>";
 		};
@@ -163,7 +163,6 @@
 				1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */,
 				74858FAE1ED2DC5600515810 /* AppDelegate.swift */,
 				74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */,
-				90AD16A32E7A24BE00F68076 /* AppleIcon.icon */,
 			);
 			path = Runner;
 			sourceTree = "<group>";
@@ -266,7 +265,7 @@
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
-				90AD16A42E7A24BE00F68076 /* AppleIcon.icon in Resources */,
+				90296DCC2E7A296200F4B92F /* AppleIcon.icon in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
