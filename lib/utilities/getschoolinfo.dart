@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 import '../l10n/app_localizations.dart';
@@ -20,7 +21,6 @@ class SchoolChanger extends StatefulWidget {
 }
 
 class _SchoolChangerState extends State<SchoolChanger> {
-  final String apiKey = "ec86c034134b4479bcbdf413fa3f2288";
   String schoolCode = "";
   String ministryCode = "B10";
   String schoolName = "";
@@ -35,7 +35,7 @@ class _SchoolChangerState extends State<SchoolChanger> {
   Future<Widget> fetchSchools() async {
     var response = await http.get(
       Uri.parse(
-        "https://open.neis.go.kr/hub/schoolInfo?KEY=$apiKey&Type=json&ATPT_OFCDC_SC_CODE=$ministryCode&SCHUL_NM=$schoolName",
+        "https://open.neis.go.kr/hub/schoolInfo?KEY=${dotenv.env["KEY"]}&Type=json&ATPT_OFCDC_SC_CODE=$ministryCode&SCHUL_NM=$schoolName",
       ),
     );
     SchoolData schoolData = SchoolData.fromJson(jsonDecode(response.body));
@@ -51,9 +51,8 @@ class _SchoolChangerState extends State<SchoolChanger> {
               subtitle: Text(schoolData.schoolInfo![1].row![index].oRGRDNMA!),
               onTap: () {
                 setState(
-                  () =>
-                      schoolCode =
-                          schoolData.schoolInfo![1].row![index].sDSCHULCODE!,
+                  () => schoolCode =
+                      schoolData.schoolInfo![1].row![index].sDSCHULCODE!,
                 );
                 // pass values to parent widget
                 Navigator.pop(context, [schoolCode, ministryCode]);
@@ -176,8 +175,9 @@ class _SchoolChangerState extends State<SchoolChanger> {
                   child: TextField(
                     autofocus: true,
                     decoration: InputDecoration(
-                      hintText:
-                          AppLocalizations.of(context)!.schoolSearchPlaceholder,
+                      hintText: AppLocalizations.of(
+                        context,
+                      )!.schoolSearchPlaceholder,
                     ),
                     onChanged: (value) {
                       setState(() => schoolName = value);
