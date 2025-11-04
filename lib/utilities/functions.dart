@@ -7,6 +7,7 @@ import 'package:langchain/langchain.dart';
 import 'package:langchain_openai/langchain_openai.dart';
 import 'package:langchain_google/langchain_google.dart';
 import 'package:langchain_anthropic/langchain_anthropic.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import '../settings.dart';
 import '../l10n/app_localizations.dart';
@@ -17,10 +18,10 @@ Future<GeupsickInfo?> getMeal(
   int idx, {
   String schoolCode = "8851096",
   String ministryCode = "R10",
-  String key = "ec86c034134b4479bcbdf413fa3f2288",
 }) async {
+  await dotenv.load(fileName: ".env");
   var url = Uri.parse(
-    "https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=$key&Type=json&ATPT_OFCDC_SC_CODE=$ministryCode&SD_SCHUL_CODE=$schoolCode&MLSV_YMD=${DateFormat('yyyyMMdd').format(date)}&MMEAL_SC_CODE=${idx + 1}",
+    "https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${dotenv.env["KEY"]}&Type=json&ATPT_OFCDC_SC_CODE=$ministryCode&SD_SCHUL_CODE=$schoolCode&MLSV_YMD=${DateFormat('yyyyMMdd').format(date)}&MMEAL_SC_CODE=${idx + 1}",
   );
   var response = await http.get(url);
   return GeupsickInfo.fromJson(jsonDecode(response.body));

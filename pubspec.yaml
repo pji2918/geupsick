@@ -10,6 +10,7 @@ dependencies:
   dynamic_color: ^1.8.1
   flutter:
     sdk: flutter
+  flutter_dotenv: ^6.0.0
   flutter_localizations:
     sdk: flutter
   google_fonts: ^6.3.2
@@ -38,3 +39,4 @@ flutter:
   generate: true
   assets:
     - assets/icon/
+    - .env
