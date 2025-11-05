@@ -33,12 +33,15 @@ class _SchoolChangerState extends State<SchoolChanger> {
   }
 
   Future<Widget> fetchSchools() async {
+    await dotenv.load(fileName: ".env");
+
     var response = await http.get(
       Uri.parse(
         "https://open.neis.go.kr/hub/schoolInfo?KEY=${dotenv.env["KEY"]}&Type=json&ATPT_OFCDC_SC_CODE=$ministryCode&SCHUL_NM=$schoolName",
       ),
     );
     SchoolData schoolData = SchoolData.fromJson(jsonDecode(response.body));
+
     if (schoolData.schoolInfo![1].row == null && mounted) {
       return Center(child: Text(AppLocalizations.of(context)!.noSearchResults));
     } else {
