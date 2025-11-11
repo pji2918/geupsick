@@ -14,7 +14,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   google_fonts: ^6.3.2
-  http: ^1.5.0
+  http: ^1.6.0
   intl: ^0.20.2
   langchain: ^0.8.0
   langchain_anthropic: ^0.3.0
