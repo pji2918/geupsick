@@ -1,20 +1,21 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:http/http.dart' as http;
+import 'package:neis_school_client/neis_school_client.dart';
 
 import '../l10n/app_localizations.dart';
-import 'types/schoolinfoclass.dart';
 
 class SchoolChanger extends StatefulWidget {
   const SchoolChanger({
     super.key,
     required this.schoolCode,
     required this.ministryCode,
+    this.fetchSchools,
   });
 
   final String schoolCode;
   final String ministryCode;
+  // optional override for testing to avoid network calls
+  final Future<Widget> Function()? fetchSchools;
 
   @override
   State<SchoolChanger> createState() => _SchoolChangerState();
@@ -32,30 +33,44 @@ class _SchoolChangerState extends State<SchoolChanger> {
     super.initState();
   }
 
+  // allow tests to override the network call by providing
+  // a `fetchSchools` callback on the widget. This helper
+  // will prefer the injected callback when present.
+  Future<Widget> _invokeFetchSchools() async {
+    if (widget.fetchSchools != null) return widget.fetchSchools!();
+    return fetchSchools();
+  }
+
   Future<Widget> fetchSchools() async {
     await dotenv.load(fileName: ".env");
 
-    var response = await http.get(
-      Uri.parse(
-        "https://open.neis.go.kr/hub/schoolInfo?KEY=${dotenv.env["KEY"]}&Type=json&ATPT_OFCDC_SC_CODE=$ministryCode&SCHUL_NM=$schoolName",
-      ),
-    );
-    SchoolData schoolData = SchoolData.fromJson(jsonDecode(response.body));
+    // var response = await http.get(
+    //   Uri.parse(
+    //     "https://open.neis.go.kr/hub/schoolInfo?KEY=${dotenv.env["KEY"]}&Type=json&ATPT_OFCDC_SC_CODE=$ministryCode&SCHUL_NM=$schoolName",
+    //   ),
+    // );
+    // SchoolData schoolData = SchoolData.fromJson(jsonDecode(response.body));
 
-    if (schoolData.schoolInfo![1].row == null && mounted) {
+    final api = NeisSchoolClient().getDefaultApi();
+    var response = await api.hubSchoolInfoGet(
+      key: dotenv.env["KEY"]!,
+      type: "json",
+    );
+
+    if (response.data?.schoolInfo![1].SCHUL_NM == null && mounted) {
       return Center(child: Text(AppLocalizations.of(context)!.noSearchResults));
     } else {
       return Card.outlined(
         child: ListView.builder(
-          itemCount: schoolData.schoolInfo![1].row!.length,
+          itemCount: response.data?.schoolInfo!.length,
           itemBuilder: (context, index) {
             return ListTile(
-              title: Text(schoolData.schoolInfo![1].row![index].sCHULNM!),
-              subtitle: Text(schoolData.schoolInfo![1].row![index].oRGRDNMA!),
+              title: Text(response.data!.schoolInfo![index].SCHUL_NM!),
+              subtitle: Text(response.data!.schoolInfo![index].ORG_RDNMA!),
               onTap: () {
                 setState(
                   () => schoolCode =
-                      schoolData.schoolInfo![1].row![index].sDSCHULCODE!,
+                      response.data!.schoolInfo![index].SD_SCHUL_CODE!,
                 );
                 // pass values to parent widget
                 Navigator.pop(context, [schoolCode, ministryCode]);
@@ -191,7 +206,7 @@ class _SchoolChangerState extends State<SchoolChanger> {
                 Expanded(
                   flex: 5,
                   child: FutureBuilder(
-                    future: fetchSchools(),
+                    future: _invokeFetchSchools(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Card.outlined(
