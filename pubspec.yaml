@@ -31,7 +31,7 @@ dev_dependencies:
   flutter_launcher_icons: ^0.14.4
   change_app_package_name: ^1.5.0
   test: ^1.26.2
-  build_runner: ^2.7.1
+  build_runner: ^2.10.3
   mockito: ^5.5.0
   flutter_test:
     sdk: flutter
