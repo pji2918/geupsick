@@ -30,6 +30,8 @@ class _SchoolChangerState extends State<SchoolChanger> {
   @override
   void initState() {
     super.initState();
+    schoolCode = widget.schoolCode;
+    ministryCode = widget.ministryCode;
   }
 
   Future<Widget> fetchSchools() async {
