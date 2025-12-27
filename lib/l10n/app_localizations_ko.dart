@@ -54,6 +54,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get aiApiKeyPlaceHolder => 'AI API 키를 여기에 입력하세요';
 
   @override
+  String get openAICompatible => 'OpenAI 호환';
+
+  @override
   String get useGScore => 'G-Score 사용';
 
   @override
