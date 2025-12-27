@@ -49,5 +49,6 @@
     "clickHere": "Click Here.",
     "menu": "Menu",
     "schoolNotSelectedTitle": "SCHOOL NOT SELECTED",
-    "schoolNotSelectedDesc": "School is not selected.\nSelect School to Get Started."
+    "schoolNotSelectedDesc": "School is not selected.\nSelect School to Get Started.",
+    "openAICompatible": "OpenAI Compatible"
 }

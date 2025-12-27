@@ -44,6 +44,10 @@
     "@aiApiKeyPlaceHolder": {
         "description": "설정 창에서 AI API 키를 설정하는 TextField의 Placeholder"
     },
+    "openAICompatible": "OpenAI 호환",
+    "@openAICompatible": {
+        "description": "OpenAI 호환 제공자 설정 항목입니다."
+    },
     "useGScore": "G-Score 사용",
     "@useGScore": {
         "description": "G-Score 사용 여부 제어 스위치 제목"

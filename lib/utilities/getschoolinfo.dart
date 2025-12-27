@@ -57,13 +57,13 @@ class _SchoolChangerState extends State<SchoolChanger> {
                   () => schoolCode =
                       schoolData.schoolInfo![1].row![index].sDSCHULCODE!,
                 );
-                // pass values to parent widget
-                Navigator.pop(context, [schoolCode, ministryCode]);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(AppLocalizations.of(context)!.schoolChanged),
                   ),
                 );
+                // pass values to parent widget
+                Navigator.pop(context, [schoolCode, ministryCode]);
               },
             );
           },

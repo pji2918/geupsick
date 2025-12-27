@@ -171,6 +171,20 @@ Future<int> getGScore(GeupsickInfo geupsick) async {
             );
             return int.parse(response.outputAsString);
           }
+        case ModelSelection.openAICompatible:
+          {
+            ChatOpenAI llm = ChatOpenAI(
+              baseUrl: await pref.getString("aiApiUrl") ?? "",
+              apiKey: (await pref.getString("aiApiKey")),
+              defaultOptions: ChatOpenAIOptions(
+                model: await pref.getString("aiModelName"),
+              ),
+            );
+            ChatResult response = await llm.invoke(
+              PromptValue.chat(requestMessage),
+            );
+            return int.parse(response.outputAsString);
+          }
       }
     }
   }

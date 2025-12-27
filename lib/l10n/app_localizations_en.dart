@@ -55,6 +55,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get aiApiKeyPlaceHolder => 'Enter Your AI API Key Here';
 
   @override
+  String get openAICompatible => 'OpenAI Compatible';
+
+  @override
   String get useGScore => 'Use G-Score';
 
   @override

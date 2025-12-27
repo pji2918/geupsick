@@ -188,6 +188,12 @@ abstract class AppLocalizations {
   /// **'AI API 키를 여기에 입력하세요'**
   String get aiApiKeyPlaceHolder;
 
+  /// OpenAI 호환 제공자 설정 항목입니다.
+  ///
+  /// In ko, this message translates to:
+  /// **'OpenAI 호환'**
+  String get openAICompatible;
+
   /// G-Score 사용 여부 제어 스위치 제목
   ///
   /// In ko, this message translates to:
