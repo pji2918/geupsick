@@ -353,10 +353,10 @@ packages:
     dependency: transitive
     description:
       name: googleai_dart
-      sha256: def6a73d64ebc374d8bfc2ea81315d53fa0ae1769fb46d2685808b6a960a3268
+      sha256: "22f8bb5e621067f4c9cd2f88db240bbd7f1ea54b960c55c348104c74794a97a7"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.0"
+    version: "3.0.0"
   googleapis:
     dependency: transitive
     description:
@@ -473,18 +473,18 @@ packages:
     dependency: "direct main"
     description:
       name: langchain_google
-      sha256: "4803d3e896c14b38fa5d425c8228c7a4ec02a14819f0e82679222c293be707bf"
+      sha256: "37e4917c42361149b41fe883e7ff9b0fc136ec7b2c6e4545c6d886e22656ec94"
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.1+1"
+    version: "0.7.1+2"
   langchain_openai:
     dependency: "direct main"
     description:
       name: langchain_openai
-      sha256: "430d27ff3c0dc7b0180e2e4eb21a05133087a00493e3483ff9c2a85a2533a245"
+      sha256: "23ed96ece5bc27ec95d1b720bce61267e6db578d24134ddf80b715184e932330"
       url: "https://pub.dev"
     source: hosted
-    version: "0.8.1"
+    version: "0.8.1+1"
   langchain_tiktoken:
     dependency: transitive
     description:
@@ -585,10 +585,10 @@ packages:
     dependency: transitive
     description:
       name: openai_dart
-      sha256: "0c392263f5aeadf93c9bef0ce9f4781f4ce45de4e4b84858d5508148dfbfd637"
+      sha256: "037605a210cb3b1d8ac72b11a4ace26f25ee9267aaf981d2af1d7f0524adcbf5"
       url: "https://pub.dev"
     source: hosted
-    version: "0.6.1"
+    version: "0.6.2"
   package_config:
     dependency: transitive
     description:
