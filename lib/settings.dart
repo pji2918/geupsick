@@ -134,8 +134,16 @@ class _SettingsState extends State<Settings> {
                           },
                         ),
                         ListTile(
-                          title: Text("openAIcompatibleSetting"),
-                          subtitle: Text("openAIcompatibleSettingDesc"),
+                          title: Text(
+                            AppLocalizations.of(
+                              context,
+                            )!.openAICompatibleSettings,
+                          ),
+                          subtitle: Text(
+                            AppLocalizations.of(
+                              context,
+                            )!.openAICompatibleSettingsDescription,
+                          ),
                           enabled:
                               modelSelection == ModelSelection.openAICompatible,
                           onTap: () {
@@ -229,7 +237,7 @@ class _SettingsState extends State<Settings> {
     return StatefulBuilder(
       builder: (context, setState) {
         return AlertDialog(
-          title: Text("openAiCompatibleConfig"),
+          title: Text(AppLocalizations.of(context)!.openAICompatibleSettings),
           content: SizedBox(
             width: MediaQuery.sizeOf(context).width * 0.75,
             height: 200,
@@ -243,7 +251,9 @@ class _SettingsState extends State<Settings> {
                   child: TextField(
                     autocorrect: false,
                     controller: textControllerOne,
-                    decoration: InputDecoration(hintText: "baseUrl"),
+                    decoration: InputDecoration(
+                      hintText: AppLocalizations.of(context)!.baseUrl,
+                    ),
                     onChanged: (value) => apiUrl = value,
                   ),
                 ),
@@ -253,7 +263,9 @@ class _SettingsState extends State<Settings> {
                   child: TextField(
                     autocorrect: false,
                     controller: textControllerTwo,
-                    decoration: InputDecoration(hintText: "modelName"),
+                    decoration: InputDecoration(
+                      hintText: AppLocalizations.of(context)!.modelName,
+                    ),
                     onChanged: (value) => model = value,
                   ),
                 ),

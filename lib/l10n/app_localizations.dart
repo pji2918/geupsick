@@ -403,6 +403,30 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'결과가 없습니다.\n더 자세히 입력해 보시는 건 어떨까요?'**
   String get searchNotAccurate;
+
+  /// No description provided for @openAICompatibleSettings.
+  ///
+  /// In ko, this message translates to:
+  /// **'OpenAI 호환 API 설정'**
+  String get openAICompatibleSettings;
+
+  /// No description provided for @openAICompatibleSettingsDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'OpenAI 호환 API를 설정합니다.'**
+  String get openAICompatibleSettingsDescription;
+
+  /// No description provided for @baseUrl.
+  ///
+  /// In ko, this message translates to:
+  /// **'API 기본 URL'**
+  String get baseUrl;
+
+  /// No description provided for @modelName.
+  ///
+  /// In ko, this message translates to:
+  /// **'모델 이름'**
+  String get modelName;
 }
 
 class _AppLocalizationsDelegate

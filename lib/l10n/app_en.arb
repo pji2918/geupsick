@@ -50,5 +50,9 @@
     "menu": "Menu",
     "schoolNotSelectedTitle": "SCHOOL NOT SELECTED",
     "schoolNotSelectedDesc": "School is not selected.\nSelect School to Get Started.",
-    "openAICompatible": "OpenAI Compatible"
+    "openAICompatible": "OpenAI Compatible",
+    "openAICompatibleSettings": "Configure OpenAI compatible API",
+    "openAICompatibleSettingsDescription": "Configures OpenAI compatible API.",
+    "baseUrl": "Base URL",
+    "modelName": "Model name"
 }
