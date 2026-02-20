@@ -163,4 +163,17 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get searchNotAccurate =>
       'No Results.\nHow about entering more details?';
+
+  @override
+  String get openAICompatibleSettings => 'Configure OpenAI compatible API';
+
+  @override
+  String get openAICompatibleSettingsDescription =>
+      'Configures OpenAI compatible API.';
+
+  @override
+  String get baseUrl => 'Base URL';
+
+  @override
+  String get modelName => 'Model name';
 }

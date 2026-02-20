@@ -160,4 +160,16 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get searchNotAccurate => '결과가 없습니다.\n더 자세히 입력해 보시는 건 어떨까요?';
+
+  @override
+  String get openAICompatibleSettings => 'OpenAI 호환 API 설정';
+
+  @override
+  String get openAICompatibleSettingsDescription => 'OpenAI 호환 API를 설정합니다.';
+
+  @override
+  String get baseUrl => 'API 기본 URL';
+
+  @override
+  String get modelName => '모델 이름';
 }
