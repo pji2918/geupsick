@@ -118,9 +118,7 @@ Future<int> getGScore(GeupsickInfo geupsick) async {
       ChatMessage.humanText("다음은 오늘의 학교 급식이야. 평가해 줘:\n$meal"),
     ];
 
-    if (await pref.getBool("useGScore") == false ||
-        await pref.getString("aiApiKey") == "" ||
-        await pref.getString("aiApiKey") == null) {
+    if (await pref.getBool("useGScore") == false) {
       return -2;
     } else {
       switch (ModelSelection.values[await pref.getInt("modelSelection") ?? 0]) {
@@ -177,7 +175,7 @@ Future<int> getGScore(GeupsickInfo geupsick) async {
           {
             ChatOpenAI llm = ChatOpenAI(
               baseUrl: await pref.getString("aiApiUrl") ?? "",
-              // apiKey: (await pref.getString("aiApiKey")),
+              apiKey: await pref.getString("aiApiKey") ?? "",
               defaultOptions: ChatOpenAIOptions(
                 model: await pref.getString("aiModelName"),
               ),
