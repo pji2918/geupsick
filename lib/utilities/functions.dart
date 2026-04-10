@@ -133,7 +133,6 @@ Future<int> getGScore(GeupsickInfo geupsick) async {
             ChatResult response = await llm.invoke(
               PromptValue.chat(requestMessage),
             );
-            debugPrint(response.toString());
             return int.parse(response.outputAsString);
           }
         case ModelSelection.google:
@@ -147,7 +146,6 @@ Future<int> getGScore(GeupsickInfo geupsick) async {
             ChatResult response = await llm.invoke(
               PromptValue.chat(requestMessage),
             );
-            debugPrint(response.toString());
             return int.parse(response.outputAsString);
           }
         case ModelSelection.anthropic:
