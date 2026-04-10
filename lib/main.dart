@@ -125,6 +125,7 @@ class _MainAppState extends State<MainApp> {
               return Scaffold(
                 appBar: AppBar(
                   title: Text(
+                    style: TextStyle(fontWeight: FontWeight.bold),
                     DateFormat.MMMEd(
                       Localizations.localeOf(context).languageCode,
                     ).format(date),
