@@ -119,16 +119,22 @@ class _SettingsState extends State<Settings> {
                           enabled: useGScore,
                           onTap: () {
                             String tempkey = aiApiKey;
+                            ModelSelection tempModelSelection = modelSelection;
                             TextEditingController textController =
                                 TextEditingController(text: aiApiKey);
                             showDialog(
                               context: context,
                               builder: (context) {
-                                return aiApiKeyConfig(textController, tempkey);
+                                return aiApiKeyConfig(
+                                  textController,
+                                  tempkey,
+                                  tempModelSelection,
+                                );
                               },
                             ).then((value) {
                               setState(() {
-                                aiApiKey = value ?? "";
+                                aiApiKey = value[0] ?? aiApiKey;
+                                modelSelection = value[1] ?? modelSelection;
                               });
                             });
                           },
@@ -295,6 +301,7 @@ class _SettingsState extends State<Settings> {
   StatefulBuilder aiApiKeyConfig(
     TextEditingController textController,
     String tempkey,
+    ModelSelection tempModelSelection,
   ) {
     return StatefulBuilder(
       builder: (context, setState) {
@@ -309,9 +316,11 @@ class _SettingsState extends State<Settings> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 RadioGroup(
-                  groupValue: modelSelection,
+                  groupValue: tempModelSelection,
                   onChanged: (value) {
-                    setState(() => modelSelection = value as ModelSelection);
+                    setState(
+                      () => tempModelSelection = value as ModelSelection,
+                    );
                   },
                   child: Column(
                     children: [
@@ -403,9 +412,6 @@ class _SettingsState extends State<Settings> {
                     hintText: AppLocalizations.of(context)!.aiApiKeyPlaceHolder,
                   ),
                   onChanged: (value) => tempkey = value,
-                  onSubmitted: (value) {
-                    Navigator.of(context).pop(value);
-                  },
                   autocorrect: false,
                 ),
               ],
@@ -413,11 +419,13 @@ class _SettingsState extends State<Settings> {
           ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(context).pop(aiApiKey),
+              onPressed: () =>
+                  Navigator.of(context).pop([aiApiKey, modelSelection]),
               child: Text(AppLocalizations.of(context)!.cancel),
             ),
             TextButton(
-              onPressed: () => Navigator.of(context).pop(tempkey),
+              onPressed: () =>
+                  Navigator.of(context).pop([tempkey, tempModelSelection]),
               child: Text(AppLocalizations.of(context)!.ok),
             ),
           ],
