@@ -128,11 +128,12 @@ Future<int> getGScore(GeupsickInfo geupsick) async {
           {
             ChatOpenAI llm = ChatOpenAI(
               apiKey: (await pref.getString("aiApiKey")),
-              defaultOptions: ChatOpenAIOptions(model: "gpt-5-nano"),
+              defaultOptions: ChatOpenAIOptions(model: "gpt-5.4-nano"),
             );
             ChatResult response = await llm.invoke(
               PromptValue.chat(requestMessage),
             );
+            debugPrint(response.toString());
             return int.parse(response.outputAsString);
           }
         case ModelSelection.google:
@@ -140,19 +141,20 @@ Future<int> getGScore(GeupsickInfo geupsick) async {
             ChatGoogleGenerativeAI llm = ChatGoogleGenerativeAI(
               apiKey: (await pref.getString("aiApiKey")),
               defaultOptions: ChatGoogleGenerativeAIOptions(
-                model: "models/gemini-2.5-flash-lite",
+                model: "gemini-3.1-flash-lite-preview",
               ),
             );
             ChatResult response = await llm.invoke(
               PromptValue.chat(requestMessage),
             );
+            debugPrint(response.toString());
             return int.parse(response.outputAsString);
           }
         case ModelSelection.anthropic:
           {
             ChatAnthropic llm = ChatAnthropic(
               apiKey: (await pref.getString("aiApiKey")),
-              defaultOptions: ChatAnthropicOptions(model: "claude-sonnet-4-0"),
+              defaultOptions: ChatAnthropicOptions(model: "claude-haiku-4-5"),
             );
             ChatResult response = await llm.invoke(
               PromptValue.chat(requestMessage),
@@ -163,7 +165,9 @@ Future<int> getGScore(GeupsickInfo geupsick) async {
           {
             ChatOpenAI llm = ChatOpenAI(
               apiKey: (await pref.getString("aiApiKey")),
-              defaultOptions: ChatOpenAIOptions(model: "grok-3-mini"),
+              defaultOptions: ChatOpenAIOptions(
+                model: "grok-4-1-fast-non-reasoning",
+              ),
               baseUrl: "https://api.x.ai/v1",
             );
             ChatResult response = await llm.invoke(
@@ -175,7 +179,7 @@ Future<int> getGScore(GeupsickInfo geupsick) async {
           {
             ChatOpenAI llm = ChatOpenAI(
               baseUrl: await pref.getString("aiApiUrl") ?? "",
-              apiKey: (await pref.getString("aiApiKey")),
+              // apiKey: (await pref.getString("aiApiKey")),
               defaultOptions: ChatOpenAIOptions(
                 model: await pref.getString("aiModelName"),
               ),
