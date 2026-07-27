@@ -20,9 +20,9 @@
     - 현재 Dart 기반 `langchain`, `langchain_openai`, `langchain_google`, `langchain_anthropic` 라이브러리를 통해 급식 메뉴의 맛 평가 점수(G-Score)를 산출합니다.
     - **Vercel AI SDK (`ai`)** 패키지를 도입하여 다양한 AI Provider(OpenAI, Gemini, Anthropic, xAI)를 단일화된 인터페이스로 가볍고 안정적으로 통합합니다.
 2. **다단 반응형 레이아웃 ([main.dart:L217-358](file:///Users/pji2918/RemoteProjects/geupsick/lib/main.dart#L217-L358))**:
-    - 화면 너비(Small $\le$ 640, Medium > 640, Large > 960)에 따라 BottomNavigationBar, NavigationRail, Drawer로 유동 전환되는 UI 레이아웃을 React Native의 `useWindowDimensions()` 및 NativeWind 유틸리티 클래스로 재구현합니다.
+    - 화면 너비(Small $\le$ 640, Medium > 640, Large > 960)에 따라 BottomNavigationBar, NavigationRail, Drawer로 유동 전환되는 UI 레이아웃을 React Native의 `useWindowDimensions()` 기반 반응형 구조로 재구현합니다.
 3. **Android Material You (Dynamic Color) & UI 레이어 ([main.dart:L82-96](file:///Users/pji2918/RemoteProjects/geupsick/lib/main.dart#L82-L96))**:
-    - **Expo UI (`@expo/ui`)**의 네이티브 위젯 컴포넌트와 **NativeWind (Tailwind CSS)** 스타일링을 병행 사용하여 고성능 반응형 UI와 프리미엄 디자인을 달성합니다.
+    - **Expo UI (`@expo/ui`)**의 네이티브 위젯 컴포넌트를 기본 메인 UI로 구성하며, **NativeWind (Tailwind CSS)**는 복잡한 조건부 레이아웃 등 반드시 필요한 상황에만 제한적으로 사용합니다.
 
 ---
 
@@ -36,12 +36,13 @@
 | `shared_preferences` (`^2.5.5`)                 | **react-native-mmkv**                                   | ✅ Approved | MMKV는 C++ 동기화 엔진 기반으로 읽기/쓰기가 10배 이상 빠름. API Key 암호화 필요시 Secure Store 병용 가능.<br/>• [react-native-mmkv GitHub](https://github.com/mrousavy/react-native-mmkv)<br/>• [expo-secure-store GitHub](https://github.com/expo/expo)                                     |
 | `langchain_*` (`^0.8.1` / `^0.3.1` / `0.7.1+1`) | **Vercel AI SDK (`ai`)**                                | ✅ Approved | Vercel AI SDK는 여러 LLM Provider(OpenAI, Anthropic, Google 등)를 표준화된 인터페이스로 간결하게 제어.<br/>• [Vercel AI SDK GitHub](https://github.com/vercel/ai)                                                                                                                            |
 | `flutter_localizations` / `intl` (`^0.20.2`)    | **i18next** + **react-i18next** + **expo-localization** | ✅ Approved | 현재 `app_en.arb`, `app_ko.arb` 기반 다국어 지원중 ([app_ko.arb](file:///Users/pji2918/RemoteProjects/geupsick/lib/l10n/app_ko.arb)). i18next 표준 JSON 변환 용이.<br/>• [i18next GitHub](https://github.com/i18next/i18next)<br/>• [expo-localization GitHub](https://github.com/expo/expo) |
-| `dynamic_color` (`^1.8.1`)                      | **Expo UI (`@expo/ui`) + NativeWind**                   | ✅ Approved | `@expo/ui` 네이티브 레이아웃과 Tailwind CSS(NativeWind) 유틸리티를 병행하여 뛰어난 퍼포먼스 및 디자인 달성.<br/>• [Expo UI GitHub](https://github.com/expo/expo)<br/>• [NativeWind GitHub](https://github.com/nativewind/nativewind)                                                         |
+| `dynamic_color` (`^1.8.1`)                      | **Expo UI (`@expo/ui`)** (+ 필요시 NativeWind)          | ✅ Approved | `@expo/ui` 네이티브 레이아웃 컴포넌트를 기본 사용하고, NativeWind는 반드시 필요한 제한적 상황에만 병행.<br/>• [Expo UI GitHub](https://github.com/expo/expo)<br/>• [NativeWind GitHub](https://github.com/nativewind/nativewind)                                                             |
 | _(상태 관리)_                                   | **Zustand** + **TanStack Query (v5)**                   | ✅ Approved | 현재 Flutter 코드는 `setState`와 `SharedPreferencesAsync`를 혼용 중. Zustand로 앱 설정 영속화, TanStack Query로 NEIS API Caching/Refetching 담당.<br/>• [Zustand GitHub](https://github.com/pmndrs/zustand)<br/>• [TanStack Query GitHub](https://github.com/TanStack/query)                 |
 | `google_fonts` (`^8.1.0`)                       | **@expo-google-fonts/ibm-plex-sans-kr**                 | ✅ Approved | 기존 `IBM Plex Sans KR` 폰트 일치([main.dart:L112](file:///Users/pji2918/RemoteProjects/geupsick/lib/main.dart#L112)).<br/>• [Expo Google Fonts GitHub](https://github.com/expo/google-fonts)                                                                                                |
 | `package_info_plus` (`^10.2.0`)                 | **expo-application** / **expo-constants**               | ✅ Approved | 앱 버전 및 이름 읽기 지원([settings.dart:L197](file:///Users/pji2918/RemoteProjects/geupsick/lib/settings.dart#L197)).                                                                                                                                                                       |
 | `url_launcher` (`^6.3.2`)                       | **expo-web-browser** / **expo-linking**                 | ✅ Approved | API Key 발급 링크 등 외부 인앱 브라우저 연동 ([settings.dart:L365-403](file:///Users/pji2918/RemoteProjects/geupsick/lib/settings.dart#L365-L403)).                                                                                                                                          |
 | `flutter_dotenv` (`^6.0.1`)                     | **Expo Environment Variables (`EXPO_PUBLIC_`)**         | ✅ Approved | NEIS API Key 관리 (`.env` 파일의 `KEY` 항목).                                                                                                                                                                                                                                                |
+| _(`DateTime`과 같은 시간 API)_                  | **Temporal**                                            | ✅ Approved | 최신 `Temporal` API 사용으로 의존성 최소화.                                                                                                                                                                                                                                                  |
 
 ---
 
@@ -87,7 +88,7 @@ geupsick-expo/
 
 - [ ] `npx create-expo-app@latest geupsick-expo --template blank-typescript`를 통한 Expo Managed 프로젝트 스캐폴딩.
 - [ ] Expo Router (`expo-router`), TypeScript, ESLint/Prettier 설정.
-- [ ] 기본 패키지 설치: `@tanstack/react-query`, `zustand`, `react-native-mmkv`, `axios`, `ai`, `@expo/ui`, `nativewind`, `expo-localization`, `i18next`, `react-i18next`.
+- [ ] 기본 패키지 설치: `@tanstack/react-query`, `zustand`, `react-native-mmkv`, `axios`, `ai`, `@expo/ui`, `expo-localization`, `i18next`, `react-i18next` (필요시 `nativewind`).
 - [ ] `.env` 환경변수 설정 (`EXPO_PUBLIC_NEIS_KEY`).
 
 ### Phase 1: Core Modules & Data Layer 이관
@@ -120,7 +121,7 @@ geupsick-expo/
     - Small 화면: `react-native-pager-view` (날짜 스와이프) + Bottom Navigation Bar.
     - Medium/Large 화면: NavigationRail / Drawer 형태 측면 메인 뷰 구성.
 - [ ] **UI Styling & Native Integration**:
-    - `@expo/ui` 네이티브 호스트 컴포넌트 적용 및 NativeWind (Tailwind CSS) 반응형 스타일링 적용.
+    - `@expo/ui` 네이티브 호스트 컴포넌트를 기본 적용하고, NativeWind는 꼭 필요한 레이아웃에만 한정적으로 병행.
 
 ### Phase 4: QA, Testing & EAS Deployment
 
@@ -136,4 +137,16 @@ geupsick-expo/
 | :---------------------------------- | :--------- | :--------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **다종 AI Provider 연동 (LLM)**     | **Medium** | OpenAI, Google Gemini, Anthropic, xAI API의 응답 구조 차이 및 통신 이슈.                                   | • **Vercel AI SDK (`ai`)** 패키지를 채택하여 단일화된 `generateText` / LLM Provider 인터페이스로 가볍고 직관적인 연동 구현.                                                                |
 | **반응형 UI (Drawer vs BottomBar)** | **Medium** | Flutter의 `NavigationRail` / `Drawer` / `NavigationBar` 자동 전환 대응 로직 이관 시 화면 이질감 발생 가능. | • React Native 내에서 화면 너비를 구독하는 `useWindowDimensions()` 기반 래퍼 컴포넌트 (`ResponsiveLayout`) 작성.<br/>• `react-native-pager-view`와 결합하여 자연스러운 스와이프 체험 제공. |
-| **Material 3 Dynamic Color & UI**   | **Low**    | Android OS의 Material You 시스템 획득 시 Flutter와 RN의 색상 셋 차이.                                      | • **Expo UI (`@expo/ui`)**와 **NativeWind**를 병행하여 네이티브 룩앤필과 고성능 유틸리티 스타일링을 동시에 만족시킴.                                                                       |
+| **Material 3 Dynamic Color & UI**   | **Low**    | Android OS의 Material You 시스템 획득 시 Flutter와 RN의 색상 셋 차이.                                      | • **Expo UI (`@expo/ui`)** 네이티브 컴포넌트를 기본 적용하며, NativeWind는 반드시 필요한 상황에만 부분 사용함.                                                                             |
+
+---
+
+## 6. 참고 사항 (Reference Notes & Implementation Tips)
+
+1. **`react-native-pager-view` 기반 무한 날짜 스와이프 구현 참고**
+    - Flutter의 `PageView.builder(initialPage: 999)` 날짜 연산 방식([main.dart:L428-440](file:///Users/pji2918/RemoteProjects/geupsick/lib/main.dart#L428-L440))을 React Native로 이전 시, 창 크기가 조절되어 Breakpoint(Small/Medium/Large)가 재계산될 때 PagerView 인덱스와 날짜 간 상태 어긋남이 발생할 수 있습니다.
+    - **대응책**: 선택된 `date`를 Zustand 글로벌 스토어의 **Single Source of Truth(단일 진실 출처)**로 유지하고, PagerView의 인덱스는 UI 오프셋 렌더링에만 수동적으로 연결합니다.
+
+2. **다국어 (i18n) 적용 시 날짜 포맷팅 (`Temporal` / `dayjs`) 동기화 참고**
+    - Flutter의 `DateFormat.MMMEd(Localizations.localeOf(context).languageCode)`([main.dart:L129-132](file:///Users/pji2918/RemoteProjects/geupsick/lib/main.dart#L129-L132))와 같이 언어 설정 변경 시 AppBar의 날짜 포맷터가 자동 동기화되어야 합니다.
+    - **대응책**: `i18next` 언어 변경 이벤트 수신기(Language Change Listener) 내에서 날짜 포맷터(`Temporal` 유틸 또는 `dayjs.locale`)가 함께 갱신되도록 통합 커스텀 훅(`useFormattedDate`)을 작성해 반영합니다.
