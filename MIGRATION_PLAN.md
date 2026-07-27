@@ -123,11 +123,10 @@ geupsick-expo/
 - [ ] **UI Styling & Native Integration**:
     - `@expo/ui` 네이티브 호스트 컴포넌트를 기본 적용하고, NativeWind는 꼭 필요한 레이아웃에만 한정적으로 병행.
 
-### Phase 4: QA, Testing & EAS Deployment
+### Phase 4: QA, Testing
 
 - [ ] `test/print_meal_and_layout_test.dart` 대응하는 Jest/React Native Testing Library 유닛 테스트 구현.
 - [ ] iOS 및 Android 기기/에뮬레이터 검증.
-- [ ] EAS (Expo Application Services) Build 설정 (`eas.json`) 및 프로덕션 빌드 준비.
 
 ---
 
