@@ -114,39 +114,40 @@ class Row {
   String? hSSCNM;
   String? iNDSTSPECLCCCCLEXSTYN;
   String? hSGNRLBUSNSSCNM;
-  Null sPCLYPURPSHSORDNM;
+  String? sPCLYPURPSHSORDNM;
   String? eNEBFESEHFSCNM;
   String? dGHTSCNM;
   String? fONDYMD;
   String? fOASMEMRD;
   String? lOADDTM;
 
-  Row(
-      {this.aTPTOFCDCSCCODE,
-      this.aTPTOFCDCSCNM,
-      this.sDSCHULCODE,
-      this.sCHULNM,
-      this.eNGSCHULNM,
-      this.sCHULKNDSCNM,
-      this.lCTNSCNM,
-      this.jUORGNM,
-      this.fONDSCNM,
-      this.oRGRDNZC,
-      this.oRGRDNMA,
-      this.oRGRDNDA,
-      this.oRGTELNO,
-      this.hMPGADRES,
-      this.cOEDUSCNM,
-      this.oRGFAXNO,
-      this.hSSCNM,
-      this.iNDSTSPECLCCCCLEXSTYN,
-      this.hSGNRLBUSNSSCNM,
-      this.sPCLYPURPSHSORDNM,
-      this.eNEBFESEHFSCNM,
-      this.dGHTSCNM,
-      this.fONDYMD,
-      this.fOASMEMRD,
-      this.lOADDTM});
+  Row({
+    this.aTPTOFCDCSCCODE,
+    this.aTPTOFCDCSCNM,
+    this.sDSCHULCODE,
+    this.sCHULNM,
+    this.eNGSCHULNM,
+    this.sCHULKNDSCNM,
+    this.lCTNSCNM,
+    this.jUORGNM,
+    this.fONDSCNM,
+    this.oRGRDNZC,
+    this.oRGRDNMA,
+    this.oRGRDNDA,
+    this.oRGTELNO,
+    this.hMPGADRES,
+    this.cOEDUSCNM,
+    this.oRGFAXNO,
+    this.hSSCNM,
+    this.iNDSTSPECLCCCCLEXSTYN,
+    this.hSGNRLBUSNSSCNM,
+    this.sPCLYPURPSHSORDNM,
+    this.eNEBFESEHFSCNM,
+    this.dGHTSCNM,
+    this.fONDYMD,
+    this.fOASMEMRD,
+    this.lOADDTM,
+  });
 
   Row.fromJson(Map<String, dynamic> json) {
     aTPTOFCDCSCCODE = json['ATPT_OFCDC_SC_CODE'];
