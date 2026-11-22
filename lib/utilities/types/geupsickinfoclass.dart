@@ -15,8 +15,9 @@ class GeupsickInfo {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     if (mealServiceDietInfo != null) {
-      data['mealServiceDietInfo'] =
-          mealServiceDietInfo!.map((v) => v.toJson()).toList();
+      data['mealServiceDietInfo'] = mealServiceDietInfo!
+          .map((v) => v.toJson())
+          .toList();
     }
     return data;
   }
@@ -112,22 +113,23 @@ class GRow {
   String? mLSVTOYMD;
   String? lOADDTM;
 
-  GRow(
-      {this.aTPTOFCDCSCCODE,
-      this.aTPTOFCDCSCNM,
-      this.sDSCHULCODE,
-      this.sCHULNM,
-      this.mMEALSCCODE,
-      this.mMEALSCNM,
-      this.mLSVYMD,
-      this.mLSVFGR,
-      this.dDISHNM,
-      this.oRPLCINFO,
-      this.cALINFO,
-      this.nTRINFO,
-      this.mLSVFROMYMD,
-      this.mLSVTOYMD,
-      this.lOADDTM});
+  GRow({
+    this.aTPTOFCDCSCCODE,
+    this.aTPTOFCDCSCNM,
+    this.sDSCHULCODE,
+    this.sCHULNM,
+    this.mMEALSCCODE,
+    this.mMEALSCNM,
+    this.mLSVYMD,
+    this.mLSVFGR,
+    this.dDISHNM,
+    this.oRPLCINFO,
+    this.cALINFO,
+    this.nTRINFO,
+    this.mLSVFROMYMD,
+    this.mLSVTOYMD,
+    this.lOADDTM,
+  });
 
   GRow.fromJson(Map<String, dynamic> json) {
     aTPTOFCDCSCCODE = json['ATPT_OFCDC_SC_CODE'];
