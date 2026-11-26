@@ -147,7 +147,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get errorMessage => '급식 정보를 불러올 수 없습니다';
 
   @override
-  String get errorMessage_GScore => '급식 점수를 불러올 수 없습니다';
+  String get errorMessage_GScore => 'G-Score를 불러올 수 없습니다';
 
   @override
   String get foodNotAvailable => '급식이 없습니다.';

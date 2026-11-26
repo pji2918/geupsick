@@ -374,10 +374,10 @@ abstract class AppLocalizations {
   /// **'급식 정보를 불러올 수 없습니다'**
   String get errorMessage;
 
-  /// 급식 점수를 불러오는데 실패했을 때 나타나는 에러 메시지입니다.
+  /// G-Score를 불러오는데 실패했을 때 나타나는 에러 메시지입니다.
   ///
   /// In ko, this message translates to:
-  /// **'급식 점수를 불러올 수 없습니다'**
+  /// **'G-Score를 불러올 수 없습니다'**
   String get errorMessage_GScore;
 
   /// 급식 정보가 없을 때 나타나는 메시지입니다.
